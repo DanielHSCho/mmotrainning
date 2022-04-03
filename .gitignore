@@ -1,0 +1,10 @@
+﻿Server/ServerCore/bin
+Server/ServerCore/obj
+Server/Server/bin
+Server/Server/obj
+Server/PacketGenerator/bin
+Server/PacketGenerator/obj
+Server/DummyClient/bin
+Server/DummyClient/obj
+Server/.vs
+Client/.vs

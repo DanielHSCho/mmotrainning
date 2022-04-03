@@ -9,3 +9,5 @@ Server/DummyClient/obj
 Server/.vs
 Client/.vs
 Client/Temp
+Client/obj
+Client/Logs

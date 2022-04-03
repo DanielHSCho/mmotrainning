@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 286427175}
   - component: {fileID: 286427174}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 327427355}
   - component: {fileID: 327427357}
   m_Layer: 0
-  m_Name: Tilemap_Col
+  m_Name: Tilemap_Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

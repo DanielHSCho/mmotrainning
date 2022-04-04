@@ -161,8 +161,10 @@ public class CreatureController : MonoBehaviour
             }
 
             if (Managers.Map.CanGo(destPos)) {
-                CellPos = destPos;
-                State = CreatureState.Moving;
+                if(Managers.Object.Find(destPos) == null) {
+                    CellPos = destPos;
+                    State = CreatureState.Moving;
+                }
             }
         }
     }

@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class MapManager
 {
     public Grid CurrentGrid { get; private set; }
+
+    public int MinX { get; set; }
+    public int MaxX { get; set; }
+    public int MinY { get; set; }
+    public int MaxY { get; set; }
+
+    bool[,] _collision;
 
     public void LoadMap(int mapId)
     {
@@ -20,6 +28,28 @@ public class MapManager
         }
 
         CurrentGrid = go.GetComponent<Grid>();
+
+        // Collision 관련 파일
+        TextAsset txt = Managers.Resource.Load<TextAsset>($"Map/{mapName}");
+        StringReader reader = new StringReader(txt.text);
+
+        reader.ReadLine();
+
+        MinX = int.Parse(reader.ReadLine());
+        MaxX = int.Parse(reader.ReadLine());
+        MinY = int.Parse(reader.ReadLine());
+        MaxY = int.Parse(reader.ReadLine());
+
+        int xCount = MaxX - MinX + 1;
+        int yCount = MaxY - MinY + 1;
+        _collision = new bool[yCount, xCount];
+
+        for(int y = 0; y <yCount; y++) {
+            string line = reader.ReadLine();
+            for(int x = 0; x < xCount; x++) {
+                _collision[y, x] = (line[x] == '1' ? true : false);
+            }
+        }
     }
 
     public void DestroyMap()

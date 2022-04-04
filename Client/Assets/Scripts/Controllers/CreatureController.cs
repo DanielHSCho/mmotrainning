@@ -128,7 +128,12 @@ public class CreatureController : MonoBehaviour
         // 거의 도착했다면
         if (dist < _speed * Time.deltaTime) {
             transform.position = destPos;
-            State = CreatureState.Idle;
+
+            // 예외적으로 애니메이션 컨트롤
+            _state = CreatureState.Idle;
+            if(_dir == MoveDir.None) {
+                UpdateAnimation();
+            }
         } else {
             transform.position += moveDir.normalized * _speed * Time.deltaTime;
             State = CreatureState.Moving;

@@ -14,6 +14,21 @@ public class MapManager
 
     bool[,] _collision;
 
+    public bool CanGo(Vector3Int cellPos)
+    {
+        if(cellPos.x < MinX || cellPos.x > MaxX) {
+            return false;
+        }
+        if (cellPos.y < MinY || cellPos.y > MaxY) {
+            return false;
+        }
+
+        int x = cellPos.x - MinX;
+        int y = MaxY - cellPos.y;
+
+        return !_collision[y, x];
+    }
+
     public void LoadMap(int mapId)
     {
         DestroyMap();

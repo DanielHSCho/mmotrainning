@@ -8,6 +8,8 @@ public class MonsterController : CreatureController
     protected override void Init()
     {
         base.Init();
+        State = CreatureState.Idle;
+        Dir = MoveDir.None;
     }
 
     protected override void UpdateController()
@@ -18,7 +20,6 @@ public class MonsterController : CreatureController
 
     void GetDirInput()
     {
-        // TODO : 이동 부분은 인풋 매니저화 해야함
         if (Input.GetKey(KeyCode.W)) {
             //transform.position += Vector3.up * Time.deltaTime * _speed;
             Dir = MoveDir.Up;

@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Managers\Contents\MapManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Map\output_default.txt" />

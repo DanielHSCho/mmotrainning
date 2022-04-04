@@ -72,6 +72,11 @@ public class PlayerController : MonoBehaviour
         UpdateIsMoving();
     }
 
+    private void LateUpdate()
+    {
+        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+    }
+
     void UpdatePosition()
     {
         if(_isMoving == false) {

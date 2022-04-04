@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Managers\Contents\MapManager.cs" />
     <Compile Include="Assets\Scripts\Controllers\MonsterController.cs" />
     <Compile Include="Assets\Scripts\Controllers\CreatureController.cs" />
+    <Compile Include="Assets\Scripts\Managers\Contents\ObjectManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Map\Map_001.txt" />

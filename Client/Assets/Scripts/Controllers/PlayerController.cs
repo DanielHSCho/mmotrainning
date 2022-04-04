@@ -5,7 +5,6 @@ using static Define;
 
 public class PlayerController : MonoBehaviour
 {
-    public Grid _grid;
     public float _speed = 5.0f;
 
     Vector3Int _cellPos = Vector3Int.zero;
@@ -62,7 +61,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
-        Vector3 pos = _grid.CellToWorld(_cellPos) + new Vector3(0.5f, 0.5f);
+        Vector3 pos = Managers.Map.CurrentGrid.CellToWorld(_cellPos) + new Vector3(0.5f, 0.5f);
         transform.position = pos;
     }
 
@@ -79,12 +78,12 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        Vector3 destPos = _grid.CellToWorld(_cellPos) + new Vector3(0.5f, 0.5f);
+        Vector3 destPos = Managers.Map.CurrentGrid.CellToWorld(_cellPos) + new Vector3(0.5f, 0.5f);
         Vector3 moveDir = destPos - transform.position;
 
-        // µµ¬¯ ø©∫Œ √º≈©
+        // ÎèÑÏ∞© Ïó¨Î∂Ä Ï≤¥ÌÅ¨
         float dist = moveDir.magnitude;
-        // ∞≈¿« µµ¬¯«ﬂ¥Ÿ∏È
+        // Í±∞Ïùò ÎèÑÏ∞©ÌñàÎã§Î©¥
         if (dist < _speed * Time.deltaTime) { 
             transform.position = destPos;
             _isMoving = false;
@@ -120,7 +119,7 @@ public class PlayerController : MonoBehaviour
 
     void GetDirInput()
     {
-        // TODO : ¿Ãµø ∫Œ∫–¿∫ ¿Œ«≤ ∏≈¥œ¿˙»≠ «ÿæﬂ«‘
+        // TODO : Ïù¥Îèô Î∂ÄÎ∂ÑÏùÄ Ïù∏Ìíã Îß§ÎãàÏ†ÄÌôî Ìï¥ÏïºÌï®
         if (Input.GetKey(KeyCode.W)) {
             //transform.position += Vector3.up * Time.deltaTime * _speed;
             Dir = MoveDir.Up;

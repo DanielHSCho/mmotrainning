@@ -19,6 +19,8 @@ public class MapEditor
 
         foreach(GameObject go in gameObjects) {
 
+            Tilemap tilemapBase = Util.FindChild<Tilemap>(go, "Tilemap_Base", true);
+
             Tilemap tilemaps = Util.FindChild<Tilemap>(go, "Tilemap_Collision", true);
             
             List<Vector3Int> blocked = new List<Vector3Int>();
@@ -39,8 +41,8 @@ public class MapEditor
                 writer.WriteLine(tilemaps.cellBounds.yMin);
                 writer.WriteLine(tilemaps.cellBounds.yMax);
 
-                for (int y = tilemaps.cellBounds.yMax; y >= tilemaps.cellBounds.yMin; y--) {
-                    for (int x = tilemaps.cellBounds.xMin; x <= tilemaps.cellBounds.xMax; x++) {
+                for (int y = tilemapBase.cellBounds.yMax; y >= tilemapBase.cellBounds.yMin; y--) {
+                    for (int x = tilemapBase.cellBounds.xMin; x <= tilemapBase.cellBounds.xMax; x++) {
                         TileBase tile = tilemaps.GetTile(new Vector3Int(x, y, 0));
                         if (tile != null) {
                             writer.Write("1");

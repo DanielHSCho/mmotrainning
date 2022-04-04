@@ -33,8 +33,6 @@ public class MapManager
         TextAsset txt = Managers.Resource.Load<TextAsset>($"Map/{mapName}");
         StringReader reader = new StringReader(txt.text);
 
-        reader.ReadLine();
-
         MinX = int.Parse(reader.ReadLine());
         MaxX = int.Parse(reader.ReadLine());
         MinY = int.Parse(reader.ReadLine());

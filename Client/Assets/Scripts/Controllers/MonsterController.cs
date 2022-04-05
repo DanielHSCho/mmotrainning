@@ -83,8 +83,8 @@ public class MonsterController : CreatureController
             Dir = MoveDir.None;
         }
 
-        if (Managers.Map.CanGo(destPos) && Managers.Object.Find(destPos) == null) {
-            CellPos = destPos;
+        if (Managers.Map.CanGo(nextPos) && Managers.Object.Find(nextPos) == null) {
+            CellPos = nextPos;
         } else {
             State = CreatureState.Idle;
         }

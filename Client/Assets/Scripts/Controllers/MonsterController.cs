@@ -74,7 +74,10 @@ public class MonsterController : CreatureController
             // 스킬 사용
             Vector3Int dir = destPos - CellPos;
             if(dir.magnitude <= _skillRange) {
+
+                Dir = GetDirFromVec(dir);
                 State = CreatureState.Skill;
+
                 _coSkill = StartCoroutine("CoStartPunch");
                 return;
             }
@@ -91,17 +94,7 @@ public class MonsterController : CreatureController
         Vector3Int nextPos = path[1];
         Vector3Int moveCellDir = nextPos - CellPos;
 
-        if(moveCellDir.x > 0) {
-            Dir = MoveDir.Right;
-        } else if (moveCellDir.x < 0) {
-            Dir = MoveDir.Left;
-        } else if (moveCellDir.y > 0) {
-            Dir = MoveDir.Up;
-        } else if (moveCellDir.y < 0) {
-            Dir = MoveDir.Down;
-        } else {
-            Dir = MoveDir.None;
-        }
+        Dir = GetDirFromVec(moveCellDir);
 
         if (Managers.Map.CanGo(nextPos) && Managers.Object.Find(nextPos) == null) {
             CellPos = nextPos;

@@ -5,6 +5,7 @@ using static Define;
 
 public class MonsterController : CreatureController
 {
+    Coroutine _coSkill;
     Coroutine _coPatrol;
     Coroutine _coSearch;
 
@@ -16,6 +17,9 @@ public class MonsterController : CreatureController
 
     [SerializeField]
     float _searchRange = 5.0f;
+
+    [SerializeField]
+    float _skillRange = 1.0f;
 
     public override CreatureState State
     {
@@ -66,6 +70,14 @@ public class MonsterController : CreatureController
         Vector3Int destPos = _destCellPos;
         if(_target != null) {
             destPos = _target.GetComponent<CreatureController>().CellPos;
+
+            // 스킬 사용
+            Vector3Int dir = destPos - CellPos;
+            if(dir.magnitude <= _skillRange) {
+                State = CreatureState.Skill;
+                _coSkill = StartCoroutine("CoStartPunch");
+                return;
+            }
         }
 
         // 맵 매니저 Astar 이용
@@ -156,5 +168,33 @@ public class MonsterController : CreatureController
                 return true;
             });
         }
+    }
+
+    IEnumerator CoStartPunch()
+    {
+        // 피격 판정
+        GameObject go = Managers.Object.Find(GetFrontCellPos());
+        if (go != null) {
+            CreatureController controller = go.GetComponent<CreatureController>();
+            if (controller != null) {
+                controller.OnDamaged();
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+        State = CreatureState.Idle;
+        _coSkill = null;
+    }
+
+    IEnumerator CoStartShootArrow()
+    {
+        GameObject go = Managers.Resource.Instantiate("Creature/Arrow");
+        ArrowController arrowController = go.GetComponent<ArrowController>();
+        arrowController.Dir = _lastDir;
+        arrowController.CellPos = CellPos;
+
+        yield return new WaitForSeconds(0.3f);
+        State = CreatureState.Idle;
+        _coSkill = null;
     }
 }

@@ -7,6 +7,7 @@ public class ObjectManager
     // TODO : Dictionary<int, GameObject>
     List<GameObject> _objects = new List<GameObject>();
 
+    // TODO : 팩토리 패턴으로 Id 전달 시, 해당 id에 해당하는 애를 만들어주도록 개선해야함
     public void Add(GameObject go)
     {
         _objects.Add(go);

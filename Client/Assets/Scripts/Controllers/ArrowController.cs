@@ -38,10 +38,16 @@ public class ArrowController : CreatureController
             State = CreatureState.Moving;
 
             if (Managers.Map.CanGo(destPos)) {
-                if (Managers.Object.Find(destPos) == null) {
+                GameObject go = Managers.Object.Find(destPos);
+                
+                if (go == null) {
                     CellPos = destPos;
+                } else {
+                    Debug.Log(go.name);
+                    Managers.Resource.Destroy(gameObject);
                 }
             } else {
+                Managers.Resource.Destroy(gameObject);
             }
         }
     }

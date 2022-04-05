@@ -51,7 +51,8 @@ public class PlayerController : CreatureController
     {
         if (Input.GetKey(KeyCode.Space)) {
             State = CreatureState.Skill;
-            _coSkill = StartCoroutine("CoStartPunch");
+            //_coSkill = StartCoroutine("CoStartPunch");
+            _coSkill = StartCoroutine("CoStartShootArrow");
         }
     }
 
@@ -64,6 +65,18 @@ public class PlayerController : CreatureController
         }
 
         yield return new WaitForSeconds(0.5f);
+        State = CreatureState.Idle;
+        _coSkill = null;
+    }
+
+    IEnumerator CoStartShootArrow()
+    {
+        GameObject go = Managers.Resource.Instantiate("Creature/Arrow");
+        ArrowController arrowController = go.GetComponent<ArrowController>();
+        arrowController.Dir = _lastDir;
+        arrowController.CellPos = CellPos;
+
+        yield return new WaitForSeconds(0.3f);
         State = CreatureState.Idle;
         _coSkill = null;
     }

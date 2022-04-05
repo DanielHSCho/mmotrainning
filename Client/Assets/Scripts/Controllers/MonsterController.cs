@@ -7,9 +7,14 @@ public class MonsterController : CreatureController
 {
     Coroutine _coPatrol;
     Coroutine _coSearch;
+
+    [SerializeField]
     Vector3Int _destCellPos;
 
+    [SerializeField]
     GameObject _target;
+
+    [SerializeField]
     float _searchRange = 5.0f;
 
     public override CreatureState State
@@ -36,8 +41,11 @@ public class MonsterController : CreatureController
     protected override void Init()
     {
         base.Init();
+
         State = CreatureState.Idle;
         Dir = MoveDir.None;
+
+        _speed = 3.0f;
     }
 
     protected override void UpdateIdle()

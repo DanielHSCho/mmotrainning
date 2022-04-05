@@ -98,5 +98,9 @@ public class MonsterController : CreatureController
 
         // 시도해봤지만 목적지를 못찾음 -> 대기상태 전환
         State = CreatureState.Idle;
+        if(_coPatrol != null) {
+            StopCoroutine(_coPatrol);
+            _coPatrol = null;
+        }
     }
 }

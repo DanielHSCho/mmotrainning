@@ -22,6 +22,9 @@ public class ArrowController : CreatureController
                 break;
         }
 
+        State = CreatureState.Moving;
+        _speed = 15.0f;
+
         base.Init();
     }
 
@@ -30,45 +33,41 @@ public class ArrowController : CreatureController
         // 딱히 애니메이션이 있지 않기 때문에 재정의
     }
 
-    protected override void UpdateIdle()
+    protected override void MoveToNextPos()
     {
-        if (_dir != MoveDir.None) {
-            Vector3Int destPos = CellPos;
+        Vector3Int destPos = CellPos;
 
-            switch (_dir) {
-                case MoveDir.Up:
-                    destPos += Vector3Int.up;
-                    break;
-                case MoveDir.Down:
-                    destPos += Vector3Int.down;
-                    break;
-                case MoveDir.Left:
-                    destPos += Vector3Int.left;
-                    break;
-                case MoveDir.Right:
-                    destPos += Vector3Int.right;
-                    break;
-            }
+        switch (_dir) {
+            case MoveDir.Up:
+                destPos += Vector3Int.up;
+                break;
+            case MoveDir.Down:
+                destPos += Vector3Int.down;
+                break;
+            case MoveDir.Left:
+                destPos += Vector3Int.left;
+                break;
+            case MoveDir.Right:
+                destPos += Vector3Int.right;
+                break;
+        }
 
-            State = CreatureState.Moving;
+        if (Managers.Map.CanGo(destPos)) {
+            GameObject go = Managers.Object.Find(destPos);
 
-            if (Managers.Map.CanGo(destPos)) {
-                GameObject go = Managers.Object.Find(destPos);
-                
-                if (go == null) {
-                    CellPos = destPos;
-                } else {
-                    CreatureController controller  = go.GetComponent<CreatureController>();
-                    if(controller != null) {
-                        controller.OnDamaged();
-                    }
-
-                    // 화살 제거
-                    Managers.Resource.Destroy(gameObject);
-                }
+            if (go == null) {
+                CellPos = destPos;
             } else {
+                CreatureController controller = go.GetComponent<CreatureController>();
+                if (controller != null) {
+                    controller.OnDamaged();
+                }
+
+                // 화살 제거
                 Managers.Resource.Destroy(gameObject);
             }
+        } else {
+            Managers.Resource.Destroy(gameObject);
         }
     }
 }

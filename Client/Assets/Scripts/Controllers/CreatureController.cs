@@ -127,16 +127,22 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void UpdateController()
     {
-        UpdatePosition();
-        UpdateIsMoving();
+        switch (State) {
+            case CreatureState.Idle:
+                UpdateIdle();
+                break;
+            case CreatureState.Moving:
+                UpdateMoving();
+                break;
+            case CreatureState.Skill:
+                break;
+            case CreatureState.Dead:
+                break;
+        }
     }
 
-    void UpdatePosition()
+    void UpdateMoving()
     {
-        if (State != CreatureState.Moving) {
-            return;
-        }
-
         Vector3 destPos = Managers.Map.CurrentGrid.CellToWorld(CellPos) + new Vector3(0.5f, 0.5f);
         Vector3 moveDir = destPos - transform.position;
 
@@ -157,9 +163,9 @@ public class CreatureController : MonoBehaviour
         }
     }
 
-    void UpdateIsMoving()
+    void UpdateIdle()
     {
-        if (State == CreatureState.Idle && _dir != MoveDir.None) {
+        if (_dir != MoveDir.None) {
             Vector3Int destPos = CellPos;
 
             switch (_dir) {

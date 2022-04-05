@@ -190,7 +190,7 @@ public class MonsterController : CreatureController
         }
 
         yield return new WaitForSeconds(0.5f);
-        State = CreatureState.Idle;
+        State = CreatureState.Moving;
         _coSkill = null;
     }
 
@@ -202,7 +202,7 @@ public class MonsterController : CreatureController
         arrowController.CellPos = CellPos;
 
         yield return new WaitForSeconds(0.3f);
-        State = CreatureState.Idle;
+        State = CreatureState.Moving;
         _coSkill = null;
     }
 }

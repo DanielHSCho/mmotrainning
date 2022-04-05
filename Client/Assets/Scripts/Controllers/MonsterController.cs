@@ -6,7 +6,11 @@ using static Define;
 public class MonsterController : CreatureController
 {
     Coroutine _coPatrol;
+    Coroutine _coSearch;
     Vector3Int _destCellPos;
+
+    GameObject _target;
+    float _searchRange = 5.0f;
 
     public override CreatureState State
     {
@@ -20,6 +24,11 @@ public class MonsterController : CreatureController
             if (_coPatrol != null) {
                 StopCoroutine(_coPatrol);
                 _coPatrol = null;
+            }
+
+            if (_coSearch != null) {
+                StopCoroutine(_coSearch);
+                _coSearch = null;
             }
         }
     }
@@ -37,6 +46,10 @@ public class MonsterController : CreatureController
 
         if(_coPatrol == null) {
             _coPatrol = StartCoroutine("CoPatrol");
+        }
+
+        if (_coSearch == null) {
+            _coSearch = StartCoroutine("CoSearch");
         }
     }
 
@@ -114,5 +127,30 @@ public class MonsterController : CreatureController
 
         // 시도해봤지만 목적지를 못찾음 -> 대기상태 전환
         State = CreatureState.Idle;
+    }
+
+    IEnumerator CoSearch()
+    {
+        while (true) {
+            yield return new WaitForSeconds(1);
+
+            if(_target != null) {
+                continue;
+            }
+
+            _target = Managers.Object.Find((go) => {
+                PlayerController pc = go.GetComponent<PlayerController>();
+                if(pc == null) {
+                    return false;
+                }
+
+                Vector3Int dir = (pc.CellPos - CellPos);
+                if(dir.magnitude > _searchRange) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
     }
 }

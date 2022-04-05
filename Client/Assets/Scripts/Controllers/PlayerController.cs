@@ -126,7 +126,10 @@ public class PlayerController : CreatureController
         // 피격 판정
         GameObject go = Managers.Object.Find(GetFrontCellPos());
         if(go != null) {
-            Debug.Log(go.name);
+            CreatureController controller = go.GetComponent<CreatureController>();
+            if (controller != null) {
+                controller.OnDamaged();
+            }
         }
 
         _rangeSkill = false;

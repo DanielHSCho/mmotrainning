@@ -16,7 +16,7 @@ public class MonsterController : CreatureController
     GameObject _target;
 
     [SerializeField]
-    float _searchRange = 5.0f;
+    float _searchRange = 10.0f;
 
     [SerializeField]
     float _skillRange = 1.0f;
@@ -83,7 +83,7 @@ public class MonsterController : CreatureController
 
             // 스킬 사용
             Vector3Int dir = destPos - CellPos;
-            if(dir.magnitude <= _skillRange) {
+            if(dir.magnitude <= _skillRange && (dir.x == 0 || dir.y == 0)) {
 
                 Dir = GetDirFromVec(dir);
                 State = CreatureState.Skill;
@@ -100,7 +100,7 @@ public class MonsterController : CreatureController
 
         // 맵 매니저 Astar 이용
         List<Vector3Int> path = Managers.Map.FindPath(CellPos, destPos, ignoreDestCollision: true);
-        if (path.Count < 2 || (_target != null && path.Count > 10)) { // 길을 못찾음 or 플레이어가 너무 멀리갔다
+        if (path.Count < 2 || (_target != null && path.Count > 20)) { // 길을 못찾음 or 플레이어가 너무 멀리갔다
             _target = null;
             State = CreatureState.Idle;
             return;

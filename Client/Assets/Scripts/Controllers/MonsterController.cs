@@ -21,6 +21,9 @@ public class MonsterController : CreatureController
     [SerializeField]
     float _skillRange = 1.0f;
 
+    [SerializeField]
+    bool _rangedSkill = false;
+
     public override CreatureState State
     {
         get { return _state; }
@@ -50,6 +53,13 @@ public class MonsterController : CreatureController
         Dir = MoveDir.None;
 
         _speed = 3.0f;
+        _rangedSkill = (Random.Range(0, 2) == 0 ? true : false);
+
+        if (_rangedSkill) {
+            _skillRange = 10.0f;
+        } else {
+            _skillRange = 1.0f;
+        }
     }
 
     protected override void UpdateIdle()
@@ -78,7 +88,12 @@ public class MonsterController : CreatureController
                 Dir = GetDirFromVec(dir);
                 State = CreatureState.Skill;
 
-                _coSkill = StartCoroutine("CoStartPunch");
+                if (_rangedSkill) {
+                    _coSkill = StartCoroutine("CoStartShootArrow");
+                } else {
+                    _coSkill = StartCoroutine("CoStartPunch");
+                }
+
                 return;
             }
         }

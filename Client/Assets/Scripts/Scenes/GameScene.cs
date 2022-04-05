@@ -18,7 +18,7 @@ public class GameScene : BaseScene
 
         for(int i = 0; i < 5; i++) {
             GameObject monster = Managers.Resource.Instantiate("Creature/Monster");
-            player.name = $"Monster_{i + 1}";
+            monster.name = $"Monster_{i + 1}";
             // 랜덤 위치 스폰
             Vector3Int pos = new Vector3Int() {
                 x = Random.Range(-12, 12),

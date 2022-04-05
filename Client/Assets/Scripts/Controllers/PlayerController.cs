@@ -58,6 +58,10 @@ public class PlayerController : CreatureController
     IEnumerator CoStartPunch()
     {
         // 피격 판정
+        GameObject go = Managers.Object.Find(GetFrontCellPos());
+        if(go != null) {
+            Debug.Log(go.name);
+        }
 
         yield return new WaitForSeconds(0.5f);
         State = CreatureState.Idle;

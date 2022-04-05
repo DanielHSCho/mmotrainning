@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Managers\Core\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Controllers\CreatureController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\ArrowController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Map\Map_001.txt" />

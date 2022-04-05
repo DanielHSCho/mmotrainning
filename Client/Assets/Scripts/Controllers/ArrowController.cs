@@ -58,7 +58,16 @@ public class ArrowController : CreatureController
                 if (go == null) {
                     CellPos = destPos;
                 } else {
-                    Debug.Log(go.name);
+                    // TEMP
+                    GameObject effect = Managers.Resource.Instantiate("Effect/DieEffect");
+                    effect.transform.position = go.transform.position;
+                    effect.GetComponent<Animator>().Play("START");
+                    GameObject.Destroy(effect, 0.5f);
+
+                    Managers.Object.Remove(go);
+                    Managers.Resource.Destroy(go);
+
+                    // 화살 제거
                     Managers.Resource.Destroy(gameObject);
                 }
             } else {

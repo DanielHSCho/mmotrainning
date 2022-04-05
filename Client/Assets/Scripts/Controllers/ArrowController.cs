@@ -7,6 +7,21 @@ public class ArrowController : CreatureController
 {
     protected override void Init()
     {
+        switch (_lastDir) {
+            case MoveDir.Up:
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case MoveDir.Down:
+                transform.rotation = Quaternion.Euler(0, 0, -180);
+                break;
+            case MoveDir.Left:
+                transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case MoveDir.Right:
+                transform.rotation = Quaternion.Euler(0, 0, -90);
+                break;
+        }
+
         base.Init();
     }
 

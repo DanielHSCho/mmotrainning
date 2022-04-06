@@ -6,7 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Packet\PacketHandler.cs" />
+    <Compile Remove="Packet\ServerPacketManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.20.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ServerCore\ServerCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Packet\" />
   </ItemGroup>
 
 </Project>

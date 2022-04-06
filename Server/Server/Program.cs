@@ -30,11 +30,13 @@ namespace Server
 				Phones = { new PhoneNumber { Number = "555-4321", Type = Person.Types.PhoneType.Home } }
 			};
 
-			int size = person.CalculateSize();
-			byte[] sendBuffer = person.ToByteArray();
+			ushort size = (ushort)person.CalculateSize();
+			byte[] sendBuffer = new byte[size + 4];
+			Array.Copy(BitConverter.GetBytes(size + 4), 0, sendBuffer, 0, sizeof(ushort));
+			ushort protocolId = 1;
+			Array.Copy(BitConverter.GetBytes(protocolId), 0, sendBuffer, 2, sizeof(ushort));
+			Array.Copy(person.ToByteArray(), 0, sendBuffer, 4, sizeof(ushort));
 
-			Person person2 = new Person();
-			person2.MergeFrom(sendBuffer);
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();

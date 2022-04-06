@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -10,49 +10,44 @@ using UnityEditor;
 
 public class MapEditor
 {
-    #if UNITY_EDITOR
 
-    [MenuItem("Tools/GenerateMap")]
-    private static void GenerateMap()
-    {
-        GameObject[] gameObjects = Resources.LoadAll<GameObject>("Prefabs/Map");
+#if UNITY_EDITOR
 
-        foreach(GameObject go in gameObjects) {
+	// % (Ctrl), # (Shift), & (Alt)
 
-            Tilemap tilemapBase = Util.FindChild<Tilemap>(go, "Tilemap_Base", true);
-            Tilemap tilemaps = Util.FindChild<Tilemap>(go, "Tilemap_Collision", true);
-            
-            List<Vector3Int> blocked = new List<Vector3Int>();
+	[MenuItem("Tools/GenerateMap %#g")]
+	private static void GenerateMap()
+	{
+		GameObject[] gameObjects = Resources.LoadAll<GameObject>("Prefabs/Map");
 
-            // 블로킹 타일 추출
-            foreach (Vector3Int pos in tilemaps.cellBounds.allPositionsWithin) {
-                TileBase tile = tilemaps.GetTile(pos);
-                if (tile != null) {
-                    blocked.Add(pos);
-                }
-            }
+		foreach (GameObject go in gameObjects)
+		{
+			Tilemap tmBase = Util.FindChild<Tilemap>(go, "Tilemap_Base", true);
+			Tilemap tm = Util.FindChild<Tilemap>(go, "Tilemap_Collision", true);
 
-            // 파일 생성
-            // TODO : 바이너리로 할지(압축) / TXT 형태로 할지(편리하게 볼 수 있도록) 고민해봐야 함 
-            using (var writer = File.CreateText($"Assets/Resources/Map/{go.name}.txt")) {
-                writer.WriteLine(tilemapBase.cellBounds.xMin);
-                writer.WriteLine(tilemapBase.cellBounds.xMax);
-                writer.WriteLine(tilemapBase.cellBounds.yMin);
-                writer.WriteLine(tilemapBase.cellBounds.yMax);
+			using (var writer = File.CreateText($"Assets/Resources/Map/{go.name}.txt"))
+			{
+				writer.WriteLine(tmBase.cellBounds.xMin);
+				writer.WriteLine(tmBase.cellBounds.xMax);
+				writer.WriteLine(tmBase.cellBounds.yMin);
+				writer.WriteLine(tmBase.cellBounds.yMax);
 
-                for (int y = tilemapBase.cellBounds.yMax; y >= tilemapBase.cellBounds.yMin; y--) {
-                    for (int x = tilemapBase.cellBounds.xMin; x <= tilemapBase.cellBounds.xMax; x++) {
-                        TileBase tile = tilemaps.GetTile(new Vector3Int(x, y, 0));
-                        if (tile != null) {
-                            writer.Write("1");
-                        } else {
-                            writer.Write("0");
-                        }
-                    }
-                    writer.WriteLine();
-                }
-            }
-        }
-    }
-    #endif
+				for (int y = tmBase.cellBounds.yMax; y >= tmBase.cellBounds.yMin; y--)
+				{
+					for (int x = tmBase.cellBounds.xMin; x <= tmBase.cellBounds.xMax; x++)
+					{
+						TileBase tile = tm.GetTile(new Vector3Int(x, y, 0));
+						if (tile != null)
+							writer.Write("1");
+						else
+							writer.Write("0");
+					}
+					writer.WriteLine();
+				}
+			}
+		}
+	}
+
+#endif
+
 }

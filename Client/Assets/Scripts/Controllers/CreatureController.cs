@@ -174,8 +174,10 @@ public class CreatureController : MonoBehaviour
                 UpdateMoving();
                 break;
             case CreatureState.Skill:
+                UpdateSkill();
                 break;
             case CreatureState.Dead:
+                UpdateDead();
                 break;
         }
     }

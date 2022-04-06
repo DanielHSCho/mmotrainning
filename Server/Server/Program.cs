@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
 using static Google.Protobuf.Protocol.Person.Types;
@@ -28,6 +29,12 @@ namespace Server
 				Email = "daniel@naver.com",
 				Phones = { new PhoneNumber { Number = "555-4321", Type = Person.Types.PhoneType.Home } }
 			};
+
+			int size = person.CalculateSize();
+			byte[] sendBuffer = person.ToByteArray();
+
+			Person person2 = new Person();
+			person2.MergeFrom(sendBuffer);
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();

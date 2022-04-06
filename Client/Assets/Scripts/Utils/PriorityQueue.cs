@@ -15,8 +15,7 @@ public class PriorityQueue<T> where T : IComparable<T>
 
 		int now = _heap.Count - 1;
 		// 도장깨기를 시작
-		while (now > 0)
-		{
+		while (now > 0) {
 			// 도장깨기를 시도
 			int next = (now - 1) / 2;
 			if (_heap[now].CompareTo(_heap[next]) < 0)
@@ -46,8 +45,7 @@ public class PriorityQueue<T> where T : IComparable<T>
 
 		// 역으로 내려가는 도장깨기 시작
 		int now = 0;
-		while (true)
-		{
+		while (true) {
 			int left = 2 * now + 1;
 			int right = 2 * now + 2;
 

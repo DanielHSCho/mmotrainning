@@ -5,7 +5,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Google.Protobuf.Protocol;
 using ServerCore;
+using static Google.Protobuf.Protocol.Person.Types;
 
 namespace Server
 {
@@ -20,6 +22,13 @@ namespace Server
 
 		static void Main(string[] args)
 		{
+			Person person = new Person() {
+				Name = "Daniel",
+				Id = 123,
+				Email = "daniel@naver.com",
+				Phones = { new PhoneNumber { Number = "555-4321", Type = Person.Types.PhoneType.Home } }
+			};
+
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);

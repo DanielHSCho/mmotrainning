@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf.Protocol;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,6 +21,13 @@ namespace Server.Game
             lock (_lock) {
                 _players.Add(newPlayer);
                 newPlayer.Room = this;
+
+                // 본인에게 정보 전송
+                {
+                    S_EnterGame enterPacket = new S_EnterGame();
+                    enterPacket.Player = newPlayer.Info;
+                    newPlayer.Session.Send(enterPacket);
+                }
             }
         }
 

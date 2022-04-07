@@ -32,20 +32,6 @@ namespace Server
 		public override void OnConnected(EndPoint endPoint)
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
-
-			// PROTO Test
-			S_Chat chat = new S_Chat()
-			{
-				Context = "안녕하세요"
-			};
-
-			Send(chat);
-
-			//S_Chat chat2 = new S_Chat();
-			//chat2.MergeFrom(sendBuffer, 4, sendBuffer.Length - 4);
-			//////////////////////////
-			//////////////////////////
-			//Program.Room.Push(() => Program.Room.Enter(this));
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)

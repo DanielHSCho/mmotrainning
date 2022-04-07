@@ -36,6 +36,17 @@ namespace Server.Game
                         newPlayer.Session.Send(spawnPacket);
                     }
                 }
+
+                // 타인에게 정보 전송
+                {
+                    S_Spawn spawnPacket = new S_Spawn();
+                    spawnPacket.Players.Add(newPlayer.Info);
+                    foreach(Player player in _players) {
+                        if(newPlayer != player) {
+                            player.Session.Send(spawnPacket);
+                        }
+                    }
+                }
             }
         }
 

@@ -8,11 +8,13 @@ using ServerCore;
 using System.Net;
 using Google.Protobuf.Protocol;
 using Google.Protobuf;
+using Server.Game;
 
 namespace Server
 {
 	public class ClientSession : PacketSession
 	{
+		public Player MyPlayer { get; set; } 
 		public int SessionId { get; set; }
 
 		public void Send(IMessage packet)
@@ -32,6 +34,18 @@ namespace Server
 		public override void OnConnected(EndPoint endPoint)
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
+
+			// TODO : 실제 MMO는 여기서 온갖 로드 정보를 클라에 알려준 후
+			// 클라에서 로드가 끝나면 Okay 패킷 전달해주면 그때 입장처리 해야 함
+			MyPlayer = PlayerManager.Instance.Add();
+            {
+				MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}";
+				MyPlayer.Info.PosX = 0;
+				MyPlayer.Info.PosY = 0;
+				MyPlayer.Session = this;
+            }
+
+			RoomManager.Instance.Find(1).EnterGame(MyPlayer);
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)

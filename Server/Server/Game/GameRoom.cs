@@ -27,6 +27,14 @@ namespace Server.Game
                     S_EnterGame enterPacket = new S_EnterGame();
                     enterPacket.Player = newPlayer.Info;
                     newPlayer.Session.Send(enterPacket);
+
+                    S_Spawn spawnPacket = new S_Spawn();
+                    foreach(Player player in _players) {
+                        if(newPlayer != player) {
+                            spawnPacket.Players.Add(player.Info);
+                        }
+                        newPlayer.Session.Send(spawnPacket);
+                    }
                 }
             }
         }

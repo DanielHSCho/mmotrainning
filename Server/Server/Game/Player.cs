@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Server.Game
 {
-    class Player
+    public class Player
     {
+        public GameRoom Room { get; set; }
+        public ClientSession Session { get; set; }
     }
 }

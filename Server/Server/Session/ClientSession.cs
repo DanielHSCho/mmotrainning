@@ -11,7 +11,7 @@ using Google.Protobuf;
 
 namespace Server
 {
-	class ClientSession : PacketSession
+	public class ClientSession : PacketSession
 	{
 		public int SessionId { get; set; }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Server.Game
 {
-    class PlayerManager
+    public class PlayerManager
     {
     }
 }

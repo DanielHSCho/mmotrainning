@@ -41,9 +41,9 @@ namespace Server.Game
                 {
                     S_Spawn spawnPacket = new S_Spawn();
                     spawnPacket.Players.Add(newPlayer.Info);
-                    foreach(Player player in _players) {
-                        if(newPlayer != player) {
-                            player.Session.Send(spawnPacket);
+                    foreach(Player otherPlayer in _players) {
+                        if(newPlayer != otherPlayer) {
+                            otherPlayer.Session.Send(spawnPacket);
                         }
                     }
                 }
@@ -52,7 +52,35 @@ namespace Server.Game
 
         public void LeaveGame(int playerId)
         {
+            lock (_lock) {
+                // TODO : 딕셔너리로 개선할 것
+                Player player = _players.Find(p => p.Info.PlayerId == playerId);
+                if(player == null) {
+                    return;
+                }
 
+                _players.Remove(player);
+                player.Room = null;
+
+
+                // 본인에게 정보 전송
+                {
+                    S_LeaveGame leavePacket = new S_LeaveGame();
+                    player.Session.Send(leavePacket);
+                }
+
+                // 타인에게 정보 전송
+                {
+                    S_Despawn despawnPacket = new S_Despawn();
+                    despawnPacket.PlayerIds.Add(player.Info.PlayerId);
+
+                    foreach(Player otherPlayer in _players) {
+                        if(player != otherPlayer) {
+                            otherPlayer.Session.Send(despawnPacket);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -34,6 +34,6 @@ class PacketHandler
 		resMovePacket.PlayerId = clientSession.MyPlayer.Info.PlayerId;
 		resMovePacket.PosInfo = movePacket.PosInfo;
 
-		clientSession.MyPlayer.Room.Bradcast(resMovePacket);
+		clientSession.MyPlayer.Room.Broadcast(resMovePacket);
 	}
 }

@@ -28,6 +28,8 @@ public class CreatureController : MonoBehaviour
 
     protected MoveDir _lastDir = MoveDir.Down;
     protected MoveDir _dir = MoveDir.Down;
+
+    [SerializeField]
     public MoveDir Dir
     {
         get { return _dir; }

@@ -10,18 +10,14 @@ class PacketHandler
 	public static void S_EnterGameHandler(PacketSession session, IMessage packet)
 	{
 		S_EnterGame enterGamePacket = packet as S_EnterGame;
-		ServerSession serverSession = session as ServerSession;
-
-		Debug.Log("S_EnterGameHandler");
-		Debug.Log(enterGamePacket.Player);
+		Managers.Object.Add(enterGamePacket.Player, myPlayer:true);
 	}
 
 	public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
 	{
 		S_LeaveGame leaveGamePacket = packet as S_LeaveGame;
 		ServerSession serverSession = session as ServerSession;
-
-		Debug.Log("S_LeaveGameHandler");
+		Managers.Object.RemoveMyPlayer();
 	}
 
 	public static void S_SpawnHandler(PacketSession session, IMessage packet)

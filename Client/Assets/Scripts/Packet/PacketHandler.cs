@@ -16,25 +16,25 @@ class PacketHandler
 	public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
 	{
 		S_LeaveGame leaveGamePacket = packet as S_LeaveGame;
-		ServerSession serverSession = session as ServerSession;
 		Managers.Object.RemoveMyPlayer();
 	}
 
 	public static void S_SpawnHandler(PacketSession session, IMessage packet)
 	{
 		S_Spawn spawnPacket = packet as S_Spawn;
-		ServerSession serverSession = session as ServerSession;
 
-		Debug.Log("S_SpawnHandler");
-		Debug.Log(spawnPacket.Players);
+		foreach(PlayerInfo player in spawnPacket.Players) {
+			Managers.Object.Add(player, myPlayer: false);
+        }
 	}
 
 	public static void S_DespawnHandler(PacketSession session, IMessage packet)
 	{
 		S_Despawn despawnPakcet = packet as S_Despawn;
-		ServerSession serverSession = session as ServerSession;
 
-		Debug.Log("S_DespawnHandler");
+		foreach (int id in despawnPakcet.PlayerIds) {
+			Managers.Object.Remove(id);
+		}
 	}
 
 	public static void S_MoveHandler(PacketSession session, IMessage packet)

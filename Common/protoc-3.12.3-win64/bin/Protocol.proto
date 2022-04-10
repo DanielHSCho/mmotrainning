@@ -21,7 +21,7 @@ enum CreatureState{
 }
 
 enum MoveDir{
-	NONT = 0;
+	NONE = 0;
 	UP = 1;
 	DOWN = 2;
 	LEFT = 3;

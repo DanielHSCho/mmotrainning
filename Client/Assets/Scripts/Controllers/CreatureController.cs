@@ -11,6 +11,8 @@ public class CreatureController : MonoBehaviour
     [SerializeField]
     public float _speed = 5.0f;
 
+    protected bool _updated = false;
+
     PositionInfo _positionInfo = new PositionInfo();
     public PositionInfo PosInfo
     {
@@ -31,8 +33,13 @@ public class CreatureController : MonoBehaviour
         }
 
         set {
+            if(PosInfo.PosX == value.x && PosInfo.PosY == value.y) {
+                return;
+            }
+
             PosInfo.PosX = value.x;
             PosInfo.PosY = value.y;
+            _updated = true;
         }
     }
     protected Animator _animator;
@@ -45,14 +52,14 @@ public class CreatureController : MonoBehaviour
             if (PosInfo.State == value) {
                 return;
             }
+
             PosInfo.State = value;
             UpdateAnimation();
+            _updated = true;
         }
     }
 
     protected MoveDir _lastDir = MoveDir.Down;
-
-    [SerializeField]
     public MoveDir Dir
     {
         get { return PosInfo.MoveDir; }
@@ -67,6 +74,7 @@ public class CreatureController : MonoBehaviour
             }
 
             UpdateAnimation();
+            _updated = true;
         }
     }
 
@@ -230,33 +238,7 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void MoveToNextPos()
     {
-        if(Dir == MoveDir.None) {
-            State = CreatureState.Idle;
-            return;
-        }
-
-        Vector3Int destPos = CellPos;
-
-        switch (Dir) {
-            case MoveDir.Up:
-                destPos += Vector3Int.up;
-                break;
-            case MoveDir.Down:
-                destPos += Vector3Int.down;
-                break;
-            case MoveDir.Left:
-                destPos += Vector3Int.left;
-                break;
-            case MoveDir.Right:
-                destPos += Vector3Int.right;
-                break;
-        }
-
-        if (Managers.Map.CanGo(destPos)) {
-            if (Managers.Object.Find(destPos) == null) {
-                CellPos = destPos;
-            }
-        }
+        
     }
 
     protected virtual void UpdateSkill()

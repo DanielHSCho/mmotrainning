@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class PlayerController : CreatureController
 
     protected override void UpdateAnimation()
     {
-        if (_state == CreatureState.Idle) {
+        if (State == CreatureState.Idle) {
             switch (_lastDir) {
                 case MoveDir.Up:
                     _animator.Play("IDLE_BACK");
@@ -34,8 +35,8 @@ public class PlayerController : CreatureController
                     _sprite.flipX = false;
                     break;
             }
-        } else if (_state == CreatureState.Moving) {
-            switch (_dir) {
+        } else if (State == CreatureState.Moving) {
+            switch (Dir) {
                 case MoveDir.Up:
                     _animator.Play("WALK_BACK");
                     _sprite.flipX = false;
@@ -53,7 +54,7 @@ public class PlayerController : CreatureController
                     _sprite.flipX = false;
                     break;
             }
-        } else if (_state == CreatureState.Skill) {
+        } else if (State == CreatureState.Skill) {
             switch (_lastDir) {
                 case MoveDir.Up:
                     _animator.Play(_rangeSkill ? "ATTACK_WEAPON_BACK" : "ATTACK_BACK");

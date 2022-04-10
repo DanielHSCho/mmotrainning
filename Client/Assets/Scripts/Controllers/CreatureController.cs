@@ -38,33 +38,30 @@ public class CreatureController : MonoBehaviour
     protected Animator _animator;
     protected SpriteRenderer _sprite;
 
-    [SerializeField]
-    protected CreatureState _state = CreatureState.Idle;
     public virtual CreatureState State
     {
-        get { return _state; }
+        get { return PosInfo.State; }
         set {
-            if (_state == value) {
+            if (PosInfo.State == value) {
                 return;
             }
-            _state = value;
+            PosInfo.State = value;
             UpdateAnimation();
         }
     }
 
     protected MoveDir _lastDir = MoveDir.Down;
-    protected MoveDir _dir = MoveDir.Down;
 
     [SerializeField]
     public MoveDir Dir
     {
-        get { return _dir; }
+        get { return PosInfo.MoveDir; }
         set {
-            if (_dir == value) {
+            if (PosInfo.MoveDir == value) {
                 return;
             }
 
-            _dir = value;
+            PosInfo.MoveDir = value;
             if (value != MoveDir.None) {
                 _lastDir = value;
             }
@@ -112,7 +109,7 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void UpdateAnimation()
     {
-        if (_state == CreatureState.Idle) {
+        if (State == CreatureState.Idle) {
             switch (_lastDir) {
                 case MoveDir.Up:
                     _animator.Play("IDLE_BACK");
@@ -131,8 +128,8 @@ public class CreatureController : MonoBehaviour
                     _sprite.flipX = false;
                     break;
             }
-        } else if (_state == CreatureState.Moving) {
-            switch (_dir) {
+        } else if (State == CreatureState.Moving) {
+            switch (Dir) {
                 case MoveDir.Up:
                     _animator.Play("WALK_BACK");
                     _sprite.flipX = false;
@@ -150,7 +147,7 @@ public class CreatureController : MonoBehaviour
                     _sprite.flipX = false;
                     break;
             }
-        } else if (_state == CreatureState.Skill) {
+        } else if (State == CreatureState.Skill) {
             switch (_lastDir) {
                 case MoveDir.Up:
                     _animator.Play("ATTACK_BACK");
@@ -233,14 +230,14 @@ public class CreatureController : MonoBehaviour
 
     protected virtual void MoveToNextPos()
     {
-        if(_dir == MoveDir.None) {
+        if(Dir == MoveDir.None) {
             State = CreatureState.Idle;
             return;
         }
 
         Vector3Int destPos = CellPos;
 
-        switch (_dir) {
+        switch (Dir) {
             case MoveDir.Up:
                 destPos += Vector3Int.up;
                 break;

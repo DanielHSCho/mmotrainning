@@ -18,7 +18,7 @@ public class ObjectManager
 
             MyPlayer = go.GetComponent<MyPlayerController>();
             MyPlayer.Id = info.PlayerId;
-            MyPlayer.CellPos = new Vector3Int(info.PosX, info.PosY, 0);
+            MyPlayer.PosInfo = info.PosInfo;
         } else {
             GameObject go = Managers.Resource.Instantiate("Creature/Player");
             go.name = info.Name;
@@ -26,7 +26,7 @@ public class ObjectManager
 
             PlayerController pc = go.GetComponent<PlayerController>();
             pc.Id = info.PlayerId;
-            pc.CellPos = new Vector3Int(info.PosX, info.PosY, 0);
+            pc.PosInfo = info.PosInfo;
         }
     }
 

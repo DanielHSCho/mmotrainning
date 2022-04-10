@@ -42,6 +42,16 @@ class PacketHandler
 		S_Move movePacket = packet as S_Move;
 		ServerSession serverSession = session as ServerSession;
 
-		Debug.Log("S_MoveHandler");
+		GameObject go = Managers.Object.FindById(movePacket.PlayerId);
+		if(go == null) {
+			return;
+        }
+
+		CreatureController creatureController = go.GetComponent<CreatureController>();
+		if(creatureController == null) {
+			return;
+        }
+
+		creatureController.PosInfo = movePacket.PosInfo;
 	}
 }

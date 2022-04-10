@@ -51,6 +51,13 @@ public class ObjectManager
         MyPlayer = null;
     }
 
+    public GameObject FindById(int id)
+    {
+        GameObject go = null;
+        _objects.TryGetValue(id, out go);
+        return go;
+    }
+
     // TODO : 매우 느린 성능 - 샘플용
     public GameObject Find(Vector3Int cellPos)
     {

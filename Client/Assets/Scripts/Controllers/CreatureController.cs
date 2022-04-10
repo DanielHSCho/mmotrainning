@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,30 @@ public class CreatureController : MonoBehaviour
     [SerializeField]
     public float _speed = 5.0f;
 
-    public Vector3Int CellPos { get; set; } = Vector3Int.zero;
+    PositionInfo _positionInfo = new PositionInfo();
+    public PositionInfo PosInfo
+    {
+        get { return _positionInfo; }
+        set {
+            if (_positionInfo.Equals(value)) {
+                return;
+            }
+
+            _positionInfo = value;
+            UpdateAnimation();
+        }
+    }
+
+    public Vector3Int CellPos {
+        get {
+            return new Vector3Int(PosInfo.PosX, PosInfo.PosY, 0);
+        }
+
+        set {
+            PosInfo.PosX = value.x;
+            PosInfo.PosY = value.y;
+        }
+    }
     protected Animator _animator;
     protected SpriteRenderer _sprite;
 

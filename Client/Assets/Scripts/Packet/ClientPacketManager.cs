@@ -54,14 +54,14 @@ class PacketManager
 		T pkt = new T();
 		pkt.MergeFrom(buffer.Array, buffer.Offset + 4, buffer.Count - 4);
 
-		if(CustomHandler != null) { // 클라라면
+		if(CustomHandler != null) {
 			CustomHandler.Invoke(session, pkt, id);
-        } else { // 서버라면
+        } else {
 			Action<PacketSession, IMessage> action = null;
 			if (_handler.TryGetValue(id, out action)) {
 				action.Invoke(session, pkt);
 			}
-		}
+		}		
 	}
 
 	public Action<PacketSession, IMessage> GetPacketHandler(ushort id)

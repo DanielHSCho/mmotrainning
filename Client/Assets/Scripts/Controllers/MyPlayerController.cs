@@ -32,15 +32,22 @@ public class MyPlayerController : PlayerController
             return;
         }
 
-        // 스킬 상태 전환 확인
-        if (Input.GetKey(KeyCode.Space)) {
+        if (_coSkillCooltime == null && Input.GetKey(KeyCode.Space)) {
             Debug.Log("SKill !");
 
             C_Skill skill = new C_Skill() { Info = new SkillInfo() };
             skill.Info.SkillId = 1;
-
             Managers.Network.Send(skill);
+
+            _coSkillCooltime = StartCoroutine("CoInputCooltime", 0.2f);
         }
+    }
+
+    Coroutine _coSkillCooltime;
+    IEnumerator CoInputCooltime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _coSkillCooltime = null;
     }
 
     private void LateUpdate()

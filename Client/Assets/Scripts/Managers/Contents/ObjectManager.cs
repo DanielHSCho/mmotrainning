@@ -9,6 +9,7 @@ public class ObjectManager
     public MyPlayerController MyPlayer { get; set; }
     Dictionary<int, GameObject> _objects = new Dictionary<int, GameObject>();
 
+    // TODO : 팩토리 패턴으로 Id 전달 시, 해당 id에 해당하는 애를 만들어주도록 개선해야함
     public void Add(PlayerInfo info, bool myPlayer = false)
     {
         if (myPlayer) {
@@ -30,15 +31,15 @@ public class ObjectManager
         }
     }
 
-    // TODO : 팩토리 패턴으로 Id 전달 시, 해당 id에 해당하는 애를 만들어주도록 개선해야함
-    public void Add(int id, GameObject go)
-    {
-        _objects.Add(id, go);
-    }
-
     public void Remove(int id)
     {
+        GameObject go = FindById(id);
+        if(go == null) {
+            return;
+        }
+
         _objects.Remove(id);
+        Managers.Resource.Destroy(go);
     }
 
     public void RemoveMyPlayer()
@@ -88,6 +89,9 @@ public class ObjectManager
 
     public void Clear()
     {
+        foreach (GameObject obj in _objects.Values) {
+            Managers.Resource.Destroy(obj);
+        }
         _objects.Clear();
     }
  

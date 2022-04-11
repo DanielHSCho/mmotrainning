@@ -22,8 +22,9 @@ public class CreatureController : MonoBehaviour
                 return;
             }
 
-            _positionInfo = value;
-            UpdateAnimation();
+            CellPos = new Vector3Int(value.PosX, value.PosY, 0);
+            State = value.State;
+            Dir = value.MoveDir;
         }
     }
 

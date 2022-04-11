@@ -16,6 +16,10 @@ public class PlayerController : CreatureController
 
     protected override void UpdateAnimation()
     {
+        if(_animator == null || _sprite == null) {
+            return;
+        }
+
         if (State == CreatureState.Idle) {
             switch (Dir) {
                 case MoveDir.Up:

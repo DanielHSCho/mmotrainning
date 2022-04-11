@@ -144,6 +144,11 @@ namespace Server.Game
                 Broadcast(skill);
 
                 // 데미지 판정 (평타라면 즉시 데미지를 줄 수 있으므로)
+                Vector2Int skillPos = player.GetFrontCellPos(info.PosInfo.MoveDir);
+                Player target = _map.Find(skillPos);
+                if(target != null) {
+                    Console.WriteLine("Hit Player!");
+                }
             }
         }
 

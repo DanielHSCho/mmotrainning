@@ -15,13 +15,19 @@ public class MapEditor
     [MenuItem("Tools/GenerateMap")]
     private static void GenerateMap()
     {
+        GenerateByPath("Assets/Resources/Map");
+        GenerateByPath("../Common/MapData");
+    }
+
+    private static void GenerateByPath(string pathPrefix)
+    {
         GameObject[] gameObjects = Resources.LoadAll<GameObject>("Prefabs/Map");
 
-        foreach(GameObject go in gameObjects) {
+        foreach (GameObject go in gameObjects) {
 
             Tilemap tilemapBase = Util.FindChild<Tilemap>(go, "Tilemap_Base", true);
             Tilemap tilemaps = Util.FindChild<Tilemap>(go, "Tilemap_Collision", true);
-            
+
             List<Vector3Int> blocked = new List<Vector3Int>();
 
             // 블로킹 타일 추출
@@ -34,7 +40,7 @@ public class MapEditor
 
             // 파일 생성
             // TODO : 바이너리로 할지(압축) / TXT 형태로 할지(편리하게 볼 수 있도록) 고민해봐야 함 
-            using (var writer = File.CreateText($"Assets/Resources/Map/{go.name}.txt")) {
+            using (var writer = File.CreateText($"{pathPrefix}/{go.name}.txt")) {
                 writer.WriteLine(tilemapBase.cellBounds.xMin);
                 writer.WriteLine(tilemapBase.cellBounds.xMax);
                 writer.WriteLine(tilemapBase.cellBounds.yMin);

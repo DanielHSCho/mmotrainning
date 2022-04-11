@@ -95,7 +95,7 @@ public class MyPlayerController : PlayerController
         CheckUpdatedFlag();
     }
 
-    void CheckUpdatedFlag()
+    protected override void CheckUpdatedFlag()
     {
         if (_updated) {
             C_Move movePacket = new C_Move();

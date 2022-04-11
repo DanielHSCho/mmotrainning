@@ -34,9 +34,12 @@ public class MyPlayerController : PlayerController
 
         // 스킬 상태 전환 확인
         if (Input.GetKey(KeyCode.Space)) {
-            State = CreatureState.Skill;
-            //_coSkill = StartCoroutine("CoStartPunch");
-            _coSkill = StartCoroutine("CoStartShootArrow");
+            Debug.Log("SKill !");
+
+            C_Skill skill = new C_Skill() { Info = new SkillInfo() };
+            skill.Info.SkillId = 1;
+
+            Managers.Network.Send(skill);
         }
     }
 

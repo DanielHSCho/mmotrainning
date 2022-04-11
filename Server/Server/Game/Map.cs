@@ -1,4 +1,5 @@
-﻿using ServerCore;
+﻿using Google.Protobuf.Protocol;
+using ServerCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -73,6 +74,42 @@ namespace Server.Game
 
 			return !_collision[y, x] && (!checkObjects || _players[y,x] == null);
 		}
+
+		public bool ApplyMove(Player player, Vector2Int dest)
+        {
+			PositionInfo posInfo = player.Info.PosInfo;
+
+			if (posInfo.PosX < MinX || posInfo.PosX > MaxX) {
+				return false;
+			}
+			if (posInfo.PosY < MinY || posInfo.PosY > MaxY) {
+				return false;
+			}
+			if (CanGo(dest, true) == false) {
+				return false;
+            }
+
+            {
+				// 기존 위치는 null 처리
+				int x = posInfo.PosX - MinX;
+				int y = MaxY - posInfo.PosY;
+				if(_players[y,x] == player) {
+					_players[y, x] = null;
+				}
+			}
+
+            {
+				// 이동
+				int x = dest.x - MinX;
+				int y = MaxY - dest.y;
+				_players[y, x] = player;
+			}
+
+			// 실 좌표 이동
+			posInfo.PosX = dest.x;
+			posInfo.PosY = dest.y;
+			return true;
+        }
 
 		// TODO : Date 시트가 들어가면 경로도 데이터에서 받아와야 한다
 		public void LoadMap(int mapId, string pathPrefix = "../../../../../Common/MapData")

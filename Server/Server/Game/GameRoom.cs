@@ -109,6 +109,7 @@ namespace Server.Game
 
                 info.PosInfo.State = movePosInfo.State;
                 info.PosInfo.MoveDir = movePosInfo.MoveDir;
+                _map.ApplyMove(player, new Vector2Int(movePosInfo.PosX, movePosInfo.PosY));
 
                 // 다른 플레이어에 브로드캐스팅
                 S_Move resMovePacket = new S_Move();

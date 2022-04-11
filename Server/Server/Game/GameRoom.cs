@@ -61,7 +61,6 @@ namespace Server.Game
         public void LeaveGame(int playerId)
         {
             lock (_lock) {
-                // TODO : 딕셔너리로 개선할 것
                 Player player = null;
                 if(_players.Remove(playerId, out player) == false) {
                     return;
@@ -103,7 +102,7 @@ namespace Server.Game
 
                 // 다른 좌표로 이동할 경우, 갈 수 있는지 체크
                 if(movePosInfo.PosX != info.PosInfo.PosX || movePosInfo.PosY != info.PosInfo.PosY) {
-                    if(_map.CanGo(new Vector2Int(movePosInfo.PosX, movePosInfo.PosY))) {
+                    if(!_map.CanGo(new Vector2Int(movePosInfo.PosX, movePosInfo.PosY))) {
                         return;
                     }
                 }

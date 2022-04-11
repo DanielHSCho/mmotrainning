@@ -107,7 +107,7 @@ namespace Server.Game
 				// 기존 위치는 null 처리
 				int x = posInfo.PosX - MinX;
 				int y = MaxY - posInfo.PosY;
-				if(_players[y,x] == player) {
+				if(_players[y, x] == player) {
 					_players[y, x] = null;
 				}
 			}

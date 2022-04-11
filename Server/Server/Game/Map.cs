@@ -73,7 +73,8 @@ namespace Server.Game
 			return !_collision[y, x];
 		}
 
-		public void LoadMap(int mapId, string pathPrefix)
+		// TODO : Date 시트가 들어가면 경로도 데이터에서 받아와야 한다
+		public void LoadMap(int mapId, string pathPrefix = "../../../../../Common/MapData")
 		{
 			string mapName = "Map_" + mapId.ToString("000");
 

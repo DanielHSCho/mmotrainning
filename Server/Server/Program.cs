@@ -26,7 +26,7 @@ namespace Server
 		static void Main(string[] args)
 		{
 			// 1번 방을 만들자
-			RoomManager.Instance.Add();
+			RoomManager.Instance.Add(1);
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();

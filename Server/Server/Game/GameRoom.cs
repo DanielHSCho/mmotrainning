@@ -13,6 +13,13 @@ namespace Server.Game
 
         List<Player> _players = new List<Player>();
 
+        Map _map = new Map();
+
+        public void Init(int mapId)
+        {
+            _map.LoadMap(mapId);
+        }
+
         public void EnterGame(Player newPlayer)
         {
             if(newPlayer == null) {

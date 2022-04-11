@@ -11,8 +11,7 @@ namespace Server.Game
         object _lock = new object();
         public int RoomId { get; set; }
 
-        List<Player> _players = new List<Player>();
-
+        Dictionary<int, Player> _players = new Dictionary<int, Player>();
         Map _map = new Map();
 
         public void Init(int mapId)
@@ -27,7 +26,7 @@ namespace Server.Game
             }
 
             lock (_lock) {
-                _players.Add(newPlayer);
+                _players.Add(newPlayer.Info.PlayerId, newPlayer);
                 newPlayer.Room = this;
 
                 // 본인에게 정보 전송
@@ -37,7 +36,7 @@ namespace Server.Game
                     newPlayer.Session.Send(enterPacket);
 
                     S_Spawn spawnPacket = new S_Spawn();
-                    foreach(Player player in _players) {
+                    foreach(Player player in _players.Values) {
                         if(newPlayer != player) {
                             spawnPacket.Players.Add(player.Info);
                         }
@@ -49,7 +48,7 @@ namespace Server.Game
                 {
                     S_Spawn spawnPacket = new S_Spawn();
                     spawnPacket.Players.Add(newPlayer.Info);
-                    foreach(Player otherPlayer in _players) {
+                    foreach(Player otherPlayer in _players.Values) {
                         if(newPlayer != otherPlayer) {
                             otherPlayer.Session.Send(spawnPacket);
                         }
@@ -62,12 +61,11 @@ namespace Server.Game
         {
             lock (_lock) {
                 // TODO : 딕셔너리로 개선할 것
-                Player player = _players.Find(p => p.Info.PlayerId == playerId);
-                if(player == null) {
+                Player player = null;
+                if(_players.Remove(playerId, out player) == false) {
                     return;
                 }
 
-                _players.Remove(player);
                 player.Room = null;
 
 
@@ -82,7 +80,7 @@ namespace Server.Game
                     S_Despawn despawnPacket = new S_Despawn();
                     despawnPacket.PlayerIds.Add(player.Info.PlayerId);
 
-                    foreach(Player otherPlayer in _players) {
+                    foreach(Player otherPlayer in _players.Values) {
                         if(player != otherPlayer) {
                             otherPlayer.Session.Send(despawnPacket);
                         }
@@ -143,7 +141,7 @@ namespace Server.Game
         public void Broadcast(IMessage packet)
         {
             lock (_lock) {
-                foreach(Player player in _players) {
+                foreach(Player player in _players.Values) {
                     player.Session.Send(packet);
                 }
             }

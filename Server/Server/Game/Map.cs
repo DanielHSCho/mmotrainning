@@ -57,8 +57,9 @@ namespace Server.Game
 		public int SizeY { get { return MaxY - MinY + 1; } }
 
 		bool[,] _collision;
+		Player[,] _players;
 
-		public bool CanGo(Vector2Int cellPos)
+		public bool CanGo(Vector2Int cellPos, bool checkObjects = true)
 		{
 			if (cellPos.x < MinX || cellPos.x > MaxX) {
 				return false;
@@ -70,7 +71,7 @@ namespace Server.Game
 			int x = cellPos.x - MinX;
 			int y = MaxY - cellPos.y;
 
-			return !_collision[y, x];
+			return !_collision[y, x] && (!checkObjects || _players[y,x] == null);
 		}
 
 		// TODO : Date 시트가 들어가면 경로도 데이터에서 받아와야 한다
@@ -90,6 +91,7 @@ namespace Server.Game
 			int xCount = MaxX - MinX + 1;
 			int yCount = MaxY - MinY + 1;
 			_collision = new bool[yCount, xCount];
+			_players = new Player[yCount, xCount];
 
 			for (int y = 0; y < yCount; y++) {
 				string line = reader.ReadLine();

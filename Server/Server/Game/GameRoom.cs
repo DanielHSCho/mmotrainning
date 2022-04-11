@@ -40,8 +40,9 @@ namespace Server.Game
                         if(newPlayer != player) {
                             spawnPacket.Players.Add(player.Info);
                         }
-                        newPlayer.Session.Send(spawnPacket);
                     }
+
+                    newPlayer.Session.Send(spawnPacket);
                 }
 
                 // 타인에게 정보 전송

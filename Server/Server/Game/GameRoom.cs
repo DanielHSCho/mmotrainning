@@ -84,6 +84,28 @@ namespace Server.Game
             }
         }
 
+        public void HandleMove(Player player, C_Move movePacket)
+        {
+            if(player == null) {
+                return;
+            }
+
+            lock (_lock) {
+                // TODO : 검증
+
+                // 일단 서버에서 좌표 이동
+                PlayerInfo info = player.Info;
+                info.PosInfo = movePacket.PosInfo;
+
+                // 다른 플레이어에 브로드캐스팅
+                S_Move resMovePacket = new S_Move();
+                resMovePacket.PlayerId = player.Info.PlayerId;
+                resMovePacket.PosInfo = movePacket.PosInfo;
+
+                Broadcast(resMovePacket);
+            }
+        }
+
         public void Broadcast(IMessage packet)
         {
             lock (_lock) {

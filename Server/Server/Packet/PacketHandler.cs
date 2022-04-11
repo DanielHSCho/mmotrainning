@@ -26,17 +26,6 @@ class PacketHandler
 			return;
         }
 
-		// TODO : 검증
-
-		// 일단 서버에서 좌표 이동
-		PlayerInfo info = player.Info;
-		info.PosInfo = movePacket.PosInfo;
-
-		// 다른 플레이어에 브로드캐스팅
-		S_Move resMovePacket = new S_Move();
-		resMovePacket.PlayerId = player.Info.PlayerId;
-		resMovePacket.PosInfo = movePacket.PosInfo;
-
-		room.Broadcast(resMovePacket);
+		room.HandleMove(player, movePacket);
 	}
 }

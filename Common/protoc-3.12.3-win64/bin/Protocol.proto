@@ -33,7 +33,7 @@ enum GameObjectType {
 	NONE = 0;
 	PLAYER = 1;
 	MONSTER = 2;
-	PROJECTIVE = 3;
+	PROJECTILE = 3;
 }
 
 message S_EnterGame {

@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Server.Game
 {
-    class Arrow
+    public class Arrow : Projectile
     {
+        public GameObject Owner { get; set; }
+        public void Update()
+        {
+            // TODO
+        }
     }
 }

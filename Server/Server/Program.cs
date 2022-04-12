@@ -38,11 +38,15 @@ namespace Server
 			Console.WriteLine("Listening...");
 
 			//FlushRoom();
-			JobTimer.Instance.Push(FlushRoom);
+			//JobTimer.Instance.Push(FlushRoom);
 
 			while (true)
 			{
-				JobTimer.Instance.Flush();
+				//JobTimer.Instance.Flush();
+
+				// TODO : 1초에 10번정도만 - 나중에 수정해야함
+				RoomManager.Instance.Find(1).Update();
+				Thread.Sleep(1000);
 			}
 		}
 	}

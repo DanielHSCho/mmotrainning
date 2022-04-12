@@ -22,6 +22,15 @@ namespace Server.Game
             _map.LoadMap(mapId);
         }
 
+        public void Update()
+        {
+            lock (_lock) {
+                foreach(Projectile projectile in _projectiles.Values) {
+                    projectile.Update();
+                }
+            }
+        }
+
         public void EnterGame(GameObject gameObject)
         {
             if(gameObject == null) {

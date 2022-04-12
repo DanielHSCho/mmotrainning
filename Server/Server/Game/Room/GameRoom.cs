@@ -12,6 +12,9 @@ namespace Server.Game
         public int RoomId { get; set; }
 
         Dictionary<int, Player> _players = new Dictionary<int, Player>();
+        Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
+        Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
+
         Map _map = new Map();
 
         public void Init(int mapId)
@@ -19,38 +22,56 @@ namespace Server.Game
             _map.LoadMap(mapId);
         }
 
-        public void EnterGame(Player newPlayer)
+        public void EnterGame(GameObject gameObject)
         {
-            if(newPlayer == null) {
+            if(gameObject == null) {
                 return;
             }
 
+            GameObjectType type = ObjectManager.GetObjectTypeById(gameObject.Id);
+
             lock (_lock) {
-                _players.Add(newPlayer.Info.ObjectId, newPlayer);
-                newPlayer.Room = this;
+                if (type == GameObjectType.Player) {
+                    Player player = gameObject as Player;
+                    _players.Add(gameObject.Id, player);
+                    player.Room = this;
 
-                // 본인에게 정보 전송
-                {
-                    S_EnterGame enterPacket = new S_EnterGame();
-                    enterPacket.Player = newPlayer.Info;
-                    newPlayer.Session.Send(enterPacket);
+                    // 본인에게 정보 전송
+                    {
+                        S_EnterGame enterPacket = new S_EnterGame();
+                        enterPacket.Player = player.Info;
+                        player.Session.Send(enterPacket);
 
-                    S_Spawn spawnPacket = new S_Spawn();
-                    foreach(Player player in _players.Values) {
-                        if(newPlayer != player) {
-                            spawnPacket.Objects.Add(player.Info);
+                        S_Spawn spawnPacket = new S_Spawn();
+                        foreach (Player p in _players.Values) {
+                            if (player != p) {
+                                spawnPacket.Objects.Add(p.Info);
+                            }
                         }
+                        player.Session.Send(spawnPacket);
                     }
+                } else if(type == GameObjectType.Monster) {
 
-                    newPlayer.Session.Send(spawnPacket);
+                    Monster monster = gameObject as Monster;
+                    _monsters.Add(gameObject.Id, monster);
+                    monster.Room = this;
+
+                } else if(type == GameObjectType.Projectile) {
+
+                    Projectile projectile = gameObject as Projectile;
+                    _projectiles.Add(gameObject.Id, projectile);
+                    projectile.Room = this; 
+
                 }
+
 
                 // 타인에게 정보 전송
                 {
                     S_Spawn spawnPacket = new S_Spawn();
-                    spawnPacket.Objects.Add(newPlayer.Info);
+                    spawnPacket.Objects.Add(gameObject.Info);
+
                     foreach(Player otherPlayer in _players.Values) {
-                        if(newPlayer != otherPlayer) {
+                        if(otherPlayer.Id != gameObject.Id) {
                             otherPlayer.Session.Send(spawnPacket);
                         }
                     }

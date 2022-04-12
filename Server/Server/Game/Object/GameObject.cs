@@ -8,6 +8,12 @@ namespace Server.Game
     public class GameObject
     {
         public GameObjectType ObjectType { get; protected set; } = GameObjectType.None;
+        public int Id
+        {
+            get { return Info.ObjectId; }
+            set { Info.ObjectId = value; }
+        }
+        
         public GameRoom Room { get; set; }
         public ObjectInfo Info { get; set; } = new ObjectInfo();
         public PositionInfo PosInfo { get; private set; } = new PositionInfo();

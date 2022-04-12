@@ -37,7 +37,7 @@ namespace Server
 
 			// TODO : 실제 MMO는 여기서 온갖 로드 정보를 클라에 알려준 후
 			// 클라에서 로드가 끝나면 Okay 패킷 전달해주면 그때 입장처리 해야 함
-			MyPlayer = PlayerManager.Instance.Add();
+			MyPlayer = ObjectManager.Instance.Add<Player>();
             {
 				MyPlayer.Info.Name = $"Player_{MyPlayer.Info.ObjectId}";
 				MyPlayer.Info.PosInfo.State = CreatureState.Idle;

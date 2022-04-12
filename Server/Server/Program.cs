@@ -46,7 +46,7 @@ namespace Server
 
 				// TODO : 1초에 10번정도만 - 나중에 수정해야함
 				RoomManager.Instance.Find(1).Update();
-				Thread.Sleep(1000);
+				Thread.Sleep(100);
 			}
 		}
 	}

@@ -15,11 +15,11 @@ namespace Server.Game
         Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
         Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
 
-        Map _map = new Map();
+        public Map Map { get; private set; } = new Map();
 
         public void Init(int mapId)
         {
-            _map.LoadMap(mapId);
+            Map.LoadMap(mapId);
         }
 
         public void Update()
@@ -101,7 +101,7 @@ namespace Server.Game
                     }
 
                     player.Room = null;
-                    _map.ApplyLeave(player);
+                    Map.ApplyLeave(player);
 
                     // 본인에게 정보 전송
                     {
@@ -116,7 +116,7 @@ namespace Server.Game
                     }
 
                     monster.Room = null;
-                    _map.ApplyLeave(monster);
+                    Map.ApplyLeave(monster);
 
                 } else if(type == GameObjectType.Projectile) {
 
@@ -156,18 +156,18 @@ namespace Server.Game
 
                 // 다른 좌표로 이동할 경우, 갈 수 있는지 체크
                 if(movePosInfo.PosX != info.PosInfo.PosX || movePosInfo.PosY != info.PosInfo.PosY) {
-                    if(!_map.CanGo(new Vector2Int(movePosInfo.PosX, movePosInfo.PosY))) {
+                    if(!Map.CanGo(new Vector2Int(movePosInfo.PosX, movePosInfo.PosY))) {
                         return;
                     }
                 }
 
                 info.PosInfo.State = movePosInfo.State;
                 info.PosInfo.MoveDir = movePosInfo.MoveDir;
-                _map.ApplyMove(player, new Vector2Int(movePosInfo.PosX, movePosInfo.PosY));
+                Map.ApplyMove(player, new Vector2Int(movePosInfo.PosX, movePosInfo.PosY));
 
                 // 다른 플레이어에 브로드캐스팅
                 S_Move resMovePacket = new S_Move();
-                resMovePacket.PlayerId = player.Info.ObjectId;
+                resMovePacket.ObjectId = player.Info.ObjectId;
                 resMovePacket.PosInfo = movePacket.PosInfo;
 
                 Broadcast(resMovePacket);
@@ -191,7 +191,7 @@ namespace Server.Game
 
                 info.PosInfo.State = CreatureState.Skill;
                 S_Skill skill = new S_Skill() { Info = new SkillInfo() };
-                skill.PlayerId = info.ObjectId;
+                skill.ObjectId = info.ObjectId;
                 // TODO : 추후 데이터 시트로 구분되어야 함 (xml / json)
                 skill.Info.SkillId = skillPacket.Info.SkillId;
                 Broadcast(skill);
@@ -199,7 +199,7 @@ namespace Server.Game
                 if (skillPacket.Info.SkillId == 1) {
                     // 데미지 판정 (평타라면 즉시 데미지를 줄 수 있으므로)
                     Vector2Int skillPos = player.GetFrontCellPos(info.PosInfo.MoveDir);
-                    GameObject target = _map.Find(skillPos);
+                    GameObject target = Map.Find(skillPos);
                     if (target != null) {
                         Console.WriteLine("Hit GameObject!");
                     }

@@ -129,25 +129,28 @@ namespace Server.Game
             lock (_lock) {
                 PlayerInfo info = player.Info;
 
-                // TODO : 스킬 사용 가능 여부 체크
                 if(info.PosInfo.State != CreatureState.Idle) {
                     return;
                 }
 
-                info.PosInfo.State = CreatureState.Skill;
+                // TODO : 스킬 사용 가능 여부 체크
 
-                // 스킬 정보
+                info.PosInfo.State = CreatureState.Skill;
                 S_Skill skill = new S_Skill() { Info = new SkillInfo() };
                 skill.PlayerId = info.PlayerId;
                 // TODO : 추후 데이터 시트로 구분되어야 함 (xml / json)
-                skill.Info.SkillId = 1;
+                skill.Info.SkillId = skillPacket.Info.SkillId;
                 Broadcast(skill);
 
-                // 데미지 판정 (평타라면 즉시 데미지를 줄 수 있으므로)
-                Vector2Int skillPos = player.GetFrontCellPos(info.PosInfo.MoveDir);
-                Player target = _map.Find(skillPos);
-                if(target != null) {
-                    Console.WriteLine("Hit Player!");
+                if (skillPacket.Info.SkillId == 1) {
+                    // 데미지 판정 (평타라면 즉시 데미지를 줄 수 있으므로)
+                    Vector2Int skillPos = player.GetFrontCellPos(info.PosInfo.MoveDir);
+                    Player target = _map.Find(skillPos);
+                    if (target != null) {
+                        Console.WriteLine("Hit Player!");
+                    }
+                } else if(skillPacket.Info.SkillId == 2) {
+
                 }
             }
         }

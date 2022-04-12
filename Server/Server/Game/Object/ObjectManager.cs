@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Server.Game
 {
-    public class PlayerManager
+    public class ObjectManager
     {
-        public static PlayerManager Instance { get; } = new PlayerManager();
+        public static ObjectManager Instance { get; } = new ObjectManager();
 
         object _lock = new object();
         Dictionary<int, Player> _players = new Dictionary<int, Player>();

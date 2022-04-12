@@ -26,7 +26,7 @@ namespace Server.Game
             }
 
             lock (_lock) {
-                _players.Add(newPlayer.Info.PlayerId, newPlayer);
+                _players.Add(newPlayer.Info.ObjectId, newPlayer);
                 newPlayer.Room = this;
 
                 // 본인에게 정보 전송
@@ -38,7 +38,7 @@ namespace Server.Game
                     S_Spawn spawnPacket = new S_Spawn();
                     foreach(Player player in _players.Values) {
                         if(newPlayer != player) {
-                            spawnPacket.Players.Add(player.Info);
+                            spawnPacket.Objects.Add(player.Info);
                         }
                     }
 
@@ -48,7 +48,7 @@ namespace Server.Game
                 // 타인에게 정보 전송
                 {
                     S_Spawn spawnPacket = new S_Spawn();
-                    spawnPacket.Players.Add(newPlayer.Info);
+                    spawnPacket.Objects.Add(newPlayer.Info);
                     foreach(Player otherPlayer in _players.Values) {
                         if(newPlayer != otherPlayer) {
                             otherPlayer.Session.Send(spawnPacket);
@@ -78,7 +78,7 @@ namespace Server.Game
                 // 타인에게 정보 전송
                 {
                     S_Despawn despawnPacket = new S_Despawn();
-                    despawnPacket.PlayerIds.Add(player.Info.PlayerId);
+                    despawnPacket.PlayerIds.Add(player.Info.ObjectId);
 
                     foreach(Player otherPlayer in _players.Values) {
                         if(player != otherPlayer) {
@@ -98,7 +98,7 @@ namespace Server.Game
             lock (_lock) {
                 // TODO : 검증
                 PositionInfo movePosInfo = movePacket.PosInfo;
-                PlayerInfo info = player.Info;
+                ObjectInfo info = player.Info;
 
                 // 다른 좌표로 이동할 경우, 갈 수 있는지 체크
                 if(movePosInfo.PosX != info.PosInfo.PosX || movePosInfo.PosY != info.PosInfo.PosY) {
@@ -113,7 +113,7 @@ namespace Server.Game
 
                 // 다른 플레이어에 브로드캐스팅
                 S_Move resMovePacket = new S_Move();
-                resMovePacket.PlayerId = player.Info.PlayerId;
+                resMovePacket.PlayerId = player.Info.ObjectId;
                 resMovePacket.PosInfo = movePacket.PosInfo;
 
                 Broadcast(resMovePacket);
@@ -127,7 +127,7 @@ namespace Server.Game
             }
 
             lock (_lock) {
-                PlayerInfo info = player.Info;
+                ObjectInfo info = player.Info;
 
                 if(info.PosInfo.State != CreatureState.Idle) {
                     return;
@@ -137,7 +137,7 @@ namespace Server.Game
 
                 info.PosInfo.State = CreatureState.Skill;
                 S_Skill skill = new S_Skill() { Info = new SkillInfo() };
-                skill.PlayerId = info.PlayerId;
+                skill.PlayerId = info.ObjectId;
                 // TODO : 추후 데이터 시트로 구분되어야 함 (xml / json)
                 skill.Info.SkillId = skillPacket.Info.SkillId;
                 Broadcast(skill);

@@ -151,6 +151,17 @@ namespace Server.Game
                     }
                 } else if(skillPacket.Info.SkillId == 2) {
 
+                    Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+                    if(arrow == null) {
+                        return;
+                    }
+
+                    arrow.Owner = player;
+                    arrow.PosInfo.State = CreatureState.Moving;
+                    arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
+                    arrow.PosInfo.PosX = player.PosInfo.PosX;
+                    arrow.PosInfo.PosY = player.PosInfo.PosY;
+                    EnterGame(arrow);
                 }
             }
         }

@@ -26,7 +26,7 @@ namespace Server.Game
         public Vector2Int CellPos
         {
             get {
-                return new Vector2Int(PosInfo.PosX, PosInfo.PosX);
+                return new Vector2Int(PosInfo.PosX, PosInfo.PosY);
             }
 
             set {

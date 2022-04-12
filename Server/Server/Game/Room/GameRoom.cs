@@ -92,6 +92,7 @@ namespace Server.Game
                     }
 
                     player.Room = null;
+                    _map.ApplyLeave(player);
 
                     // 본인에게 정보 전송
                     {
@@ -106,6 +107,7 @@ namespace Server.Game
                     }
 
                     monster.Room = null;
+                    _map.ApplyLeave(monster);
 
                 } else if(type == GameObjectType.Projectile) {
 
@@ -188,9 +190,9 @@ namespace Server.Game
                 if (skillPacket.Info.SkillId == 1) {
                     // 데미지 판정 (평타라면 즉시 데미지를 줄 수 있으므로)
                     Vector2Int skillPos = player.GetFrontCellPos(info.PosInfo.MoveDir);
-                    Player target = _map.Find(skillPos);
+                    GameObject target = _map.Find(skillPos);
                     if (target != null) {
-                        Console.WriteLine("Hit Player!");
+                        Console.WriteLine("Hit GameObject!");
                     }
                 } else if(skillPacket.Info.SkillId == 2) {
 

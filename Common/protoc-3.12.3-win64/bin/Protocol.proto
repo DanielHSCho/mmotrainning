@@ -49,7 +49,7 @@ message S_Spawn{
 }
 
 message S_Despawn{
-	repeated int32 playerIds = 1;
+	repeated int32 objectIds = 1;
 }
 
 message C_Move{

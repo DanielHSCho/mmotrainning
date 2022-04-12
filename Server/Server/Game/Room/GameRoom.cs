@@ -132,7 +132,7 @@ namespace Server.Game
                 // 타인에게 정보 전송
                 {
                     S_Despawn despawnPacket = new S_Despawn();
-                    despawnPacket.PlayerIds.Add(objectId);
+                    despawnPacket.ObjectIds.Add(objectId);
 
                     foreach(Player otherPlayer in _players.Values) {
                         if(objectId != otherPlayer.Id) {

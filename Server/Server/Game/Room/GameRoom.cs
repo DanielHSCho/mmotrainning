@@ -79,30 +79,52 @@ namespace Server.Game
             }
         }
 
-        public void LeaveGame(int playerId)
+        public void LeaveGame(int objectId)
         {
+            GameObjectType type = ObjectManager.GetObjectTypeById(objectId);
+
             lock (_lock) {
-                Player player = null;
-                if(_players.Remove(playerId, out player) == false) {
-                    return;
+
+                if(type == GameObjectType.Player) {
+                    Player player = null;
+                    if (_players.Remove(objectId, out player) == false) {
+                        return;
+                    }
+
+                    player.Room = null;
+
+                    // 본인에게 정보 전송
+                    {
+                        S_LeaveGame leavePacket = new S_LeaveGame();
+                        player.Session.Send(leavePacket);
+                    }
+                } else if(type == GameObjectType.Monster) {
+
+                    Monster monster = null;
+                    if(_monsters.Remove(objectId, out monster) == false) {
+                        return;
+                    }
+
+                    monster.Room = null;
+
+                } else if(type == GameObjectType.Projectile) {
+
+                    Projectile projectile = null;
+                    if(_projectiles.Remove(objectId, out projectile) == false) {
+                        return;
+                    }
+
+                    projectile.Room = null;
                 }
-
-                player.Room = null;
-
-
-                // 본인에게 정보 전송
-                {
-                    S_LeaveGame leavePacket = new S_LeaveGame();
-                    player.Session.Send(leavePacket);
-                }
+              
 
                 // 타인에게 정보 전송
                 {
                     S_Despawn despawnPacket = new S_Despawn();
-                    despawnPacket.PlayerIds.Add(player.Info.ObjectId);
+                    despawnPacket.PlayerIds.Add(objectId);
 
                     foreach(Player otherPlayer in _players.Values) {
-                        if(player != otherPlayer) {
+                        if(objectId != otherPlayer.Id) {
                             otherPlayer.Session.Send(despawnPacket);
                         }
                     }

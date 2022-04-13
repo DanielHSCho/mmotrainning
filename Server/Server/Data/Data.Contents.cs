@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf.Protocol;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -27,5 +28,18 @@ namespace Server.Data
 			return dict;
 		}
 	}
-	#endregion
+    #endregion
+
+    #region Skill
+	[Serializable]
+	public class Skill
+    {
+		public int id;
+		public string name;
+		public float cooldown;
+		public int damage;
+
+		public SkillType skillType;
+    }
+    #endregion
 }

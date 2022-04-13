@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Google.Protobuf.WellKnownTypes;
+using Server.Data;
 using Server.Game;
 using ServerCore;
 
@@ -25,6 +26,10 @@ namespace Server
 
 		static void Main(string[] args)
 		{
+			// 데이터 로드
+			ConfigManager.LoadConfig();
+			DataManager.LoadData();
+
 			// 1번 방을 만들자
 			RoomManager.Instance.Add(1);
 

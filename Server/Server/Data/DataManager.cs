@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Server.Data
@@ -20,8 +21,8 @@ namespace Server.Data
 
         Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
         {
-            TextAsset textAsset = Managers.Resource.Load<TextAsset>($"Data/{path}");
-            return JsonUtility.FromJson<Loader>(textAsset.text);
+            string text = File.ReadAllText($"");
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Loader>(text);
         }
     }
 

@@ -1,22 +1,24 @@
 {
-  "stats": [
+  "skills": [
     {
-      "level": "1",
-      "maxHp": "200",
-      "attack": "20",
-      "totalExp": "0"
+      "id": "1",
+      "name": "평타",
+      "cooldown": "0.2",
+      "damage": "10",
+      "skillType": "SkillAuto"
     },
     {
-      "level": "2",
-      "maxHp": "250",
-      "attack": "25",
-      "totalExp": "10"
-    },
-    {
-      "level": "3",
-      "maxHp": "300",
-      "attack": "30",
-      "totalExp": "20"
+      "id": "2",
+      "name": "화살 공격",
+      "cooldown": "0.2",
+      "damage": "5",
+      "skillType": "SkillProjectile",
+      "projectile": {
+        "name": "화살",
+        "speed": "10.0",
+        "range": "10",
+        "prefab": "Creature/Arrow"
+      }
     }
   ]
 } 

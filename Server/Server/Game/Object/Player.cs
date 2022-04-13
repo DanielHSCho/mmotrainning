@@ -15,5 +15,10 @@ namespace Server.Game
             // TODO : 플레이어 스피드도 데이터화
             Speed = 10.0f;
         }
+
+        public override void OnDamaged(GameObject attacker, int damage)
+        {
+            Console.WriteLine($"TODO : damage {damage}");
+        }
     }
 }

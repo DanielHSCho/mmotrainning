@@ -91,6 +91,8 @@ public class PlayerController : CreatureController
     {
         if(skillId == 1) {
             _coSkill = StartCoroutine("CoStartPunch");
+        } else if(skillId == 2) {
+            _coSkill = StartCoroutine("CoStartShootArrow");
         }
     }
 
@@ -111,15 +113,12 @@ public class PlayerController : CreatureController
 
     IEnumerator CoStartShootArrow()
     {
-        GameObject go = Managers.Resource.Instantiate("Creature/Arrow");
-        ArrowController arrowController = go.GetComponent<ArrowController>();
-        arrowController.Dir = Dir;
-        arrowController.CellPos = CellPos;
-
         _rangeSkill = true;
+        State = CreatureState.Skill;
         yield return new WaitForSeconds(0.3f);
         State = CreatureState.Idle;
         _coSkill = null;
+        CheckUpdatedFlag();
     }
 
     public override void OnDamaged()

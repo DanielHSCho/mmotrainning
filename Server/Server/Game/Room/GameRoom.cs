@@ -219,6 +219,8 @@ namespace Server.Game
                             }
 
                             arrow.Owner = player;
+                            arrow.Data = skillData;
+
                             arrow.PosInfo.State = CreatureState.Moving;
                             arrow.PosInfo.MoveDir = player.PosInfo.MoveDir;
                             arrow.PosInfo.PosX = player.PosInfo.PosX;

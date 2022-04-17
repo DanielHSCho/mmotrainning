@@ -87,6 +87,11 @@ namespace Server.Game
 
         public virtual void OnDead(GameObject attacker)
         {
+            S_Die diePacket = new S_Die();
+            diePacket.ObjectId = Id;
+            diePacket.AttackerId = attacker.Id;
+            Room.Broadcast(diePacket);
+
 
         }
     }

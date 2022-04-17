@@ -72,6 +72,19 @@ namespace Server.Game
 
         public virtual void OnDamaged(GameObject attacker, int damage)
         {
+            Stat.Hp -= damage;
+
+            // TODO : 
+
+
+            if(Stat.Hp <= 0) {
+                Stat.Hp = 0;
+                OnDead(attacker);
+            }
+        }
+
+        public virtual void OnDead(GameObject attacker)
+        {
 
         }
     }

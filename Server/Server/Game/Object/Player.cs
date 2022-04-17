@@ -18,7 +18,13 @@ namespace Server.Game
 
         public override void OnDamaged(GameObject attacker, int damage)
         {
-            Console.WriteLine($"TODO : damage {damage}");
+            base.OnDamaged(attacker, damage);
+            // TODO : 랭킹, PK포인트는 이쪽에
+        }
+
+        public override void OnDead(GameObject attacker)
+        {
+            base.OnDead(attacker);
         }
     }
 }

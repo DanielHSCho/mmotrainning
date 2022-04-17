@@ -38,7 +38,6 @@ namespace Server.Game
             } else {
                 GameObject target = Room.Map.Find(destPos);
                 if(target != null) {
-                    // TODO : 피격 판정
                     target.OnDamaged(this, Data.damage);
                 }
 

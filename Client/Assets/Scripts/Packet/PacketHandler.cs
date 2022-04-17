@@ -46,12 +46,12 @@ class PacketHandler
 			return;
         }
 
-		CreatureController creatureController = go.GetComponent<CreatureController>();
-		if(creatureController == null) {
+		BaseController bc = go.GetComponent<BaseController>();
+		if(bc == null) {
 			return;
         }
 
-		creatureController.PosInfo = movePacket.PosInfo;
+		bc.PosInfo = movePacket.PosInfo;
 	}
 
 	public static void S_SkillHandler(PacketSession session, IMessage packet)

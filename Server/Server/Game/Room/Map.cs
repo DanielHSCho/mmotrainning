@@ -177,7 +177,7 @@ namespace Server.Game
 		int[] _deltaX = new int[] { 0, 0, -1, 1 };
 		int[] _cost = new int[] { 10, 10, 10, 10 };
 
-		public List<Vector2Int> FindPath(Vector2Int startCellPos, Vector2Int destCellPos, bool ignoreDestCollision = false)
+		public List<Vector2Int> FindPath(Vector2Int startCellPos, Vector2Int destCellPos, bool checkObjects = true)
 		{
 			List<Pos> path = new List<Pos>();
 
@@ -231,8 +231,8 @@ namespace Server.Game
 
 					// 유효 범위를 벗어났으면 스킵
 					// 벽으로 막혀서 갈 수 없으면 스킵
-					if (!ignoreDestCollision || next.Y != dest.Y || next.X != dest.X) {
-						if (CanGo(Pos2Cell(next)) == false) // CellPos
+					if (next.Y != dest.Y || next.X != dest.X) {
+						if (CanGo(Pos2Cell(next), checkObjects) == false) // CellPos
 							continue;
 					}
 

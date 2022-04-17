@@ -252,6 +252,18 @@ namespace Server.Game
             }
         }
 
+        public Player FindPlayer(Func<GameObject, bool> condition)
+        {
+            // TODO : 무식한 방법으로 우선 찾아보자
+            foreach(Player player in _players.Values) {
+                if (condition.Invoke(player)) {
+                    return player;
+                }
+            }
+
+            return null;
+        }
+
         public void Broadcast(IMessage packet)
         {
             lock (_lock) {

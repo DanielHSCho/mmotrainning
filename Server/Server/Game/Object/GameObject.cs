@@ -74,8 +74,10 @@ namespace Server.Game
         {
             Stat.Hp -= damage;
 
-            // TODO : 
-
+            S_ChangeHp changePacket = new S_ChangeHp();
+            changePacket.ObjectId = Id;
+            changePacket.Hp = Stat.Hp;
+            Room.Broadcast(changePacket);
 
             if(Stat.Hp <= 0) {
                 Stat.Hp = 0;

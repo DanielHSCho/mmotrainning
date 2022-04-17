@@ -7,35 +7,21 @@ using static Define;
 public class CreatureController : BaseController
 {
     HpBar _hpBar;
-    public int Id { get; set; }
 
-    StatInfo _stat = new StatInfo();
-    public StatInfo Stat
+    public override StatInfo Stat
     {
-        get { return _stat; }
+        get { return base.Stat; }
         set {
-            if (_stat.Equals(value)) {
-                return;
-            }
-
-            _stat.Hp = value.Hp;
-            _stat.MaxHp = value.MaxHp;
-            _stat.Speed = value.Speed;
+            base.Stat = value;
             UpdateHpBar();
         }
     }
 
-    public float Speed
-    {
-        get { return Stat.Speed; }
-        set { Stat.Speed = value; }
-    }
-
-    public int Hp
+    public override int Hp
     {
         get { return Stat.Hp; }
         set {
-            Stat.Hp = value;
+            base.Hp = value;
             UpdateHpBar();
         }
     }

@@ -10,6 +10,10 @@ namespace Server.Game
         Player _target;
         int _searchCellDist = 10;
         int _chaseCellDist = 20;
+
+        long _coolTick = 0;
+        int _skillRange = 1;
+
         long _nextSearchTick = 0;
         long _nextMoveTick = 0;
 
@@ -85,7 +89,8 @@ namespace Server.Game
             }
 
             // 도망가는 거리
-            int dist = (_target.CellPos - CellPos).cellDistFromZero;
+            Vector2Int dir = _target.CellPos - CellPos;
+            int dist = dir.cellDistFromZero;
             if(dist == 0 || dist > _chaseCellDist) {
                 _target = null;
                 State = CreatureState.Idle;
@@ -104,9 +109,12 @@ namespace Server.Game
                 return;
             }
 
-            // 스킬 사용 여부 체크
+            // 스킬 사용 여부 체크 / 대각선 스킬 사용 방지
+            if(dist <= _skillRange && (dir.x == 0 || dir.y == 0))
             {
-
+                _coolTick = 0;
+                State = CreatureState.Skill;
+                return;
             }
 
             // 이동
@@ -126,7 +134,17 @@ namespace Server.Game
 
         protected virtual void UpdateSkill()
         {
+            if(_coolTick == 0) {
+                // 유효 타겟 여부
 
+                // 스킬 사용 가능 여부
+
+                // 데미지 판정
+
+                // 스킬 사용 브로드 캐스팅
+
+                // 스킬 쿨타임 적용
+            }
         }
 
         protected virtual void UpdateDead()

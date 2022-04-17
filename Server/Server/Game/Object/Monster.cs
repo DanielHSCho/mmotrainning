@@ -7,6 +7,8 @@ namespace Server.Game
 {
     public class Monster : GameObject
     {
+        Player _target;
+        int _searchCellDist = 10;
         long _nextSearchTick = 0;
 
         public Monster()
@@ -48,6 +50,19 @@ namespace Server.Game
             }
 
             _nextSearchTick = Environment.TickCount64 + 1000;
+
+            // 1초마다 내 주변 서칭
+            Player target = Room.FindPlayer(p => {
+                Vector2Int dir = p.CellPos - CellPos;
+                return dir.cellDistFromZero <= _searchCellDist;
+            });
+
+            if(target == null) {
+                return;
+            }
+
+            _target = target;
+            State = CreatureState.Moving;
         }
 
         protected virtual void UpdateMoving()

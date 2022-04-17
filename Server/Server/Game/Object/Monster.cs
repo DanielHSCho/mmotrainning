@@ -9,7 +9,9 @@ namespace Server.Game
     {
         Player _target;
         int _searchCellDist = 10;
+        int _chaseCellDist = 20;
         long _nextSearchTick = 0;
+        long _nextMoveTick = 0;
 
         public Monster()
         {
@@ -67,8 +69,49 @@ namespace Server.Game
 
         protected virtual void UpdateMoving()
         {
+            if(_nextMoveTick > Environment.TickCount64) {
+                return;
+            }
 
+            int moveTick = (int)(1000 / Speed);
+            _nextMoveTick = Environment.TickCount64 + moveTick;
+
+            // 내가 공격하려는 대상이 로그아웃을하거나 다른 방으로 이동시
+            if(_target == null || _target.Room != Room) {
+                _target = null;
+                State = CreatureState.Idle;
+                return;
+            }
+
+            // 도망가는 거리
+            int dist = (_target.CellPos - CellPos).cellDistFromZero;
+            if(dist == 0 || dist > _chaseCellDist) {
+                _target = null;
+                State = CreatureState.Idle;
+                return;
+            }
+
+            // 길 찾기
+            List<Vector2Int> path = Room.Map.FindPath(CellPos, _target.CellPos, checkObjects:false);
+            
+            // 갈 수 있는 위치가 없거나 너무 멀다면
+            if(path.Count < 2 || path.Count > _chaseCellDist) {
+                _target = null;
+                State = CreatureState.Idle;
+                return;
+            }
+
+            // 이동
+            Dir = GetDirFromVec(path[1] - CellPos);
+            Room.Map.ApplyMove(this, path[1]);
+
+            // 다른 플레이어에게 이동 브로드캐스팅
+            S_Move movePacket = new S_Move();
+            movePacket.ObjectId = Id;
+            movePacket.PosInfo = PosInfo;
+            Room.Broadcast(movePacket);
         }
+
         protected virtual void UpdateSkill()
         {
 

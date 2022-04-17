@@ -72,7 +72,7 @@ namespace Server.Game
 
         public virtual void OnDamaged(GameObject attacker, int damage)
         {
-            Stat.Hp -= damage;
+            Stat.Hp = Math.Max(Stat.Hp - damage, 0);
 
             S_ChangeHp changePacket = new S_ChangeHp();
             changePacket.ObjectId = Id;

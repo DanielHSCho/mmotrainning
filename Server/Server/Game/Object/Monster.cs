@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Protocol;
+using Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -136,15 +137,57 @@ namespace Server.Game
         {
             if(_coolTick == 0) {
                 // 유효 타겟 여부
+                if(_target == null || _target.Room != Room || _target.Hp == 0) {
+                    _target = null;
+                    State = CreatureState.Moving;
+                    BroardcastMove();
+                    return;
+                }
 
                 // 스킬 사용 가능 여부
+                Vector2Int dir = (_target.CellPos - CellPos);
+                int dist = dir.cellDistFromZero;
+                bool canUseSkill = (dist <= _skillRange && (dir.x == 0 || dir.y == 0));
+
+                if(canUseSkill == false) {
+                    // 타겟 Null 처리는 제외 - 다시 판단이 가능하도록
+                    State = CreatureState.Moving;
+                    BroardcastMove();
+                    return;
+                }
+
+                // 타겟팅 방향 주시
+                MoveDir lookDir = GetDirFromVec(dir);
+                if(Dir != lookDir) {
+                    Dir = lookDir;
+                    BroardcastMove();
+                }
+
+
+                // TODO : 몬스터 스킬 데이터 시트로 연동해야함
+                Skill skillData = null;
+                DataManager.SkillDict.TryGetValue(1, out skillData);
 
                 // 데미지 판정
+                _target.OnDamaged(this, skillData.damage + Stat.Attack);
 
                 // 스킬 사용 브로드 캐스팅
+                S_Skill skill = new S_Skill() { Info = new SkillInfo() };
+                skill.ObjectId = Id;
+                skill.Info.SkillId = skillData.id;
+                Room.Broadcast(skill);
 
                 // 스킬 쿨타임 적용
+                int coolTick = (int)(1000 * skillData.cooldown);
+                _coolTick = Environment.TickCount64 + coolTick;
             }
+
+            // 다음 스킬 사용 가능 시간인지 체크
+            if(_coolTick > Environment.TickCount64) {
+                return;
+            }
+
+            _coolTick = 0;
         }
 
         protected virtual void UpdateDead()

@@ -80,6 +80,7 @@ namespace Server.Game
             if(_target == null || _target.Room != Room) {
                 _target = null;
                 State = CreatureState.Idle;
+                BroardcastMove();
                 return;
             }
 
@@ -88,6 +89,7 @@ namespace Server.Game
             if(dist == 0 || dist > _chaseCellDist) {
                 _target = null;
                 State = CreatureState.Idle;
+                BroardcastMove();
                 return;
             }
 
@@ -98,13 +100,23 @@ namespace Server.Game
             if(path.Count < 2 || path.Count > _chaseCellDist) {
                 _target = null;
                 State = CreatureState.Idle;
+                BroardcastMove();
                 return;
+            }
+
+            // 스킬 사용 여부 체크
+            {
+
             }
 
             // 이동
             Dir = GetDirFromVec(path[1] - CellPos);
             Room.Map.ApplyMove(this, path[1]);
+            BroardcastMove();
+        }
 
+        void BroardcastMove()
+        {
             // 다른 플레이어에게 이동 브로드캐스팅
             S_Move movePacket = new S_Move();
             movePacket.ObjectId = Id;

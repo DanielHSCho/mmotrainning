@@ -92,7 +92,19 @@ namespace Server.Game
             diePacket.AttackerId = attacker.Id;
             Room.Broadcast(diePacket);
 
+            GameRoom room = Room;
+            Room.LeaveGame(Id);
+            
+            // 재입장을 위한 초기화
+            Stat.Hp = Stat.MaxHp;
+            PosInfo.State = CreatureState.Idle;
+            PosInfo.MoveDir = MoveDir.Down;
+            // TODO : 마을좌표나 리스폰 좌표 데이터가 있다면 연동
+            PosInfo.PosX = 0;
+            PosInfo.PosY = 0;
 
+            // 플레이어가 있던 Room이 Null이 되도 미리 받아뒀던 방으로 재입장
+            room.EnterGame(this);
         }
     }
 }

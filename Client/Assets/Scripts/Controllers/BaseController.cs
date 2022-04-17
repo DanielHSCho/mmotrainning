@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class CreatureController : BaseController
+public class BaseController : MonoBehaviour
 {
-    HpBar _hpBar;
     public int Id { get; set; }
 
     StatInfo _stat = new StatInfo();
-    public StatInfo Stat
+    public virtual StatInfo Stat
     {
         get { return _stat; }
         set {
@@ -21,7 +20,6 @@ public class CreatureController : BaseController
             _stat.Hp = value.Hp;
             _stat.MaxHp = value.MaxHp;
             _stat.Speed = value.Speed;
-            UpdateHpBar();
         }
     }
 
@@ -31,12 +29,11 @@ public class CreatureController : BaseController
         set { Stat.Speed = value; }
     }
 
-    public int Hp
+    public virtual int Hp
     {
         get { return Stat.Hp; }
         set {
             Stat.Hp = value;
-            UpdateHpBar();
         }
     }
 
@@ -57,43 +54,20 @@ public class CreatureController : BaseController
         }
     }
 
-    protected void AddHpBar()
-    {
-        GameObject go = Managers.Resource.Instantiate("UI/HpBar", transform);
-        go.transform.localPosition = new Vector3(0, 0.5f, 0);
-        go.name = "HpBar";
-        _hpBar = go.GetComponent<HpBar>();
-
-        UpdateHpBar();
-    }
-
-    void UpdateHpBar()
-    {
-        if(_hpBar == null) {
-            return;
-        }
-
-        float ratio = 0.0f;
-        if(Stat.MaxHp > 0) {
-            ratio = ((float)Hp) / Stat.MaxHp;
-        }
-
-        _hpBar.SetHpBar(ratio);
-    }
-
     public void SyncPos()
     {
         Vector3 destPos = Managers.Map.CurrentGrid.CellToWorld(CellPos) + new Vector3(0.5f, 0.5f);
         transform.position = destPos;
     }
 
-    public Vector3Int CellPos {
+    public Vector3Int CellPos
+    {
         get {
             return new Vector3Int(PosInfo.PosX, PosInfo.PosY, 0);
         }
 
         set {
-            if(PosInfo.PosX == value.x && PosInfo.PosY == value.y) {
+            if (PosInfo.PosX == value.x && PosInfo.PosY == value.y) {
                 return;
             }
 
@@ -128,7 +102,7 @@ public class CreatureController : BaseController
             }
 
             PosInfo.MoveDir = value;
-          
+
             UpdateAnimation();
             _updated = true;
         }
@@ -195,7 +169,7 @@ public class CreatureController : BaseController
                 case MoveDir.Up:
                     _animator.Play("WALK_BACK");
                     _sprite.flipX = false;
-                     break;
+                    break;
                 case MoveDir.Down:
                     _animator.Play("WALK_FRONT");
                     _sprite.flipX = false;
@@ -296,7 +270,7 @@ public class CreatureController : BaseController
 
     protected virtual void MoveToNextPos()
     {
-        
+
     }
 
     protected virtual void UpdateSkill()
@@ -307,23 +281,5 @@ public class CreatureController : BaseController
     protected virtual void UpdateDead()
     {
 
-    }
-
-    public virtual void OnDamaged()
-    {
-
-    }
-
-    public virtual void OnDead()
-    {
-        State = CreatureState.Dead;
-
-        // TODO : Dead 애니메이션이 있다면 여기서 연동
-        
-        // =
-        GameObject effect = Managers.Resource.Instantiate("Effect/DieEffect");
-        effect.transform.position = this.transform.position;
-        effect.GetComponent<Animator>().Play("START");
-        GameObject.Destroy(effect, 0.5f);
     }
 }

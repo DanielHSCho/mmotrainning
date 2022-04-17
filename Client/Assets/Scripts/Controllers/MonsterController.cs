@@ -111,7 +111,7 @@ public class MonsterController : CreatureController
 
         Dir = GetDirFromVec(moveCellDir);
 
-        if (Managers.Map.CanGo(nextPos) && Managers.Object.Find(nextPos) == null) {
+        if (Managers.Map.CanGo(nextPos) && Managers.Object.FindCreature(nextPos) == null) {
             CellPos = nextPos;
         } else {
             State = CreatureState.Idle;
@@ -136,7 +136,7 @@ public class MonsterController : CreatureController
             Vector3Int randomPos = CellPos + new Vector3Int(xRange, yRange, 0);
 
             // 이동이 가능하고, 아무 오브젝트가 없다면 이동
-            if(Managers.Map.CanGo(randomPos) && Managers.Object.Find(randomPos) == null){
+            if(Managers.Map.CanGo(randomPos) && Managers.Object.FindCreature(randomPos) == null){
                 _destCellPos = randomPos;
                 State = CreatureState.Moving;
                 yield break;
@@ -175,7 +175,7 @@ public class MonsterController : CreatureController
     IEnumerator CoStartPunch()
     {
         // 피격 판정
-        GameObject go = Managers.Object.Find(GetFrontCellPos());
+        GameObject go = Managers.Object.FindCreature(GetFrontCellPos());
         if (go != null) {
             CreatureController controller = go.GetComponent<CreatureController>();
             if (controller != null) {

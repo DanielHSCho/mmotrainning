@@ -76,7 +76,7 @@ public class ObjectManager
     }
 
     // TODO : 매우 느린 성능 - 샘플용
-    public GameObject Find(Vector3Int cellPos)
+    public GameObject FindCreature(Vector3Int cellPos)
     {
         foreach(GameObject obj in _objects.Values) {
             CreatureController creController = obj.GetComponent<CreatureController>();

@@ -60,6 +60,15 @@ namespace Server.Game
                                 spawnPacket.Objects.Add(p.Info);
                             }
                         }
+
+                        foreach(Monster m in _monsters.Values) {
+                            spawnPacket.Objects.Add(m.Info);
+                        }
+
+                        foreach(Projectile p in _projectiles.Values) {
+                            spawnPacket.Objects.Add(p.Info);
+                        }
+
                         player.Session.Send(spawnPacket);
                     }
                 } else if(type == GameObjectType.Monster) {

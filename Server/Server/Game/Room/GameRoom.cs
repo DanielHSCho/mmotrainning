@@ -31,7 +31,12 @@ namespace Server.Game
 
         public void Update()
         {
+            // TODO : 깔끔한 방법은 아님 - 임시
             lock (_lock) {
+                foreach(Monster monster in _monsters.Values) {
+                    monster.Update();
+                }
+
                 foreach(Projectile projectile in _projectiles.Values) {
                     projectile.Update();
                 }

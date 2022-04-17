@@ -25,10 +25,26 @@ namespace Server.Game
             set { Stat.Speed = value; }
         }
 
+        public MoveDir Dir
+        {
+            get { return PosInfo.MoveDir; }
+            set { PosInfo.MoveDir = value; }
+        }
+
+        public CreatureState State
+        {
+            get { return PosInfo.State; }
+            set { PosInfo.State = value; }
+        }
+
         public GameObject()
         {
             Info.PosInfo = PosInfo;
             Info.StatInfo = Stat;
+        }
+
+        public virtual void Update()
+        {
         }
 
         public Vector2Int CellPos

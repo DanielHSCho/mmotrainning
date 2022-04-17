@@ -16,7 +16,7 @@ class PacketHandler
 	public static void S_LeaveGameHandler(PacketSession session, IMessage packet)
 	{
 		S_LeaveGame leaveGamePacket = packet as S_LeaveGame;
-		Managers.Object.RemoveMyPlayer();
+		Managers.Object.Clear();
 	}
 
 	public static void S_SpawnHandler(PacketSession session, IMessage packet)

@@ -6,11 +6,11 @@ namespace Server.Game
 {
     class JobSerializer
     {
-		Queue<Action> _jobQueue = new Queue<Action>();
+		Queue<IJob> _jobQueue = new Queue<IJob>();
 		object _lock = new object();
 		bool _flush = false;
 
-		public void Push(Action job)
+		public void Push(IJob job)
 		{
 			bool flush = false;
 
@@ -27,15 +27,15 @@ namespace Server.Game
 		void Flush()
 		{
 			while (true) {
-				Action action = Pop();
-				if (action == null)
+				IJob job = Pop();
+				if (job == null)
 					return;
 
-				action.Invoke();
+				job.Execute();
 			}
 		}
 
-		Action Pop()
+		IJob Pop()
 		{
 			lock (_lock) {
 				if (_jobQueue.Count == 0) {

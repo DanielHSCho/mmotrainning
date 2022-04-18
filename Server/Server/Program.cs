@@ -40,7 +40,8 @@ namespace Server
 			DataManager.LoadData();
 
 			// 1번 방을 만들자
-			RoomManager.Instance.Add(1);
+			GameRoom room = RoomManager.Instance.Add(1);
+			TickRoom(room, 50);
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
@@ -57,10 +58,6 @@ namespace Server
 			while (true)
 			{
 				//JobTimer.Instance.Flush();
-
-				// TODO : 1초에 10번정도만 - 나중에 수정해야함
-				GameRoom room = RoomManager.Instance.Find(1);
-				room.Push(room.Update);
 				Thread.Sleep(100);
 			}
 		}

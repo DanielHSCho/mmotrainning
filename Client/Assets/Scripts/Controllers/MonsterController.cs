@@ -6,8 +6,6 @@ using static Define;
 
 public class MonsterController : CreatureController
 {
-    Coroutine _coSkill;
-
     protected override void Init()
     {
         base.Init();
@@ -31,9 +29,7 @@ public class MonsterController : CreatureController
     public override void UseSkill(int skillId)
     {
         if (skillId == 1) {
-            _coSkill = StartCoroutine("CoStartPunch");
-        } else if (skillId == 2) {
-            _coSkill = StartCoroutine("CoStartShootArrow");
+            State = CreatureState.Skill;
         }
     }
 }

@@ -46,6 +46,11 @@ class PacketHandler
 			return;
         }
 
+		// TODO : 추후에 거리가 정말 멀어진 경우에만 보정
+		if(Managers.Object.MyPlayer.Id == movePacket.ObjectId) {
+			return;
+        }
+
 		BaseController bc = go.GetComponent<BaseController>();
 		if(bc == null) {
 			return;

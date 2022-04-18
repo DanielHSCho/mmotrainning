@@ -107,6 +107,10 @@ namespace Server.Game
 
         public virtual void OnDamaged(GameObject attacker, int damage)
         {
+            if (Room == null) {
+                return;
+            }
+
             Stat.Hp = Math.Max(Stat.Hp - damage, 0);
 
             S_ChangeHp changePacket = new S_ChangeHp();
@@ -122,13 +126,17 @@ namespace Server.Game
 
         public virtual void OnDead(GameObject attacker)
         {
+            if(Room == null) {
+                return;
+            }
+
             S_Die diePacket = new S_Die();
             diePacket.ObjectId = Id;
             diePacket.AttackerId = attacker.Id;
             Room.Broadcast(diePacket);
 
             GameRoom room = Room;
-            room.Push(room.LeaveGame, Id);
+            room.LeaveGame(Id);
             
             // 재입장을 위한 초기화
             Stat.Hp = Stat.MaxHp;
@@ -139,7 +147,7 @@ namespace Server.Game
             PosInfo.PosY = 0;
 
             // 플레이어가 있던 Room이 Null이 되도 미리 받아뒀던 방으로 재입장
-            room.Push(room.EnterGame, this);
+            room.EnterGame(this);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Server.Game
             // TEMP
             Monster monster = ObjectManager.Instance.Add<Monster>();
             monster.CellPos = new Vector2Int(5, 5);
-            EnterGame(monster);
+            Push(EnterGame, monster);
 
         }
 
@@ -239,7 +239,7 @@ namespace Server.Game
                         arrow.PosInfo.PosX = player.PosInfo.PosX;
                         arrow.PosInfo.PosY = player.PosInfo.PosY;
                         arrow.Speed = skillData.projectile.speed;
-                        EnterGame(arrow);
+                        Push(EnterGame, arrow);
                     }
                     break;
             }

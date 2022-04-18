@@ -28,19 +28,12 @@ namespace Server.Game
 
 		public void Push(IJob job)
 		{
-			bool flush = false;
-
 			lock (_lock) {
 				_jobQueue.Enqueue(job);
-				if (_flush == false)
-					flush = _flush = true;
 			}
-
-			if (flush)
-				Flush();
 		}
 
-		void Flush()
+		public void Flush()
 		{
 			_timer.Flush();
 

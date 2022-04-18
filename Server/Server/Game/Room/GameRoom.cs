@@ -38,6 +38,8 @@ namespace Server.Game
             foreach (Projectile projectile in _projectiles.Values) {
                 projectile.Update();
             }
+
+            Flush();
         }
 
         public void EnterGame(GameObject gameObject)

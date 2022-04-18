@@ -11,6 +11,16 @@ namespace Server.Game
 
     public class Job : IJob
     {
+        Action _action;
 
+        public Job(Action action)
+        {
+            _action = action;
+        }
+
+        public void Execute()
+        {
+            _action.Invoke();
+        }
     }
 }

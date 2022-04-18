@@ -63,9 +63,9 @@ class PacketHandler
 			return;
 		}
 
-		PlayerController pc = go.GetComponent<PlayerController>();
-		if (pc != null) {
-			pc.UseSkill(skillPacket.Info.SkillId);
+		CreatureController cc = go.GetComponent<CreatureController>();
+		if (cc != null) {
+			cc.UseSkill(skillPacket.Info.SkillId);
 		}
 	}
 

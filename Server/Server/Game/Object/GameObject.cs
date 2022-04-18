@@ -128,7 +128,7 @@ namespace Server.Game
             Room.Broadcast(diePacket);
 
             GameRoom room = Room;
-            Room.LeaveGame(Id);
+            room.LeaveGame(Id);
             
             // 재입장을 위한 초기화
             Stat.Hp = Stat.MaxHp;

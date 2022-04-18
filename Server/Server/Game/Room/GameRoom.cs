@@ -118,8 +118,8 @@ namespace Server.Game
                     return;
                 }
 
-                player.Room = null;
                 Map.ApplyLeave(player);
+                player.Room = null;
 
                 // 본인에게 정보 전송
                 {

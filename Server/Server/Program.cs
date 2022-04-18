@@ -50,7 +50,9 @@ namespace Server
 				//JobTimer.Instance.Flush();
 
 				// TODO : 1초에 10번정도만 - 나중에 수정해야함
-				RoomManager.Instance.Find(1).Update();
+				GameRoom room = RoomManager.Instance.Find(1);
+				room.Push(room.Update);
+				Thread.Sleep(100);
 			}
 		}
 	}

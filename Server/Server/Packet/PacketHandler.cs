@@ -26,7 +26,7 @@ class PacketHandler
 			return;
         }
 
-		room.HandleMove(player, movePacket);
+		room.Push(room.HandleMove, player, movePacket);
 	}
 
 	public static void C_SkillHandler(PacketSession session, IMessage packet)
@@ -44,6 +44,6 @@ class PacketHandler
 			return;
 		}
 
-		room.HandleSkill(player, skillPacket);
+		room.Push(room.HandleSkill, player, skillPacket);
 	}
 }

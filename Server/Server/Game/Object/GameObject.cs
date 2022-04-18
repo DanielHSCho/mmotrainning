@@ -128,7 +128,7 @@ namespace Server.Game
             Room.Broadcast(diePacket);
 
             GameRoom room = Room;
-            room.LeaveGame(Id);
+            room.Push(room.LeaveGame, Id);
             
             // 재입장을 위한 초기화
             Stat.Hp = Stat.MaxHp;
@@ -139,7 +139,7 @@ namespace Server.Game
             PosInfo.PosY = 0;
 
             // 플레이어가 있던 Room이 Null이 되도 미리 받아뒀던 방으로 재입장
-            room.EnterGame(this);
+            room.Push(room.EnterGame, this);
         }
     }
 }

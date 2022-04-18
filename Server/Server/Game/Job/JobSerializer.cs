@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Server.Game
 {
-    class JobSerializer
+    public class JobSerializer
     {
 		Queue<IJob> _jobQueue = new Queue<IJob>();
 		object _lock = new object();

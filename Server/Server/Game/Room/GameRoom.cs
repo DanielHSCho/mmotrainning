@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Server.Game
 {
-    public class GameRoom
+    public class GameRoom : JobSerializer
     {
         object _lock = new object();
         public int RoomId { get; set; }

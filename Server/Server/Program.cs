@@ -18,6 +18,20 @@ namespace Server
 	class Program
 	{
 		static Listener _listener = new Listener();
+		static List<System.Timers.Timer> _timers = new List<System.Timers.Timer>();
+
+		static void TickRoom(GameRoom room, int tick = 100)
+        {
+			var timer = new System.Timers.Timer();
+			timer.Interval = tick;
+			timer.Elapsed += ((s, e) => { room.Update(); });
+			timer.AutoReset = true;
+			timer.Enabled = true;
+
+			// 타이머들을 관리할 수 있게 기억해두자
+			// timer.Stop으로 수동으로 끌 수 있음
+			_timers.Add(timer);
+        }
 
 		static void Main(string[] args)
 		{

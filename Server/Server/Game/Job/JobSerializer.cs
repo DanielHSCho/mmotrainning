@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServerCore
+namespace Server.Game
 {
-	public interface IJobQueue
-	{
-		void Push(Action job);
-	}
-
-	public class JobQueue : IJobQueue
-	{
+    class JobSerializer
+    {
 		Queue<Action> _jobQueue = new Queue<Action>();
 		object _lock = new object();
 		bool _flush = false;
@@ -19,8 +14,7 @@ namespace ServerCore
 		{
 			bool flush = false;
 
-			lock (_lock)
-			{
+			lock (_lock) {
 				_jobQueue.Enqueue(job);
 				if (_flush == false)
 					flush = _flush = true;
@@ -32,8 +26,7 @@ namespace ServerCore
 
 		void Flush()
 		{
-			while (true)
-			{
+			while (true) {
 				Action action = Pop();
 				if (action == null)
 					return;
@@ -44,10 +37,8 @@ namespace ServerCore
 
 		Action Pop()
 		{
-			lock (_lock)
-			{
-				if (_jobQueue.Count == 0)
-				{
+			lock (_lock) {
+				if (_jobQueue.Count == 0) {
 					_flush = false;
 					return null;
 				}

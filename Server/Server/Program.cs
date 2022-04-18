@@ -19,11 +19,6 @@ namespace Server
 	{
 		static Listener _listener = new Listener();
 
-		static void FlushRoom()
-		{
-			JobTimer.Instance.Push(FlushRoom, 250);
-		}
-
 		static void Main(string[] args)
 		{
 			// 데이터 로드

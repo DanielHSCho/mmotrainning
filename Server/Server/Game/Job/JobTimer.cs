@@ -21,8 +21,6 @@ namespace Server.Game
 		PriorityQueue<JobTimerElem> _pq = new PriorityQueue<JobTimerElem>();
 		object _lock = new object();
 
-		public static JobTimer Instance { get; } = new JobTimer();
-
 		public void Push(IJob job, int tickAfter = 0)
 		{
 			JobTimerElem jobElement;

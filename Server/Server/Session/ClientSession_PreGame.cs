@@ -107,6 +107,8 @@ namespace Server
 				MyPlayer.Session = this;
 			}
 
+			ServerState = PlayerServerState.ServerStateGame;
+
 			GameRoom room = RoomManager.Instance.Find(1);
 			room.Push(room.EnterGame, MyPlayer);
 		}

@@ -36,6 +36,13 @@ namespace Server
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
+            {
+				S_Connected connectedPacket = new S_Connected();
+				Send(connectedPacket);
+            }
+
+			// TODO : 로비에서 캐릭터 선택
+
 			// TODO : 실제 MMO는 여기서 온갖 로드 정보를 클라에 알려준 후
 			// 클라에서 로드가 끝나면 Okay 패킷 전달해주면 그때 입장처리 해야 함
 			MyPlayer = ObjectManager.Instance.Add<Player>();
@@ -54,6 +61,7 @@ namespace Server
 				MyPlayer.Session = this;
             }
 
+			// TODO : 클라에서 캐릭터 선택 후 입장 요청할 때 처리해야함
 			GameRoom room = RoomManager.Instance.Find(1);
 			room.Push(room.EnterGame, MyPlayer);
 		}

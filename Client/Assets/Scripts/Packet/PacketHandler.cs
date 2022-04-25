@@ -122,6 +122,12 @@ class PacketHandler
 		Debug.Log($"LoginOk({loginPacket.LoginOk})");
 
 		// TODO : 로비 UI에서 캐릭터 출력 / 선택
+		if(loginPacket.Players == null || loginPacket.Players.Count == 0) {
+			C_CreatePlayer createPacket = new C_CreatePlayer();
+			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
+			Managers.Network.Send(createPacket);
+        } else {
+        }
     }
 
 	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)

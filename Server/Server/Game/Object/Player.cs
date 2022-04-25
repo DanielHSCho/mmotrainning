@@ -20,18 +20,20 @@ namespace Server.Game
         {
             base.OnDamaged(attacker, damage);
             // TODO : 랭킹, PK포인트는 이쪽에
-
-            // DB 연동?
-            using (AppDbContext db = new AppDbContext()) {
-                PlayerDb playerDb = db.Players.Find(PlayerDbId);
-                playerDb.Hp = Stat.Hp;
-                db.SaveChanges();
-            }
         }
 
         public override void OnDead(GameObject attacker)
         {
             base.OnDead(attacker);
+        }
+
+        public void OnLeaveGame()
+        {
+            using (AppDbContext db = new AppDbContext()) {
+                PlayerDb playerDb = db.Players.Find(PlayerDbId);
+                playerDb.Hp = Stat.Hp;
+                db.SaveChanges();
+            }
         }
     }
 }

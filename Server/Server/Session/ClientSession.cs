@@ -44,30 +44,6 @@ namespace Server
 				S_Connected connectedPacket = new S_Connected();
 				Send(connectedPacket);
             }
-
-			// TODO : 로비에서 캐릭터 선택
-
-			// TODO : 실제 MMO는 여기서 온갖 로드 정보를 클라에 알려준 후
-			// 클라에서 로드가 끝나면 Okay 패킷 전달해주면 그때 입장처리 해야 함
-			MyPlayer = ObjectManager.Instance.Add<Player>();
-            {
-				MyPlayer.Info.Name = $"Player_{MyPlayer.Info.ObjectId}";
-				MyPlayer.Info.PosInfo.State = CreatureState.Idle;
-				MyPlayer.Info.PosInfo.MoveDir = MoveDir.Down;
-				MyPlayer.Info.PosInfo.PosX = 0;
-				MyPlayer.Info.PosInfo.PosY = 0;
-
-				// TODO : 나중엔 이 부분이 DB에서 긁어와서 스탯 세팅
-				StatInfo stat = null;
-				DataManager.StatDict.TryGetValue(1, out stat);
-				MyPlayer.Stat.MergeFrom(stat);
-
-				MyPlayer.Session = this;
-            }
-
-			// TODO : 클라에서 캐릭터 선택 후 입장 요청할 때 처리해야함
-			GameRoom room = RoomManager.Instance.Find(1);
-			room.Push(room.EnterGame, MyPlayer);
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)

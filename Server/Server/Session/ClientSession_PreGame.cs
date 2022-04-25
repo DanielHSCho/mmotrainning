@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Server.DB;
+using Server.Game;
 using ServerCore;
 using System;
 using System.Collections.Generic;
@@ -85,8 +86,30 @@ namespace Server
 
 		public void HandleEnterGame(C_EnterGame enterGamePacket)
         {
+			if(ServerState != PlayerServerState.ServerStateLobby) {
+				return;
+            }
 
-        }
+			LobbyPlayerInfo playerInfo = LobbyPlayers.Find(p => p.Name == enterGamePacket.Name);
+			if(playerInfo == null) {
+				return;
+            }
+
+			MyPlayer = ObjectManager.Instance.Add<Player>();
+			{
+				MyPlayer.Info.Name = playerInfo.Name;
+				MyPlayer.Info.PosInfo.State = CreatureState.Idle;
+				MyPlayer.Info.PosInfo.MoveDir = MoveDir.Down;
+				MyPlayer.Info.PosInfo.PosX = 0;
+				MyPlayer.Info.PosInfo.PosY = 0;
+
+				MyPlayer.Stat.MergeFrom(playerInfo.StatInfo);
+				MyPlayer.Session = this;
+			}
+
+			GameRoom room = RoomManager.Instance.Find(1);
+			room.Push(room.EnterGame, MyPlayer);
+		}
 
 		public void HandleCreatePlayer(C_CreatePlayer createPacket)
         {

@@ -10,6 +10,7 @@ using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Google.Protobuf.WellKnownTypes;
 using Server.Data;
+using Server.DB;
 using Server.Game;
 using ServerCore;
 
@@ -38,6 +39,12 @@ namespace Server
 			// 데이터 로드
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
+
+			// DB Test
+			using(AppDbContext db = new AppDbContext()) {
+				db.Accounts.Add(new AccountDb() { AccountName = "TestAccount" });
+				db.SaveChanges();
+            }
 
 			// 1번 방을 만들자
 			GameRoom room = RoomManager.Instance.Add(1);

@@ -11,6 +11,7 @@ namespace Server
 {
     public partial class ClientSession : PacketSession
     {
+		public int AccountDbId { get; private set; }
 		public List<LobbyPlayerInfo> LobbyPlayers { get; set; } = new List<LobbyPlayerInfo>();
 
         public void HandleLogin(C_Login loginPacket)
@@ -37,6 +38,9 @@ namespace Server
 					.Where(a => a.AccountName == loginPacket.UniqueId).FirstOrDefault();
 
 				if (findAccount != null) {
+					// AccountDbId 기억
+					AccountDbId = findAccount.AccountDbId;
+
 					S_Login loginOk = new S_Login() { LoginOk = 1 };
 					foreach(PlayerDb playerDb in findAccount.Players) {
 						LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo() {

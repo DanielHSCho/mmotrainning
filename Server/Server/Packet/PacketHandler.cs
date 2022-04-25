@@ -57,8 +57,15 @@ class PacketHandler
 
 		// TODO : 이런저런 보안 체크
 
-		// Account 존재 여부 체크
-		// TODO : 단, 이 로직은 문제가 있음
+		/* 
+		 <해킹 이슈> - 로그인 관련
+			- 동시에 다른 사람이 같은 UniqueId를 보낸다면?
+				- DB 저장이 안될 경우를 체크 (SaveChanges)
+			- 악의적으로 여러번 보낸다면 (1초에 100번씩 보낸다면)
+			- 생뚱맞은 타이밍에 이 패킷을 보낸다면
+				- 로그인했는지 등의 상태 관리
+		*/
+
 		using (AppDbContext db = new AppDbContext()) {
 			AccountDb findAccount = db.Accounts
 				.Where(a => a.AccountName == loginPacket.UniqueId).FirstOrDefault();

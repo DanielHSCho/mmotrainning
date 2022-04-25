@@ -13,3 +13,5 @@ Client/obj
 Client/Logs
 Client/Builds
 Client/Library
+Client/Assembly-CSharp.csproj
+Client/Assembly-CSharp-Editor.csproj

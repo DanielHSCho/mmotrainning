@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Protocol;
+using Microsoft.EntityFrameworkCore;
 using Server.DB;
 using ServerCore;
 using System;
@@ -28,6 +29,7 @@ namespace Server
 
 			using (AppDbContext db = new AppDbContext()) {
 				AccountDb findAccount = db.Accounts
+					.Include(a=>a.Players)
 					.Where(a => a.AccountName == loginPacket.UniqueId).FirstOrDefault();
 
 				if (findAccount != null) {

@@ -83,4 +83,16 @@ class PacketHandler
 			}
 		}
 	}
+
+	public static void C_EnterGameHandler(PacketSession session, IMessage packet)
+	{
+		C_EnterGame enterGamePacket = (C_EnterGame)packet;
+		ClientSession clientSession = (ClientSession)session;
+	}
+
+	public static void C_CreatePlayerHandler(PacketSession session, IMessage packet)
+	{
+		C_CreatePlayer createPlayerPacket = (C_CreatePlayer)packet;
+		ClientSession clientSession = (ClientSession)session;
+	}
 }

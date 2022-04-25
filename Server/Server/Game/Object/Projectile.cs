@@ -13,5 +13,8 @@ namespace Server.Game
         {
             ObjectType = GameObjectType.Projectile;
         }
+        public override void Update()
+        {
+        }
     }
 }

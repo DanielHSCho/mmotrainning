@@ -59,6 +59,8 @@ namespace Server
                     }
 
 					Send(loginOk);
+					// 로비로 이동
+					ServerState = PlayerServerState.ServerStateLobby;
 				} else {
 					AccountDb newAccount = new AccountDb() { AccountName = loginPacket.UniqueId };
 					db.Accounts.Add(newAccount);

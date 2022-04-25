@@ -37,7 +37,7 @@ namespace Server.Game
 
                 db.Entry(playerDb).State = EntityState.Unchanged;
                 db.Entry(playerDb).Property(nameof(playerDb.Hp)).IsModified = true;
-                db.SaveChanges();
+                db.SaveChangesEx();
             }
         }
     }

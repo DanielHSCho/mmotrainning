@@ -71,7 +71,10 @@ namespace Server
 				} else {
 					AccountDb newAccount = new AccountDb() { AccountName = loginPacket.UniqueId };
 					db.Accounts.Add(newAccount);
-					db.SaveChanges();
+					bool success = db.SaveChangesEx();
+					if(success == false) {
+						return;
+                    }
 
 					// AccountDbId 기억
 					AccountDbId = findAccount.AccountDbId;
@@ -152,7 +155,10 @@ namespace Server
 					db.Players.Add(newPlayerDb);
 					// TODO : ExceptionHandling
 					// => 찰나의 순간에 동일한 플레이어 이름이 요청될 경우
-					db.SaveChanges();
+					bool success = db.SaveChangesEx();
+					if (success == false) {
+						return;
+					}
 
 					// 메모리에 추가
 					LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo() {

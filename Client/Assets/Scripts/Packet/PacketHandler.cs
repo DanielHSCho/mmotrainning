@@ -121,6 +121,12 @@ class PacketHandler
 		S_Login loginPacket = packet as S_Login;
 		Debug.Log($"LoginOk({loginPacket.LoginOk})");
 
-		// TODO : 방입장 요청
+		// TODO : 로비 UI에서 캐릭터 출력 / 선택
+    }
+
+	public static void S_CreatePlayerHandler(PacketSession session, IMessage packet)
+    {
+		S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
+
     }
 }

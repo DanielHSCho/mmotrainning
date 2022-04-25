@@ -125,8 +125,15 @@ class PacketHandler
 		if(loginPacket.Players == null || loginPacket.Players.Count == 0) {
 			C_CreatePlayer createPacket = new C_CreatePlayer();
 			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
+
 			Managers.Network.Send(createPacket);
         } else {
+			// TODO : 첫번째 캐릭터로 로그인한다고 가정
+			LobbyPlayerInfo info = loginPacket.Players[0];
+			C_EnterGame enterGamePacket = new C_EnterGame();
+			enterGamePacket.Name = info.Name;
+
+			Managers.Network.Send(enterGamePacket);
         }
     }
 

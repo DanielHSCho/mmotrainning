@@ -18,6 +18,9 @@ enum MsgId {
   S_CONNECTED = 10;
   C_LOGIN = 11;
   S_LOGIN = 12;
+  C_ENTER_GAME = 13;
+  C_CREATE_PLAYER = 14;
+  S_CREATE_PLAYER = 15;
 }
 
 enum CreatureState{
@@ -115,6 +118,10 @@ message C_CreatePlayer{
 
 message S_CreatePlayer{
 	LobbyPlayerInfo player = 1;
+}
+
+message C_EnterGame{
+	string name = 1;
 }
 
 message LobbyPlayerInfo{

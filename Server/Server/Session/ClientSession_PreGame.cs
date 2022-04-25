@@ -68,6 +68,9 @@ namespace Server
 
 					S_Login loginOk = new S_Login() { LoginOk = 1 };
 					Send(loginOk);
+
+					// 로비로 이동
+					ServerState = PlayerServerState.ServerStateLobby;
 				}
 			}
 		}

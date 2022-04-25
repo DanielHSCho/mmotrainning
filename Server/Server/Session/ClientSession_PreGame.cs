@@ -34,6 +34,25 @@ namespace Server
 
 				if (findAccount != null) {
 					S_Login loginOk = new S_Login() { LoginOk = 1 };
+					foreach(PlayerDb playerDb in findAccount.Players) {
+						LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo() {
+							Name = playerDb.PlayerName,
+							StatInfo = new StatInfo() {
+								Level = playerDb.Level,
+								Hp = playerDb.Hp,
+								MaxHp = playerDb.MaxHp,
+								Attack = playerDb.Attack,
+								Speed = playerDb.Speed,
+								TotalExp = playerDb.TotalExp
+                            }
+						};
+
+						// 메모리에도 들고 - DB접근 횟수 최소화하기 위해
+
+						// 패킷에도 넣어준다
+						loginOk.Players.Add(lobbyPlayer);
+                    }
+
 					Send(loginOk);
 				} else {
 					AccountDb newAccount = new AccountDb() { AccountName = loginPacket.UniqueId };

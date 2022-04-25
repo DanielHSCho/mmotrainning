@@ -46,6 +46,7 @@ namespace Server
 					S_Login loginOk = new S_Login() { LoginOk = 1 };
 					foreach(PlayerDb playerDb in findAccount.Players) {
 						LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo() {
+							PlayerDbId = playerDb.PlayerDbId,
 							Name = playerDb.PlayerName,
 							StatInfo = new StatInfo() {
 								Level = playerDb.Level,

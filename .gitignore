@@ -11,3 +11,5 @@ Client/.vs
 Client/Temp
 Client/obj
 Client/Logs
+Client/Builds
+Client/Library

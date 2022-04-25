@@ -20,5 +20,15 @@ namespace Server.DB
                 .UseSqlServer("");
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<AccountDb>()
+                .HasIndex(a => a.AccountName)
+                .IsUnique();
+
+            builder.Entity<PlayerDb>()
+                .HasIndex(a => a.PlayerName)
+                .IsUnique();
+        }
     }
 }

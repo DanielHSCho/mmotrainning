@@ -12,10 +12,10 @@ namespace Server
     {
         public void HandleLogin(C_Login loginPacket)
         {
-			// TODO : 콘솔도 나중엔 체계화 해야함
-			Console.WriteLine($"UniqueId({loginPacket.UniqueId})");
-
 			// TODO : 이런저런 보안 체크
+			if(ServerState != PlayerServerState.ServerStateLogin) {
+				return;
+            }
 
 			/* 
 			 <해킹 이슈> - 로그인 관련
@@ -32,14 +32,14 @@ namespace Server
 
 				if (findAccount != null) {
 					S_Login loginOk = new S_Login() { LoginOk = 1 };
-					clientSession.Send(loginOk);
+					Send(loginOk);
 				} else {
 					AccountDb newAccount = new AccountDb() { AccountName = loginPacket.UniqueId };
 					db.Accounts.Add(newAccount);
 					db.SaveChanges();
 
 					S_Login loginOk = new S_Login() { LoginOk = 1 };
-					clientSession.Send(loginOk);
+					Send(loginOk);
 				}
 			}
 		}

@@ -118,11 +118,38 @@ namespace Server
 						MaxHp = stat.MaxHp,
 						Attack = stat.Attack,
 						Speed = stat.Speed,
-						TotalExp = stat.TotalExp,
+						TotalExp = 0,
+						AccountDbId = AccountDbId
 					};
 
+					db.Players.Add(newPlayerDb);
+					// TODO : ExceptionHandling
+					// => 찰나의 순간에 동일한 플레이어 이름이 요청될 경우
+					db.SaveChanges();
 
-                }
+					// 메모리에 추가
+					LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo() {
+						Name = createPacket.Name,
+						StatInfo = new StatInfo() {
+							Level = stat.Level,
+							Hp = stat.Hp,
+							MaxHp = stat.MaxHp,
+							Attack = stat.Attack,
+							Speed = stat.Speed,
+							TotalExp = 0
+						}
+					};
+
+					LobbyPlayers.Add(lobbyPlayer);
+
+					// 클라에 캐릭터 생성 알림
+					S_CreatePlayer newPlayer = new S_CreatePlayer() {
+						Player = new LobbyPlayerInfo()};
+
+					newPlayer.Player.MergeFrom(lobbyPlayer);
+
+					Send(newPlayer);
+				}
             }
 		}
     }

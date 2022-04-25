@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.Protocol;
+using Microsoft.EntityFrameworkCore;
 using Server.DB;
 using System;
 using System.Collections.Generic;
@@ -30,8 +31,12 @@ namespace Server.Game
         public void OnLeaveGame()
         {
             using (AppDbContext db = new AppDbContext()) {
-                PlayerDb playerDb = db.Players.Find(PlayerDbId);
+                PlayerDb playerDb = new PlayerDb();
+                playerDb.PlayerDbId = PlayerDbId;
                 playerDb.Hp = Stat.Hp;
+
+                db.Entry(playerDb).State = EntityState.Unchanged;
+                db.Entry(playerDb).Property(nameof(playerDb.Hp)).IsModified = true;
                 db.SaveChanges();
             }
         }

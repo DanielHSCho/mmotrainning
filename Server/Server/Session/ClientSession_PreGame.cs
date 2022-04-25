@@ -11,6 +11,8 @@ namespace Server
 {
     public partial class ClientSession : PacketSession
     {
+		public List<LobbyPlayerInfo> LobbyPlayers { get; set; } = new List<LobbyPlayerInfo>();
+
         public void HandleLogin(C_Login loginPacket)
         {
 			// TODO : 이런저런 보안 체크
@@ -26,6 +28,8 @@ namespace Server
 				- 생뚱맞은 타이밍에 이 패킷을 보낸다면
 					- 로그인했는지 등의 상태 관리
 			*/
+
+			LobbyPlayers.Clear();
 
 			using (AppDbContext db = new AppDbContext()) {
 				AccountDb findAccount = db.Accounts
@@ -47,7 +51,8 @@ namespace Server
                             }
 						};
 
-						// 메모리에도 들고 - DB접근 횟수 최소화하기 위해
+						// 메모리에도 들고
+						LobbyPlayers.Add(lobbyPlayer);
 
 						// 패킷에도 넣어준다
 						loginOk.Players.Add(lobbyPlayer);

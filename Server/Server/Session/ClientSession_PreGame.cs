@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Protocol;
 using Microsoft.EntityFrameworkCore;
+using Server.Data;
 using Server.DB;
 using ServerCore;
 using System;
@@ -89,7 +90,40 @@ namespace Server
 
 		public void HandleCreatePlayer(C_CreatePlayer createPacket)
         {
+			// TODO : 이런저런 보안 체크
+			if (ServerState != PlayerServerState.ServerStateLobby) {
+				return;
+			}
 
-        }
+			using(AppDbContext db = new AppDbContext()) {
+
+				PlayerDb findPlayer = db.Players
+					.Where(p => p.PlayerName == createPacket.Name)
+					.FirstOrDefault();
+
+				if(findPlayer != null) {
+					// 이름이 겹친다
+					Send(new S_CreatePlayer());
+                } else {
+					// 새 플레이어 생성
+					// 1레벨 스탯 정보 추출
+					StatInfo stat = null;
+					DataManager.StatDict.TryGetValue(1, out stat);
+
+					// DB에 플레이어 추가
+					PlayerDb newPlayerDb = new PlayerDb() {
+						PlayerName = createPacket.Name,
+						Level = stat.Level,
+						Hp = stat.Hp,
+						MaxHp = stat.MaxHp,
+						Attack = stat.Attack,
+						Speed = stat.Speed,
+						TotalExp = stat.TotalExp,
+					};
+
+
+                }
+            }
+		}
     }
 }

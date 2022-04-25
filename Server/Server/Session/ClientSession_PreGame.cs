@@ -81,5 +81,15 @@ namespace Server
 				}
 			}
 		}
+
+		public void HandleEnterGame(C_EnterGame enterGamePacket)
+        {
+
+        }
+
+		public void HandleCreatePlayer(C_CreatePlayer createPacket)
+        {
+
+        }
     }
 }

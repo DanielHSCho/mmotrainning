@@ -141,5 +141,18 @@ class PacketHandler
     {
 		S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
 
+		// 어떤 이유에서 캐릭터 생성 실패 시 재요청
+		if(createOkPacket.Player == null) {
+			C_CreatePlayer createPacket = new C_CreatePlayer();
+			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
+
+			Managers.Network.Send(createPacket);
+        } else {
+			// TODO : 첫번째 캐릭터로 로그인한다고 가정
+			C_EnterGame enterGamePacket = new C_EnterGame();
+			enterGamePacket.Name = createOkPacket.Player.Name;
+
+			Managers.Network.Send(enterGamePacket);
+		}
     }
 }

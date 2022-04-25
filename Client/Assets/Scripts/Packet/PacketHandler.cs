@@ -104,4 +104,23 @@ class PacketHandler
 			cc.OnDead();
 		}
 	}
+
+	public static void S_ConnectedHandler(PacketSession session, IMessage packet)
+	{
+		Debug.Log("S_ConnectedHandler");
+
+		C_Login loginPacket = new C_Login();
+		// Note : 디바이스 시스템에 따라 유니크 아이디 생성
+		// 로컬에서 멀티플레이시에는 문제될 될 수 있어 예외처리 필요
+		loginPacket.UniqueId = SystemInfo.deviceUniqueIdentifier;
+		Managers.Network.Send(loginPacket);
+	}
+
+	public static void S_LoginHandler(PacketSession session, IMessage packet)
+    {
+		S_Login loginPacket = packet as S_Login;
+		Debug.Log($"LoginOk({loginPacket.LoginOk})");
+
+		// TODO : 방입장 요청
+    }
 }

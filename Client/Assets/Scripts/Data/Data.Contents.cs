@@ -51,6 +51,7 @@ namespace Data
 		// int 같은 것으로 국가 코드를 지정해서 해당 문자열을 받아와야 함
 		public string name;
 		public ItemType itemType;
+		public string iconPath;
 	}
 
 	[Serializable]

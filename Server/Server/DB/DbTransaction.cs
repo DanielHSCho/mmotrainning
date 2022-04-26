@@ -35,5 +35,35 @@ namespace Server.DB
                 }
             });
         }
+
+        public static void SavePlayerStatus_Step1(Player player, GameRoom room)
+        {
+            if (player == null || room == null) {
+                return;
+            }
+
+            PlayerDb playerDb = new PlayerDb();
+            playerDb.PlayerDbId = player.PlayerDbId;
+            playerDb.Hp = player.Stat.Hp;
+            Instance.Push<PlayerDb, GameRoom>(SavePlayerStatus_Step2, playerDb, room);
+        }
+
+        public static void SavePlayerStatus_Step2(PlayerDb playerDb, GameRoom room)
+        {
+            using (AppDbContext db = new AppDbContext()) {
+                db.Entry(playerDb).State = EntityState.Unchanged;
+                db.Entry(playerDb).Property(nameof(playerDb.Hp)).IsModified = true;
+                bool success = db.SaveChangesEx();
+                if (success) {
+                    // Me (GameRoom) - callback
+                    room.Push(SavePlayerStatus_Step3, playerDb.Hp);
+                }
+            }
+        }
+
+        public static void SavePlayerStatus_Step3(int hp)
+        {
+            Console.WriteLine($"Hp Saved({hp})");
+        }
     }
 }

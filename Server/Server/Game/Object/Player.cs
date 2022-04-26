@@ -30,7 +30,7 @@ namespace Server.Game
 
         public void OnLeaveGame()
         {
-            DbTransaction.SavePlayerStatus_AllInOne(this, Room);
+            DbTransaction.SavePlayerStatus_Step1(this, Room);
         }
     }
 }

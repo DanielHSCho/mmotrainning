@@ -10,7 +10,7 @@ namespace Server.Game
 
         public void Add(Item item)
         {
-            _items.Add(0, item);
+            _items.Add(item.ItemDbId, item);
         }
 
         public Item Get(int itemDbId)

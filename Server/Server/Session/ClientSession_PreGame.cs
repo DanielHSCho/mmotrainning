@@ -111,6 +111,8 @@ namespace Server
 				MyPlayer.Stat.MergeFrom(playerInfo.StatInfo);
 				MyPlayer.Session = this;
 
+				S_ItemList itemListPacket = new S_ItemList();
+
 				// 아이템 목록 로드
 				using(AppDbContext db = new AppDbContext()) {
 					List<ItemDb> items = db.Items.Where(i => i.OwnerDbId == playerInfo.PlayerDbId)
@@ -118,10 +120,12 @@ namespace Server
 
 					foreach(ItemDb itemDb in items) {
 						// 인벤토리
-                    }
-
-					// 클라에 아이템 목록 전달
+						ItemInfo info = new ItemInfo();
+						itemListPacket.Items.Add(info);
+					}
                 }
+
+				Send(itemListPacket);
 			}
 
 			ServerState = PlayerServerState.ServerStateGame;

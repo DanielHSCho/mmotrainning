@@ -59,6 +59,7 @@ namespace Server
 			while (true)
 			{
 				// TODO : 나중엔 이 부분 틱룸처럼 개선해야함
+				// 이벤트락으로 일감이 있을때만 깨어나서 동작하도록 <
 				DbTransaction.Instance.Flush();
 
 				//JobTimer.Instance.Flush();

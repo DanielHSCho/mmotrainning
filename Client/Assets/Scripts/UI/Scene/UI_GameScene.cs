@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_GameScene : MonoBehaviour
+public class UI_GameScene : UI_Scene
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public UI_Stat StatUI { get; private set; }
+    public UI_Inventory InvenUI { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+    public override void Init()
     {
-        
+        base.Init();
+
+        StatUI = GetComponentInChildren<UI_Stat>();
+        InvenUI = GetComponentInChildren<UI_Inventory>();
+
+        StatUI.gameObject.SetActive(false);
+        InvenUI.gameObject.SetActive(false);
     }
 }

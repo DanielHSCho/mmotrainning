@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Protocol;
 using Server.Data;
+using Server.DB;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,6 +35,36 @@ namespace Server.Game
         public Item(ItemType itemType)
         {
             ItemType = itemType;
+        }
+
+        public static Item MakeItem(ItemDb itemDb)
+        {
+            Item item = null;
+
+            ItemData itemData = null;
+            DataManager.ItemDict.TryGetValue(itemDb.TemplateId, out itemData);
+
+            if(itemData == null) {
+                return null;
+            }
+
+            switch (itemData.itemType) {
+                case ItemType.Weapon:
+                    item = new Weapon(itemDb.TemplateId);
+                    break;
+                case ItemType.Armor:
+                    item = new Armor(itemDb.TemplateId);
+                    break;
+                case ItemType.Consumable:
+                    item = new Consumable(itemDb.TemplateId);
+                    break;
+            }
+
+            if(item != null) {
+                item.ItemDbId = itemDb.ItemDbId;
+            }
+
+            return item;
         }
     }
 

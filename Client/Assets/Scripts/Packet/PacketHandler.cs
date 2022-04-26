@@ -160,8 +160,23 @@ class PacketHandler
     {
 		S_ItemList itemList = (S_ItemList)packet;
 
-		foreach(ItemInfo item in itemList.Items) {
-			Debug.Log($"{item.TemplateId} : {item.Count}");
+		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+		if(gameSceneUI == null) {
+			return;
         }
+
+		UI_Inventory invenUI = gameSceneUI.InvenUI;
+
+		Managers.Inven.Clear();
+
+		// 메모리에 아이템 정보 적용
+		foreach(ItemInfo itemInfo in itemList.Items) {
+			Item item = Item.MakeItem(itemInfo);
+			Managers.Inven.Add(item);
+        }
+
+		// UI에 표시
+		invenUI.gameObject.SetActive(true);
+		invenUI.RefreshUI();
     }
 }

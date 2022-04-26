@@ -26,6 +26,12 @@ public class Item
         set { Info.Count = value; }
     }
 
+    public int Slot
+    {
+        get { return Info.Slot; }
+        set { Info.Slot = value; }
+    }
+
     public ItemType ItemType { get; private set; }
     public bool Stackable { get; protected set; }
 

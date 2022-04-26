@@ -58,8 +58,11 @@ namespace Server
 
 			while (true)
 			{
+				// TODO : 나중엔 이 부분 틱룸처럼 개선해야함
+				DbTransaction.Instance.Flush();
+
 				//JobTimer.Instance.Flush();
-				Thread.Sleep(100);
+				//Thread.Sleep(100);
 			}
 		}
 	}

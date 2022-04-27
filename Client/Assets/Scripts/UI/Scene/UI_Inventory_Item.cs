@@ -43,5 +43,6 @@ public class UI_Inventory_Item : UI_Base
 
         Sprite icon = Managers.Resource.Load<Sprite>(itemData.iconPath);
         _icon.sprite = icon;
+        _frame.gameObject.SetActive(Equipped);
     }
 }

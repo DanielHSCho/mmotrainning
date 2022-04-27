@@ -183,18 +183,44 @@ class PacketHandler
 	{
 		S_AddItem itemList = (S_AddItem)packet;
 
-		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-		if (gameSceneUI == null) {
-			return;
-		}
-
-		UI_Inventory invenUI = gameSceneUI.InvenUI;
-
 		foreach (ItemInfo itemInfo in itemList.Items) {
 			Item item = Item.MakeItem(itemInfo);
 			Managers.Inven.Add(item);
 		}
 
 		Debug.Log("아이템 획득");
+
+		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+		if (gameSceneUI != null) {
+			UI_Inventory invenUI = gameSceneUI.InvenUI;
+			invenUI.RefreshUI();
+		}
+	}
+
+	public static void S_EquipItemHandler(PacketSession session, IMessage packet)
+	{
+		S_EquipItem equipItemOk = (S_EquipItem)packet;
+
+		Item item = Managers.Inven.Get(equipItemOk.ItemDbId);
+		if(item == null) {
+			return;
+        }
+
+		item.Equipped = equipItemOk.Equipped;
+		Debug.Log("아이템 착용 변경");
+
+
+		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+		if (gameSceneUI != null) {
+			UI_Inventory invenUI = gameSceneUI.InvenUI;
+			invenUI.RefreshUI();
+		}
+	}
+
+	public static void S_ChangeStatHandler(PacketSession session, IMessage packet)
+	{
+		S_ChangeStat itemList = (S_ChangeStat)packet;
+
+		// TODO
 	}
 }

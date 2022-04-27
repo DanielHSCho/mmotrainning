@@ -164,6 +164,21 @@ namespace Server.Game
             }
         }
 
+        // TODO
+        // Note : 이 함수는 GameRoom안에서 잡큐 형태로 호출되는 함수 안에서 불려짐
+        // 외부에서 이 함수를 직접 호출하는 일이 없도록 주의할 것
+        public Player FindPlayer(Func<GameObject, bool> condition)
+        {
+            // TODO : 무식한 방법으로 우선 찾아보자
+            foreach (Player player in _players.Values) {
+                if (condition.Invoke(player)) {
+                    return player;
+                }
+            }
+
+            return null;
+        }
+
         public void Broadcast(IMessage packet)
         {
             foreach (Player player in _players.Values) {

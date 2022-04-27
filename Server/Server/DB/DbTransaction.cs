@@ -73,10 +73,16 @@ namespace Server.DB
                 return;
             }
 
+            // TODO : 퀴즈 - 살짝 문제가 있음 (멀티스레드 관련)
+            int? slot = player.Inven.GetEmptySlot();
+            if(slot == null) {
+                return;
+            }
+
             ItemDb itemDb = new ItemDb() {
                 TemplateId = rewardData.itemId,
                 Count = rewardData.count,
-                Slot = 0,
+                Slot = slot.Value,
                 OwnerDbId = player.PlayerDbId
             };
 

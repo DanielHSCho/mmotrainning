@@ -201,5 +201,12 @@ namespace Server.Game
 
             // TODO : 아이템 생성?
         }
+
+        RewardData GetRandomReward()
+        {
+            MonsterData monsterData = null;
+            DataManager.MonsterDict.TryGetValue(0, out monsterData);
+
+        }
     }
 }

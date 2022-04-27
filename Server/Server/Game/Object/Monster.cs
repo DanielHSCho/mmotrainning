@@ -8,6 +8,8 @@ namespace Server.Game
 {
     public class Monster : GameObject
     {
+        public int TemplateId { get; private set; }
+
         Player _target;
         int _searchCellDist = 10;
         int _chaseCellDist = 20;
@@ -21,13 +23,16 @@ namespace Server.Game
         public Monster()
         {
             ObjectType = GameObjectType.Monster;
+        }
 
-            // TEMP
-            Stat.Level = 1;
-            Stat.Hp = 100;
-            Stat.MaxHp = 100;
-            Stat.Speed = 5.0f;
+        public void Init(int templateId)
+        {
+            TemplateId = templateId;
 
+            MonsterData monsterData = null;
+            DataManager.MonsterDict.TryGetValue(TemplateId, out monsterData);
+            Stat.MergeFrom(monsterData.stat);
+            Stat.Hp = monsterData.stat.MaxHp;
             State = CreatureState.Idle;
         }
 

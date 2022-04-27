@@ -73,6 +73,7 @@ public class Item
             item.ItemDbId = itemInfo.ItemDbId;
             item.Count = itemInfo.Count;
             item.Slot = itemInfo.Slot;
+            item.Equipped = itemInfo.Equipped;
         }
 
         return item;

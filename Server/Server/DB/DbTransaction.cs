@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Google.Protobuf.Protocol;
+using Microsoft.EntityFrameworkCore;
 using Server.Data;
 using Server.Game;
 using System;
@@ -96,7 +97,15 @@ namespace Server.DB
                             Item newItem = Item.MakeItem(itemDb);
                             player.Inven.Add(newItem);
 
-                            // TODO : Client Noti
+                            // Client Noti
+                            {
+                                S_AddItem itemPacket = new S_AddItem();
+                                ItemInfo itemInfo = new ItemInfo();
+                                itemInfo.MergeFrom(newItem.Info);
+                                itemPacket.Items.Add(itemInfo);
+
+                                player.Session.Send(itemPacket);
+                            }
                         });
                     }
                 }

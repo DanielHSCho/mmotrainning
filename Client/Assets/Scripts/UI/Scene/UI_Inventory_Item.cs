@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UI_Inventory_Item : UI_Base
 {
     [SerializeField]
-    Image _icon;
+    Image _icon = null;
 
     public override void Init()
     {

@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.Protocol;
 using Server.Data;
+using Server.DB;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -210,11 +211,7 @@ namespace Server.Game
                 RewardData rewardData = GetRandomReward();
                 if(rewardData != null) {
                     Player player = (Player)owner;
-
-                    // 게임서버 로직에서 직접 메모리에 만들면 안되고
-                    // DB에 요청해서 저장이 된 후에 결과값을 받아와야 함
-                    // Item.MakeItem()
-                    // player.Inven.Add();
+                    DbTransaction.RewardPlayer(player, rewardData, Room);
                 }
             }
         }

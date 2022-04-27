@@ -201,7 +201,7 @@ namespace Server.Game
 
         }
 
-        public virtual void OnDead(GameObject attacker)
+        public override void OnDead(GameObject attacker)
         {
             base.OnDead(attacker);
 

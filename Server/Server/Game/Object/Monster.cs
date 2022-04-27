@@ -204,11 +204,12 @@ namespace Server.Game
         {
             base.OnDead(attacker);
 
-            // TODO : 아이템 생성?
-            if(attacker.ObjectType == GameObjectType.Player) {
+            GameObject owner = attacker.GetOwner();
+
+            if(owner.ObjectType == GameObjectType.Player) {
                 RewardData rewardData = GetRandomReward();
                 if(rewardData != null) {
-                    Player player = (Player)attacker;
+                    Player player = (Player)owner;
 
                     // 게임서버 로직에서 직접 메모리에 만들면 안되고
                     // DB에 요청해서 저장이 된 후에 결과값을 받아와야 함

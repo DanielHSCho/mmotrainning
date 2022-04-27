@@ -149,5 +149,10 @@ namespace Server.Game
             // 플레이어가 있던 Room이 Null이 되도 미리 받아뒀던 방으로 재입장
             room.EnterGame(this);
         }
+
+        public virtual GameObject GetOwner()
+        {
+            return this;
+        }
     }
 }

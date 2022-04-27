@@ -76,6 +76,7 @@ namespace Server.Game
                 item.ItemDbId = itemDb.ItemDbId;
                 item.Count = itemDb.Count;
                 item.Slot = itemDb.Slot;
+                item.Equipped = itemDb.Equipped;
             }
 
             return item;

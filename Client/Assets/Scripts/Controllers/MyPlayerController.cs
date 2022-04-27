@@ -14,6 +14,8 @@ public class MyPlayerController : PlayerController
 
     protected override void UpdateController()
     {
+        GetUIKeyInput();
+
         switch (State) {
             case CreatureState.Idle:
                 GetDirInput();
@@ -54,6 +56,24 @@ public class MyPlayerController : PlayerController
     private void LateUpdate()
     {
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+    }
+
+    void GetUIKeyInput()
+    {
+        if (Input.GetKeyDown(KeyCode.I)) {
+            UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            if (gameSceneUI == null) {
+                return;
+            }
+            UI_Inventory invenUI = gameSceneUI.InvenUI;
+
+            if (invenUI.gameObject.activeSelf) {
+                invenUI.gameObject.SetActive(false);
+            } else {
+                invenUI.gameObject.SetActive(true);
+                invenUI.RefreshUI();
+            }
+        }
     }
 
     void GetDirInput()

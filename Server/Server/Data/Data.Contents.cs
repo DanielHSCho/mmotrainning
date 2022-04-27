@@ -118,4 +118,39 @@ namespace Server.Data
 		}
 	}
 	#endregion
+
+	#region Monster
+	[Serializable]
+	public class RewardData
+    {
+		// 100분율 기준 - 나중에 만분율까지도 감
+		public int probability;
+		public int itemId;
+		public int count;
+    }
+
+	[Serializable]
+	public class MonsterData
+    {
+		public int id;
+		public string name;
+		public StatInfo stat;
+		public List<RewardData> rewards;
+		// public string prefabPath
+    }
+
+	public class MonsterLoader : ILoader<int, MonsterData>
+	{
+		public List<MonsterData> monsters = new List<MonsterData>();
+
+		public Dictionary<int, MonsterData> MakeDict()
+		{
+			Dictionary<int, MonsterData> dict = new Dictionary<int, MonsterData>();
+			foreach (MonsterData monster in monsters) {
+				dict.Add(monster.id, monster);
+			}
+			return dict;
+		}
+	}
+	#endregion
 }

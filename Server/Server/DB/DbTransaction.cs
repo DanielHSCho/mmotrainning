@@ -75,6 +75,9 @@ namespace Server.DB
             }
 
             // TODO : 퀴즈 - 살짝 문제가 있음 (멀티스레드 관련)
+            // 동시에 저장요청이 올 경우 동일한 슬롯에 저장될 수 있음
+            // 따라서 빈슬롯 반환 시에 별도의 자료구조에 바로 이 빈슬롯을 기억해두고
+            // 적용된 빈슬롯은 필터링 되도록 해야함
             int? slot = player.Inven.GetEmptySlot();
             if(slot == null) {
                 return;
@@ -111,5 +114,7 @@ namespace Server.DB
                 }
             });
         }
+
+
     }
 }

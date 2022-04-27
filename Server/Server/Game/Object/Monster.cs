@@ -194,5 +194,12 @@ namespace Server.Game
         {
 
         }
+
+        public virtual void OnDead(GameObject attacker)
+        {
+            base.OnDead(attacker);
+
+            // TODO : 아이템 생성?
+        }
     }
 }

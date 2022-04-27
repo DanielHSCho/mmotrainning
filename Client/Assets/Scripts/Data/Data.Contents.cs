@@ -105,4 +105,34 @@ namespace Data
 		}
 	}
 	#endregion
+
+
+	#region Monster
+	[Serializable]
+	public class MonsterData
+	{
+		public int id;
+		public string name;
+		public StatInfo stat;
+		// [Not In Cli]
+		// public List<RewardData> rewards;
+
+		// [Only In Cli]
+		public string prefabPath;
+	}
+
+	public class MonsterLoader : ILoader<int, MonsterData>
+	{
+		public List<MonsterData> monsters = new List<MonsterData>();
+
+		public Dictionary<int, MonsterData> MakeDict()
+		{
+			Dictionary<int, MonsterData> dict = new Dictionary<int, MonsterData>();
+			foreach (MonsterData monster in monsters) {
+				dict.Add(monster.id, monster);
+			}
+			return dict;
+		}
+	}
+	#endregion
 }

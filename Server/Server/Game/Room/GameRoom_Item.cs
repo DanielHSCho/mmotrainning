@@ -10,7 +10,6 @@ namespace Server.Game
 {
     public partial class GameRoom : JobSerializer
     {
-
         public void HandleEquipItem(Player player, C_EquipItem equipPacket)
         {
             if (player == null) {
@@ -27,7 +26,12 @@ namespace Server.Game
 
             // DB Noti
             DbTransaction.EquipItemNoti(player, item);
-            
+
+            // 클라 통보
+            S_EquipItem equipOkItem = new S_EquipItem();
+            equipOkItem.ItemDbId = equipPacket.ItemDbId;
+            equipOkItem.Equipped = equipPacket.Equipped;
+            player.Session.Send(equipOkItem);
         }
     }
 }

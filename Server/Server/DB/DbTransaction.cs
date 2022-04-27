@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Server.Data;
 using Server.Game;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,36 @@ namespace Server.DB
         public static void SavePlayerStatus_Step3(int hp)
         {
             Console.WriteLine($"Hp Saved({hp})");
+        }
+
+        public static void RewardPlayer(Player player, RewardData rewardData, GameRoom room)
+        {
+            if(player == null || rewardData == null || room == null) {
+                return;
+            }
+
+            ItemDb itemDb = new ItemDb() {
+                TemplateId = rewardData.itemId,
+                Count = rewardData.count,
+                Slot = 0,
+                OwnerDbId = player.PlayerDbId
+            };
+
+            Instance.Push(() => {
+                using (AppDbContext db = new AppDbContext()) {
+                    db.Items.Add(itemDb);
+                    bool success = db.SaveChangesEx();
+                    if (success) {
+                        // Success Callback
+                        room.Push(() => {
+                            Item newItem = Item.MakeItem(itemDb);
+                            player.Inven.Add(newItem);
+
+                            // TODO : Client Noti
+                        });
+                    }
+                }
+            });
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Server.Data;
+using Server.DB;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +22,12 @@ namespace Server.Game
                 return;
             }
 
-            // DB 연동
+            // 메모리 선 적용 후 DB에 알림
+            item.Equipped = equipPacket.Equipped;
+
+            // DB Noti
+            DbTransaction.EquipItemNoti(player, item);
+            
         }
     }
 }

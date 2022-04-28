@@ -54,6 +54,11 @@ namespace Server.Game
                     UpdateDead();
                     break;
             }
+
+            // 몬스터는 5프레임마다 (0.2초마다) 갱신
+            if(Room != null) {
+                Room.PushAfter(200, Update);
+            }
         }
 
         protected virtual void UpdateIdle()

@@ -21,17 +21,53 @@ namespace Server.Game
                 return;
             }
 
-            // 메모리 선 적용 후 DB에 알림
-            item.Equipped = equipPacket.Equipped;
+            if(item.ItemType == ItemType.Consumable) {
+                return;
+            }
 
-            // DB Noti
-            DbTransaction.EquipItemNoti(player, item);
+            // 착용 요청이라면 겹치는 부위 해제
+            if (equipPacket.Equipped) {
+                Item unequipItem = null;
 
-            // 클라 통보
-            S_EquipItem equipOkItem = new S_EquipItem();
-            equipOkItem.ItemDbId = equipPacket.ItemDbId;
-            equipOkItem.Equipped = equipPacket.Equipped;
-            player.Session.Send(equipOkItem);
+                if(item.ItemType == ItemType.Weapon) {
+                    unequipItem = player.Inven.Find(
+                        i => i.Equipped && i.ItemType == ItemType.Weapon);
+                } else if(item.ItemType == ItemType.Armor) {
+                    ArmorType armorType = ((Armor)item).ArmorType;
+                   
+                    unequipItem = player.Inven.Find(
+                        i => i.Equipped && i.ItemType == ItemType.Armor
+                        && ((Armor)i).ArmorType == armorType);
+                }
+
+                if(unequipItem != null) {
+                    // 메모리 선 적용 후 DB에 알림
+                    unequipItem.Equipped = false;
+
+                    // DB Noti
+                    DbTransaction.EquipItemNoti(player, unequipItem);
+
+                    // 클라 통보
+                    S_EquipItem equipOkItem = new S_EquipItem();
+                    equipOkItem.ItemDbId = unequipItem.ItemDbId;
+                    equipOkItem.Equipped = unequipItem.Equipped;
+                    player.Session.Send(equipOkItem);
+                }
+            }
+
+            {
+                // 메모리 선 적용 후 DB에 알림
+                item.Equipped = equipPacket.Equipped;
+
+                // DB Noti
+                DbTransaction.EquipItemNoti(player, item);
+
+                // 클라 통보
+                S_EquipItem equipOkItem = new S_EquipItem();
+                equipOkItem.ItemDbId = equipPacket.ItemDbId;
+                equipOkItem.Equipped = equipPacket.Equipped;
+                player.Session.Send(equipOkItem);
+            }
         }
     }
 }

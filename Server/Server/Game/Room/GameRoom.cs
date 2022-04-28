@@ -93,6 +93,7 @@ namespace Server.Game
                 _projectiles.Add(gameObject.Id, projectile);
                 projectile.Room = this;
 
+                projectile.Update();
             }
 
 

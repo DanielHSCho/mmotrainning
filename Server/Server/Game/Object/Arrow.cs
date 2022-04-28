@@ -9,20 +9,14 @@ namespace Server.Game
     {
         public GameObject Owner { get; set; }
 
-        long _nextMoveTick = 0;
-
         public override void Update()
         {
             if(Data == null || Data.projectile == null || Owner == null || Room == null) {
                 return;
             }
 
-            if(_nextMoveTick >= Environment.TickCount64) {
-                return;
-            }
-
-            long tick = (long)(1000 / Data.projectile.speed);
-            _nextMoveTick = Environment.TickCount64 + tick;
+            int tick = (int)(1000 / Data.projectile.speed);
+            Room.PushAfter(tick, Update);
 
             // 앞으로 이동
             Vector2Int destPos = GetFrontCellPos();

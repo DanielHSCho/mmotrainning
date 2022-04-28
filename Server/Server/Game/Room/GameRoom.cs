@@ -35,11 +35,7 @@ namespace Server.Game
             foreach (Monster monster in _monsters.Values) {
                 monster.Update();
             }
-
-            foreach (Projectile projectile in _projectiles.Values) {
-                projectile.Update();
-            }
-
+ 
             Flush();
         }
 

@@ -196,8 +196,8 @@ class PacketHandler
 
 		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 		if (gameSceneUI != null) {
-			UI_Inventory invenUI = gameSceneUI.InvenUI;
-			invenUI.RefreshUI();
+			gameSceneUI.InvenUI.RefreshUI();
+			gameSceneUI.StatUI.RefreshUI();
 		}
 
 		if (Managers.Object.MyPlayer != null) {
@@ -220,8 +220,8 @@ class PacketHandler
 
 		UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 		if (gameSceneUI != null) {
-			UI_Inventory invenUI = gameSceneUI.InvenUI;
-			invenUI.RefreshUI();
+			gameSceneUI.InvenUI.RefreshUI();
+			gameSceneUI.StatUI.RefreshUI();
 		}
 
 		if(Managers.Object.MyPlayer != null) {

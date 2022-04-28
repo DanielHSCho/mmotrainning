@@ -31,11 +31,6 @@ namespace Server.Game
 
         public void Update()
         {
-            // TODO : 깔끔한 방법은 아님 - 임시
-            foreach (Monster monster in _monsters.Values) {
-                monster.Update();
-            }
- 
             Flush();
         }
 
@@ -86,6 +81,8 @@ namespace Server.Game
                 monster.Room = this;
 
                 Map.ApplyMove(monster, new Vector2Int(monster.CellPos.x, monster.CellPos.y));
+
+                monster.Update();
 
             } else if (type == GameObjectType.Projectile) {
 

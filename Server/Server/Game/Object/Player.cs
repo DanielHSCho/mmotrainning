@@ -13,6 +13,9 @@ namespace Server.Game
         public ClientSession Session { get; set; }
         public Inventory Inven { get; private set; } = new Inventory();
 
+        public int WeaponDamage { get; private set; }
+        public int ArmorDefence { get; private set; }
+
         public Player()
         {
             ObjectType = GameObjectType.Player;

@@ -175,7 +175,7 @@ namespace Server.Game
                 DataManager.SkillDict.TryGetValue(1, out skillData);
 
                 // 데미지 판정
-                _target.OnDamaged(this, skillData.damage + Stat.Attack);
+                _target.OnDamaged(this, skillData.damage + TotalAttack);
 
                 // 스킬 사용 브로드 캐스팅
                 S_Skill skill = new S_Skill() { Info = new SkillInfo() };

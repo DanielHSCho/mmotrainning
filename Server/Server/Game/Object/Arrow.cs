@@ -38,7 +38,7 @@ namespace Server.Game
             } else {
                 GameObject target = Room.Map.Find(destPos);
                 if(target != null) {
-                    target.OnDamaged(this, Data.damage + Owner.Stat.Attack);
+                    target.OnDamaged(this, Data.damage + Owner.TotalAttack);
                 }
 
                 // 소멸

@@ -36,5 +36,62 @@ namespace Server.Game
         {
             DbTransaction.SavePlayerStatus_Step1(this, Room);
         }
+
+        public void HandleEquipItem(C_EquipItem equipPacket)
+        {
+
+            Item item = this.Inven.Get(equipPacket.ItemDbId);
+            if (item == null) {
+                return;
+            }
+
+            if (item.ItemType == ItemType.Consumable) {
+                return;
+            }
+
+            // 착용 요청이라면 겹치는 부위 해제
+            if (equipPacket.Equipped) {
+                Item unequipItem = null;
+
+                if (item.ItemType == ItemType.Weapon) {
+                    unequipItem = this.Inven.Find(
+                        i => i.Equipped && i.ItemType == ItemType.Weapon);
+                } else if (item.ItemType == ItemType.Armor) {
+                    ArmorType armorType = ((Armor)item).ArmorType;
+
+                    unequipItem = this.Inven.Find(
+                        i => i.Equipped && i.ItemType == ItemType.Armor
+                        && ((Armor)i).ArmorType == armorType);
+                }
+
+                if (unequipItem != null) {
+                    // 메모리 선 적용 후 DB에 알림
+                    unequipItem.Equipped = false;
+
+                    // DB Noti
+                    DbTransaction.EquipItemNoti(this, unequipItem);
+
+                    // 클라 통보
+                    S_EquipItem equipOkItem = new S_EquipItem();
+                    equipOkItem.ItemDbId = unequipItem.ItemDbId;
+                    equipOkItem.Equipped = unequipItem.Equipped;
+                    this.Session.Send(equipOkItem);
+                }
+            }
+
+            {
+                // 메모리 선 적용 후 DB에 알림
+                item.Equipped = equipPacket.Equipped;
+
+                // DB Noti
+                DbTransaction.EquipItemNoti(this, item);
+
+                // 클라 통보
+                S_EquipItem equipOkItem = new S_EquipItem();
+                equipOkItem.ItemDbId = equipPacket.ItemDbId;
+                equipOkItem.Equipped = equipPacket.Equipped;
+                this.Session.Send(equipOkItem);
+            }
+        }
     }
 }

@@ -210,6 +210,11 @@ namespace Server.Game
 
         public override void OnDead(GameObject attacker)
         {
+            if (_job != null) {
+                _job.Cancel = true;
+                _job = null;
+            }
+
             base.OnDead(attacker);
 
             GameObject owner = attacker.GetOwner();
@@ -220,11 +225,6 @@ namespace Server.Game
                     Player player = (Player)owner;
                     DbTransaction.RewardPlayer(player, rewardData, Room);
                 }
-            }
-
-            if(_job != null) {
-                _job.Cancel = true;
-                _job = null;
             }
         }
 

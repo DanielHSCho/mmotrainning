@@ -23,6 +23,15 @@ public class UI_Inventory_Item : UI_Base
         _icon.gameObject.BindEvent((e) => {
             Debug.Log("Click Item");
 
+            // 소비 아이템 유형 판단
+            Data.ItemData itemData = null;
+            Managers.Data.ItemDict.TryGetValue(TemplateId, out itemData);
+
+            // TODO : 소비 아이템이면 C_USE_ITEM 패킷 전송
+            if(itemData.itemType == ItemType.Consumable) {
+                return;
+            }
+
             C_EquipItem equipPacket = new C_EquipItem();
             equipPacket.ItemDbId = ItemDbId;
             equipPacket.Equipped = !Equipped; // 토글방식

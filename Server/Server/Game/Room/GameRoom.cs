@@ -52,6 +52,8 @@ namespace Server.Game
                 _players.Add(gameObject.Id, player);
                 player.Room = this;
 
+                player.RefreshAdditionalStat();
+
                 Map.ApplyMove(player, new Vector2Int(player.CellPos.x, player.CellPos.y));
 
                 // 본인에게 정보 전송

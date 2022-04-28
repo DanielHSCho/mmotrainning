@@ -177,7 +177,11 @@ class PacketHandler
 		//// UI에 표시
 		//invenUI.gameObject.SetActive(true);
 		//invenUI.RefreshUI();
-    }
+
+		if (Managers.Object.MyPlayer != null) {
+			Managers.Object.MyPlayer.RefreshAdditionalStat();
+		}
+	}
 
 	public static void S_AddItemHandler(PacketSession session, IMessage packet)
 	{
@@ -194,6 +198,10 @@ class PacketHandler
 		if (gameSceneUI != null) {
 			UI_Inventory invenUI = gameSceneUI.InvenUI;
 			invenUI.RefreshUI();
+		}
+
+		if (Managers.Object.MyPlayer != null) {
+			Managers.Object.MyPlayer.RefreshAdditionalStat();
 		}
 	}
 
@@ -214,6 +222,10 @@ class PacketHandler
 		if (gameSceneUI != null) {
 			UI_Inventory invenUI = gameSceneUI.InvenUI;
 			invenUI.RefreshUI();
+		}
+
+		if(Managers.Object.MyPlayer != null) {
+			Managers.Object.MyPlayer.RefreshAdditionalStat();
 		}
 	}
 

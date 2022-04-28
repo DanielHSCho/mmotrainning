@@ -21,6 +21,8 @@ namespace Server.Game
         long _nextSearchTick = 0;
         long _nextMoveTick = 0;
 
+        IJob _job;
+
         public Monster()
         {
             ObjectType = GameObjectType.Monster;
@@ -57,7 +59,7 @@ namespace Server.Game
 
             // 몬스터는 5프레임마다 (0.2초마다) 갱신
             if(Room != null) {
-                Room.PushAfter(200, Update);
+                _job = Room.PushAfter(200, Update);
             }
         }
 
@@ -218,6 +220,11 @@ namespace Server.Game
                     Player player = (Player)owner;
                     DbTransaction.RewardPlayer(player, rewardData, Room);
                 }
+            }
+
+            if(_job != null) {
+                _job.Cancel = true;
+                _job = null;
             }
         }
 

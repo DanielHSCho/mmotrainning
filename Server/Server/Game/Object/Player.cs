@@ -16,6 +16,9 @@ namespace Server.Game
         public int WeaponDamage { get; private set; }
         public int ArmorDefence { get; private set; }
 
+        public override int TotalAttack { get { return Stat.Attack + WeaponDamage; } }
+        public override int TotalDefence { get { return ArmorDefence; } }
+
         public Player()
         {
             ObjectType = GameObjectType.Player;

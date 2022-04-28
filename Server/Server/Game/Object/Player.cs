@@ -92,6 +92,29 @@ namespace Server.Game
                 equipOkItem.Equipped = equipPacket.Equipped;
                 this.Session.Send(equipOkItem);
             }
+
+            RefreshAdditionalStat();
+        }
+
+        public void RefreshAdditionalStat()
+        {
+            WeaponDamage = 0;
+            ArmorDefence = 0;
+
+            foreach(Item item in Inven.Items.Values) {
+                if(item.Equipped == false) {
+                    continue;
+                }
+
+                switch (item.ItemType) {
+                    case ItemType.Weapon:
+                        WeaponDamage += ((Weapon)item).Damage;
+                        break;
+                    case ItemType.Armor:
+                        ArmorDefence += ((Armor)item).Defence;
+                        break;
+                }
+            }
         }
     }
 }

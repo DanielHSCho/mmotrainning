@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Server.Game
 {
-    public class RoomManager
+    public class GameLogic
     {
-        public static RoomManager Instance { get; } = new RoomManager();
+        public static GameLogic Instance { get; } = new GameLogic();
 
         object _lock = new object();
         Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();

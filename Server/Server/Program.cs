@@ -42,7 +42,7 @@ namespace Server
 			DataManager.LoadData();
 
 			// 1번 방을 만들자
-			GameRoom room = RoomManager.Instance.Add(1);
+			GameRoom room = GameLogic.Instance.Add(1);
 			TickRoom(room, 50);
 
 			// DNS (Domain Name System)

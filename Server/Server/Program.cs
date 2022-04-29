@@ -73,20 +73,27 @@ namespace Server
 			_listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
 			Console.WriteLine("Listening...");
 
-            // GameLogicTask
+            // DbTask
             {
-				Task gameLogicTask = new Task(GameLogicTask, TaskCreationOptions.LongRunning);
-				gameLogicTask.Start();
+				Thread t = new Thread(DbTask);
+				t.Name = "DB";
+				t.Start();
             }
 
 			// NetworkTask
 			{
-				Task networkTask = new Task(NetworkTask, TaskCreationOptions.LongRunning);
-				networkTask.Start();
+				// Note : 롱러닝 Task와 스레드는 큰차이 없음
+				// Task networkTask = new Task(NetworkTask, TaskCreationOptions.LongRunning);
+				// networkTask.Start();
+
+				Thread t = new Thread(NetworkTask);
+				t.Name = "NetworkSend";
+				t.Start();
 			}
 
-			// DBTask -  DbTask는 메인 스레드에서 처리하도록함
-			DbTask();
+			// GameLogic
+			Thread.CurrentThread.Name = "GameLogic";
+			GameLogicTask();
 		}
 	}
 }

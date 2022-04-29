@@ -42,6 +42,15 @@ namespace Server
 			}
 		}
 
+		// Note : 얘는 여러 스레드를 둬서 분배할 수 있음
+		static void NetworkTask()
+        {
+            while (true) {
+
+				Thread.Sleep(0);
+            }
+        }
+
 		static void Main(string[] args)
 		{
 			// 데이터 로드

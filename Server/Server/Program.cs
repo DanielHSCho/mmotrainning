@@ -23,7 +23,10 @@ namespace Server
 
 		static void GameLogicTask()
         {
-
+            while (true) {
+				GameLogic.Instance.Update();
+				Thread.Sleep(0);
+            }
         }
 
 		static void DbTask()
@@ -45,7 +48,7 @@ namespace Server
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
 
-			// 1번 방을 만들자
+			// 게임 동작 전 데이터 로드 후 생성
 			GameRoom room = GameLogic.Instance.Add(1);
 
 			// DNS (Domain Name System)

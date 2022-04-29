@@ -12,6 +12,14 @@ namespace Server.Game
         Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
         int _roomId = 1;
 
+        public void Update()
+        {
+            // 내가 가진 방을 모두 한번씩 Update
+            foreach(GameRoom room in _rooms.Values) {
+                room.Update();
+            }
+        }
+
         public GameRoom Add(int mapId)
         {
             GameRoom gameRoom = new GameRoom();

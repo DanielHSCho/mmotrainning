@@ -8,7 +8,6 @@ namespace Server.Game
     {
         public static GameLogic Instance { get; } = new GameLogic();
 
-        object _lock = new object();
         Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
         int _roomId = 1;
 
@@ -28,11 +27,9 @@ namespace Server.Game
             GameRoom gameRoom = new GameRoom();
             gameRoom.Push(gameRoom.Init, mapId);
 
-            lock (_lock) {
-                gameRoom.RoomId = _roomId;
-                _rooms.Add(_roomId, gameRoom);
-                _roomId++;
-            }
+            gameRoom.RoomId = _roomId;
+            _rooms.Add(_roomId, gameRoom);
+            _roomId++;
 
             return gameRoom;
         }
@@ -40,22 +37,18 @@ namespace Server.Game
         // ALERT : Remove는 일감형태로 호출할 것
         public bool Remove(int roomId)
         {
-            lock (_lock) {
-                return _rooms.Remove(roomId);
-            }
+            return _rooms.Remove(roomId);
         }
 
         // ALERT : Find는 일감형태로 호출할 것
         public GameRoom Find(int roomId)
         {
-            lock (_lock) {
-                GameRoom room = null;
-                if(_rooms.TryGetValue(roomId, out room)) {
-                    return room;
-                }
-
-                return null;
+            GameRoom room = null;
+            if (_rooms.TryGetValue(roomId, out room)) {
+                return room;
             }
+
+            return null;
         }
     }
 }

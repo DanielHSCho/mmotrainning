@@ -26,6 +26,19 @@ namespace Server
 
         }
 
+		static void DbTask()
+        {
+			while (true) {
+				// TODO : 나중엔 이 부분 틱룸처럼 개선해야함
+				// 이벤트락으로 일감이 있을때만 깨어나서 동작하도록 <
+				DbTransaction.Instance.Flush();
+
+				// While이 도는게 부담스러우므로
+				// Thread.Sleep(0)으로 소유권을 살짝 넘겨줌
+				Thread.Sleep(0);
+			}
+		}
+
 		static void Main(string[] args)
 		{
 			// 데이터 로드
@@ -49,16 +62,6 @@ namespace Server
 				Task gameLogicTask = new Task(GameLogicTask, TaskCreationOptions.LongRunning);
 				gameLogicTask.Start();
             }
-
-			while (true)
-			{
-				// TODO : 나중엔 이 부분 틱룸처럼 개선해야함
-				// 이벤트락으로 일감이 있을때만 깨어나서 동작하도록 <
-				DbTransaction.Instance.Flush();
-
-				//JobTimer.Instance.Flush();
-				//Thread.Sleep(100);
-			}
 		}
 	}
 }

@@ -14,9 +14,11 @@ namespace Server.Game
 
         public void Update()
         {
-            // 내가 가진 방을 모두 한번씩 Update
-            foreach(GameRoom room in _rooms.Values) {
-                room.Update();
+            lock (_lock) {
+                // 내가 가진 방을 모두 한번씩 Update
+                foreach (GameRoom room in _rooms.Values) {
+                    room.Update();
+                }
             }
         }
 

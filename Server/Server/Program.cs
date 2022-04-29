@@ -62,6 +62,9 @@ namespace Server
 				Task gameLogicTask = new Task(GameLogicTask, TaskCreationOptions.LongRunning);
 				gameLogicTask.Start();
             }
+
+			// DBTask -  DbTask는 메인 스레드에서 처리하도록함
+			DbTask();
 		}
 	}
 }

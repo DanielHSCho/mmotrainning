@@ -12,7 +12,33 @@ namespace Server.Game
 		public Pos(int y, int x) { Y = y; X = x; }
 		public int Y;
 		public int X;
-	}
+
+		public static bool operator ==(Pos lhs, Pos rhs)
+        {
+			return lhs.Y == rhs.Y && lhs.X == rhs.X;
+        }
+
+		public static bool operator !=(Pos lhs, Pos rhs)
+		{
+			return !(lhs.Y == rhs.Y && lhs.X == rhs.X);
+		}
+
+        public override bool Equals(object obj)
+        {
+			return (Pos)obj == this;
+        }
+
+        public override int GetHashCode()
+        {
+			long value = (Y << 32) | X;
+			return value.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+    }
 
 	public struct PQNode : IComparable<PQNode>
 	{
@@ -203,7 +229,7 @@ namespace Server.Game
 			// H = 목적지에서 얼마나 가까운지 (작을 수록 좋음, 고정)
 
 			// (y, x) 이미 방문했는지 여부 (방문 = closed 상태)
-			bool[,] closed = new bool[SizeY, SizeX]; // CloseList
+			HashSet<Pos> closeList = new HashSet<Pos>(); // CloseList
 
 			// (y, x) 가는 길을 한 번이라도 발견했는지
 			// 발견X => MaxValue

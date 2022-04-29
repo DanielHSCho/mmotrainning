@@ -20,9 +20,11 @@ namespace Server
 		public Player MyPlayer { get; set; } 
 		public int SessionId { get; set; }
 
+		object _lock = new object();
 		List<ArraySegment<byte>> _reserveQueue = new List<ArraySegment<byte>>();
 
 		#region Network
+		// Note : 예약만 하고 보내는 것은 다른 스레드가
 		public void Send(IMessage packet)
         {
 			string msgName = packet.Descriptor.Name.Replace("_", string.Empty);
@@ -34,7 +36,9 @@ namespace Server
 			Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort));
 			Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
 
-			_reserveQueue.Add(sendBuffer);
+            lock (_lock) {
+				_reserveQueue.Add(sendBuffer);
+			}
 			// Send(new ArraySegment<byte>(sendBuffer));
 		}
 

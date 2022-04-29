@@ -46,6 +46,10 @@ namespace Server
 		static void NetworkTask()
         {
             while (true) {
+				List<ClientSession> sessions = SessionManager.Instance.GetSessions();
+				foreach(ClientSession session in sessions) {
+					session.FlushSend();
+                }
 
 				Thread.Sleep(0);
             }

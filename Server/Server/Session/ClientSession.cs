@@ -53,8 +53,11 @@ namespace Server
 
 		public override void OnDisconnected(EndPoint endPoint)
 		{
-			GameRoom room = GameLogic.Instance.Find(1);
-			room.Push(room.LeaveGame, MyPlayer.Info.ObjectId);
+			// 게임로직 담당스레드에게 일감 넘김
+			GameLogic.Instance.Push(() => {
+				GameRoom room = GameLogic.Instance.Find(1);
+				room.Push(room.LeaveGame, MyPlayer.Info.ObjectId);
+			});
 
 			SessionManager.Instance.Remove(this);
 

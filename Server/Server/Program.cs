@@ -49,7 +49,7 @@ namespace Server
 			DataManager.LoadData();
 
 			// 게임 동작 전 데이터 로드 후 생성
-			GameRoom room = GameLogic.Instance.Add(1);
+			GameLogic.Instance.Push(() => { GameRoom room = GameLogic.Instance.Add(1); });
 
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();

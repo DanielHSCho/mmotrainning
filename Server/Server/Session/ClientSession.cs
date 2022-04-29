@@ -39,7 +39,25 @@ namespace Server
             lock (_lock) {
 				_reserveQueue.Add(sendBuffer);
 			}
-			// Send(new ArraySegment<byte>(sendBuffer));
+		}
+
+		// 실제 Network IO 보내는 부분
+		public void FlushSend()
+        {
+			// Flush 전까지는 Send를 할 수 없으므로
+			// sendList에 참조값을 전달하는 방식으로 우회
+			List<ArraySegment<byte>> sendList = null;
+
+            lock (_lock) {
+				if(_reserveQueue.Count == 0) {
+					return;
+                }
+
+				sendList = _reserveQueue;
+				_reserveQueue = new List<ArraySegment<byte>>();
+            }
+
+			Send(sendList);
 		}
 
 		public override void OnConnected(EndPoint endPoint)

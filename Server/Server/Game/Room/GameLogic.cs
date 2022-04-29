@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Server.Game
 {
-    public class GameLogic
+    public class GameLogic : JobSerializer
     {
         public static GameLogic Instance { get; } = new GameLogic();
 
@@ -14,14 +14,15 @@ namespace Server.Game
 
         public void Update()
         {
-            lock (_lock) {
-                // 내가 가진 방을 모두 한번씩 Update
-                foreach (GameRoom room in _rooms.Values) {
-                    room.Update();
-                }
+            Flush();
+
+            // 내가 가진 방을 모두 한번씩 Update
+            foreach (GameRoom room in _rooms.Values) {
+                room.Update();
             }
         }
 
+        // ALERT : Add는 일감형태로 호출할 것
         public GameRoom Add(int mapId)
         {
             GameRoom gameRoom = new GameRoom();
@@ -36,6 +37,7 @@ namespace Server.Game
             return gameRoom;
         }
 
+        // ALERT : Remove는 일감형태로 호출할 것
         public bool Remove(int roomId)
         {
             lock (_lock) {
@@ -43,6 +45,7 @@ namespace Server.Game
             }
         }
 
+        // ALERT : Find는 일감형태로 호출할 것
         public GameRoom Find(int roomId)
         {
             lock (_lock) {

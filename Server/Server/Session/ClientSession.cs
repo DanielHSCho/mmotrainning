@@ -20,6 +20,7 @@ namespace Server
 		public Player MyPlayer { get; set; } 
 		public int SessionId { get; set; }
 
+		List<ArraySegment<byte>> _reserveQueue = new List<ArraySegment<byte>>();
 
 		#region Network
 		public void Send(IMessage packet)
@@ -33,7 +34,8 @@ namespace Server
 			Array.Copy(BitConverter.GetBytes((ushort)msgId), 0, sendBuffer, 2, sizeof(ushort));
 			Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
 
-			Send(new ArraySegment<byte>(sendBuffer));
+			_reserveQueue.Add(sendBuffer);
+			// Send(new ArraySegment<byte>(sendBuffer));
 		}
 
 		public override void OnConnected(EndPoint endPoint)

@@ -21,6 +21,11 @@ namespace Server
 	{
 		static Listener _listener = new Listener();
 
+		static void GameLogicTask()
+        {
+
+        }
+
 		static void Main(string[] args)
 		{
 			// 데이터 로드
@@ -39,8 +44,11 @@ namespace Server
 			_listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
 			Console.WriteLine("Listening...");
 
-			//FlushRoom();
-			//JobTimer.Instance.Push(FlushRoom);
+            // GameLogicTask
+            {
+				Task gameLogicTask = new Task(GameLogicTask, TaskCreationOptions.LongRunning);
+				gameLogicTask.Start();
+            }
 
 			while (true)
 			{

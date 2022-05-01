@@ -143,6 +143,10 @@ namespace Server.Game
 				return false;
 			}
 
+			// Zone
+			Zone zone = gameObject.Room.GetZone(gameObject.CellPos);
+			zone.Remove(gameObject);
+
 			{
 				// 기존 위치는 null 처리
 				int x = posInfo.PosX - MinX;
@@ -157,8 +161,6 @@ namespace Server.Game
 
 		public bool ApplyMove(GameObject gameObject, Vector2Int dest, bool checkObjects = true, bool collision = true)
         {
-			ApplyLeave(gameObject);
-
 			if (gameObject.Room == null) {
 				return false;
 			}
@@ -173,10 +175,21 @@ namespace Server.Game
 
 			
             if(collision) {
+				// 기존 위치는 null 처리
+				{
+					int x = posInfo.PosX - MinX;
+					int y = MaxY - posInfo.PosY;
+					if (_objects[y, x] == gameObject) {
+						_objects[y, x] = null;
+					}
+				}
+
 				// 이동
-				int x = dest.x - MinX;
-				int y = MaxY - dest.y;
-				_objects[y, x] = gameObject;
+				{
+					int x = dest.x - MinX;
+					int y = MaxY - dest.y;
+					_objects[y, x] = gameObject;
+				}
 			}
 
 			// Note : 실제 이동 시 존 변경 여부 판단

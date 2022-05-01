@@ -137,7 +137,6 @@ namespace Server.Game
                 }
 
                 cellPos = player.CellPos;
-                GetZone(player.CellPos).Players.Remove(player);
 
                 player.OnLeaveGame();
                 Map.ApplyLeave(player);
@@ -156,7 +155,6 @@ namespace Server.Game
                 }
 
                 cellPos = monster.CellPos;
-                GetZone(monster.CellPos).Monsters.Remove(monster);
 
                 Map.ApplyLeave(monster);
                 monster.Room = null;
@@ -169,7 +167,7 @@ namespace Server.Game
                 }
 
                 cellPos = projectile.CellPos;
-                GetZone(projectile.CellPos).Projectiles.Remove(projectile);
+                Map.ApplyLeave(projectile);
                 projectile.Room = null;
             } else {
                 return;

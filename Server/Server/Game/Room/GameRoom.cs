@@ -3,6 +3,7 @@ using Google.Protobuf.Protocol;
 using Server.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Server.Game
@@ -216,7 +217,31 @@ namespace Server.Game
         {
             foreach (Player player in _players.Values) {
                 player.Session.Send(packet);
+
+        public List<Zone> GetAdjacentZones(Vector2Int cellPos, int cells = 5)
+        {
+            // 인접 존 검색
+
+            HashSet<Zone> zones = new HashSet<Zone>();
+
+            // 상 / 하 / 좌 / 우 모서리 정보
+            int[] delta = new int[2] { -cells, +cells };
+
+            // 4가지 케이스가 나올 것
+            foreach(int dy in delta) {
+                foreach(int dx in delta) {
+                    int y = cellPos.y + dy;
+                    int x = cellPos.x + dy;
+                    Zone zone = GetZone(new Vector2Int(x, y));
+                    if(zone == null) {
+                        continue;
+                    }
+
+                    zones.Add(zone);
+                }
             }
+
+            return zones.ToList();
         }
     }
 }

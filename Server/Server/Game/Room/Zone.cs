@@ -22,7 +22,7 @@ namespace Server.Game
 
         public void Remove(GameObject gameObject)
         {
-            GameObjectType type = ObjectManager.GetObjectTypeById(GameObject.id);
+            GameObjectType type = ObjectManager.GetObjectTypeById(gameObject.Id);
 
             switch (type) {
                 case GameObjectType.Player:

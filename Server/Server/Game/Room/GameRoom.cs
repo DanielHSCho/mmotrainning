@@ -22,6 +22,8 @@ namespace Server.Game
 
         public Map Map { get; private set; } = new Map();
 
+        Random _rand = new Random();
+
         public Zone GetZone(Vector2Int cellPos)
         {
             int x = (cellPos.x - Map.MinX) / ZoneCells;
@@ -61,7 +63,7 @@ namespace Server.Game
             // TODO : 하드코딩
             monster.Init(1);
             monster.CellPos = new Vector2Int(5, 5);
-            EnterGame(monster);
+            EnterGame(monster, randomPos:true);
         }
 
         public void Update()
@@ -69,10 +71,24 @@ namespace Server.Game
             Flush();
         }
 
-        public void EnterGame(GameObject gameObject)
+        public void EnterGame(GameObject gameObject, bool randomPos)
         {
             if(gameObject == null) {
                 return;
+            }
+
+            Vector2Int respawnPos;
+
+            if (randomPos) {
+                // TODO : While 개선하자
+                while (true) {
+                    respawnPos.x = _rand.Next(Map.MinX, Map.MaxX + 1);
+                    respawnPos.y = _rand.Next(Map.MinY, Map.MaxY + 1);
+                    if (Map.Find(respawnPos) == null) {
+                        gameObject.CellPos = respawnPos;
+                        break;
+                    }
+                }
             }
 
             GameObjectType type = ObjectManager.GetObjectTypeById(gameObject.Id);

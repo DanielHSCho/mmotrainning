@@ -40,6 +40,34 @@ namespace Server.Game
 
                     objects.Add(player);
                 }
+
+                foreach (Monster monster in zone.Monsters) {
+                    int dx = monster.CellPos.x - cellPos.x;
+                    int dy = monster.CellPos.y - cellPos.y;
+                    if (Math.Abs(dx) > GameRoom.VisionCells) {
+                        continue;
+                    }
+
+                    if (Math.Abs(dy) > GameRoom.VisionCells) {
+                        continue;
+                    }
+
+                    objects.Add(monster);
+                }
+
+                foreach (Projectile projectile in zone.Projectiles) {
+                    int dx = projectile.CellPos.x - cellPos.x;
+                    int dy = projectile.CellPos.y - cellPos.y;
+                    if (Math.Abs(dx) > GameRoom.VisionCells) {
+                        continue;
+                    }
+
+                    if (Math.Abs(dy) > GameRoom.VisionCells) {
+                        continue;
+                    }
+
+                    objects.Add(projectile);
+                }
             }
 
             return objects;

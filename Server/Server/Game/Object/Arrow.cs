@@ -20,9 +20,7 @@ namespace Server.Game
 
             // 앞으로 이동
             Vector2Int destPos = GetFrontCellPos();
-            if (Room.Map.CanGo(destPos)) {
-                CellPos = destPos;
-
+            if (Room.Map.ApplyMove(this, destPos, collision:false)) {
                 S_Move movePacket = new S_Move();
                 movePacket.ObjectId = Id;
                 movePacket.PosInfo = PosInfo;

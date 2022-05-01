@@ -155,7 +155,7 @@ namespace Server.Game
 			return true;
 		}
 
-		public bool ApplyMove(GameObject gameObject, Vector2Int dest)
+		public bool ApplyMove(GameObject gameObject, Vector2Int dest, bool checkObjects = true, bool collision = true)
         {
 			ApplyLeave(gameObject);
 
@@ -167,11 +167,12 @@ namespace Server.Game
 			}
 
 			PositionInfo posInfo = gameObject.PosInfo;
-			if (CanGo(dest, true) == false) {
+			if (CanGo(dest, checkObjects) == false) {
 				return false;
             }
 
-            {
+			
+            if(collision) {
 				// 이동
 				int x = dest.x - MinX;
 				int y = MaxY - dest.y;

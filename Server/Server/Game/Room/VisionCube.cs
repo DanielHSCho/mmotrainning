@@ -14,5 +14,35 @@ namespace Server.Game
         {
             Owner = owner;
         }
+
+        public HashSet<GameObject> GatherObjects()
+        {
+            // 잡 방식으로 실행될 수 있으므로
+            if (Owner == null || Owner.Room == null) {
+                return null;
+            }
+
+            HashSet<GameObject> objects = new HashSet<GameObject>();
+            Vector2Int cellPos = Owner.CellPos;
+            List<Zone> zones = Owner.Room.GetAdjacentZones(cellPos);
+
+            foreach(Zone zone in zones) {
+                foreach(Player player in zone.Players) {
+                    int dx = player.CellPos.x - cellPos.x;
+                    int dy = player.CellPos.y - cellPos.y;
+                    if(Math.Abs(dx) > GameRoom.VisionCells) {
+                        continue;
+                    }
+
+                    if (Math.Abs(dy) > GameRoom.VisionCells) {
+                        continue;
+                    }
+
+                    objects.Add(player);
+                }
+            }
+
+            return objects;
+        }
     }
 }

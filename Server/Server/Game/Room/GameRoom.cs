@@ -10,6 +10,7 @@ namespace Server.Game
 {
     public partial class GameRoom : JobSerializer
     {
+        public const int VisionCells = 5;
         public int RoomId { get; set; }
 
         Dictionary<int, Player> _players = new Dictionary<int, Player>();
@@ -222,7 +223,7 @@ namespace Server.Game
             }
         }
 
-        public List<Zone> GetAdjacentZones(Vector2Int cellPos, int cells = 5)
+        public List<Zone> GetAdjacentZones(Vector2Int cellPos, int cells = GameRoom.VisionCells)
         {
             // 인접 존 검색
 

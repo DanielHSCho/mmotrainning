@@ -288,7 +288,7 @@ namespace Server.Game
 					// 다른 경로에서 더 빠른 길 이미 찾았으면 스킵
 					int value = 0;
 
-					if(openList.TryGetValue(next, out value)) {
+					if(openList.TryGetValue(next, out value) == false) {
 						value = Int32.MaxValue;
                     }
 

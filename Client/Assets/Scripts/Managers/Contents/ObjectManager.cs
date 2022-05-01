@@ -18,6 +18,10 @@ public class ObjectManager
     // TODO : 팩토리 패턴으로 Id 전달 시, 해당 id에 해당하는 애를 만들어주도록 개선해야함
     public void Add(ObjectInfo info, bool myPlayer = false)
     {
+        if(MyPlayer != null && MyPlayer.Id == info.ObjectId) {
+            return;
+        }
+
         GameObjectType objectType = GetObjectTypeById(info.ObjectId);
 
         if(objectType == GameObjectType.Player) {
@@ -68,6 +72,10 @@ public class ObjectManager
 
     public void Remove(int id)
     {
+        if (MyPlayer != null && MyPlayer.Id == id) {
+            return;
+        }
+
         GameObject go = FindById(id);
         if(go == null) {
             return;

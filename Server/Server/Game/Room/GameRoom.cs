@@ -117,6 +117,7 @@ namespace Server.Game
                 _monsters.Add(gameObject.Id, monster);
                 monster.Room = this;
 
+                GetZone(monster.CellPos).Monsters.Add(monster);
                 Map.ApplyMove(monster, new Vector2Int(monster.CellPos.x, monster.CellPos.y));
 
                 monster.Update();
@@ -127,6 +128,7 @@ namespace Server.Game
                 _projectiles.Add(gameObject.Id, projectile);
                 projectile.Room = this;
 
+                GetZone(projectile.CellPos).Projectiles.Add(projectile);
                 projectile.Update();
             }
 
@@ -172,6 +174,8 @@ namespace Server.Game
                     return;
                 }
 
+                GetZone(monster.CellPos).Monsters.Remove(monster);
+
                 Map.ApplyLeave(monster);
                 monster.Room = null;
 
@@ -182,6 +186,7 @@ namespace Server.Game
                     return;
                 }
 
+                GetZone(projectile.CellPos).Projectiles.Remove(projectile);
                 projectile.Room = null;
             }
 

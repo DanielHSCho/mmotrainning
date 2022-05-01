@@ -178,6 +178,23 @@ namespace Server.Game
 				_objects[y, x] = gameObject;
 			}
 
+			// Note : 실제 이동 시 존 변경 여부 판단
+			Player p = gameObject as Player;
+			if(p != null) {
+				Zone now = gameObject.Room.GetZone(gameObject.CellPos);
+				Zone after = gameObject.Room.GetZone(dest);
+
+				if(now != after) {
+					if(now != null) {
+						now.Players.Remove(p);
+					}
+
+					if(after != null) {
+						after.Players.Add(p);
+					}
+				}
+            }
+
 			// 실 좌표 이동
 			posInfo.PosX = dest.x;
 			posInfo.PosY = dest.y;

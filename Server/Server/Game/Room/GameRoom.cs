@@ -94,22 +94,7 @@ namespace Server.Game
                     enterPacket.Player = player.Info;
                     player.Session.Send(enterPacket);
 
-                    S_Spawn spawnPacket = new S_Spawn();
-                    foreach (Player p in _players.Values) {
-                        if (player != p) {
-                            spawnPacket.Objects.Add(p.Info);
-                        }
-                    }
-
-                    foreach (Monster m in _monsters.Values) {
-                        spawnPacket.Objects.Add(m.Info);
-                    }
-
-                    foreach (Projectile p in _projectiles.Values) {
-                        spawnPacket.Objects.Add(p.Info);
-                    }
-
-                    player.Session.Send(spawnPacket);
+                    player.Vision.Update();
                 }
             } else if (type == GameObjectType.Monster) {
 

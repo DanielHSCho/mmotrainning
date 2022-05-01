@@ -20,6 +20,22 @@ namespace Server.Game
 
         public Map Map { get; private set; } = new Map();
 
+        public Zone GetZone(Vector2Int cellPos)
+        {
+            int x = (cellPos.x - Map.MinX) / ZoneCells;
+            int y = (Map.MaxY - cellPos.y) / ZoneCells;
+
+            if(x < 0 || x >= Zones.GetLength(1)) {
+                return null;
+            }
+
+            if (y < 0 || y >= Zones.GetLength(0)) {
+                return null;
+            }
+
+            return Zones[y, x];
+        }
+
         public void Init(int mapId, int zoneCells)
         {
             Map.LoadMap(mapId);

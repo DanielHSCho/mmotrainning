@@ -84,6 +84,8 @@ namespace Server.Game
 
                 Map.ApplyMove(player, new Vector2Int(player.CellPos.x, player.CellPos.y));
 
+                GetZone(player.CellPos).Players.Add(player);
+
                 // 본인에게 정보 전송
                 {
                     S_EnterGame enterPacket = new S_EnterGame();
@@ -149,6 +151,8 @@ namespace Server.Game
                 if (_players.Remove(objectId, out player) == false) {
                     return;
                 }
+
+                GetZone(player.CellPos).Players.Remove(player);
 
                 player.OnLeaveGame();
                 Map.ApplyLeave(player);

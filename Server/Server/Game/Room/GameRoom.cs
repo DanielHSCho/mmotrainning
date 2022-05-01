@@ -15,11 +15,28 @@ namespace Server.Game
         Dictionary<int, Monster> _monsters = new Dictionary<int, Monster>();
         Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
 
+        public Zone[,] Zones { get; private set; }
+        public int ZoneCells { get; private set; }
+
         public Map Map { get; private set; } = new Map();
 
-        public void Init(int mapId)
+        public void Init(int mapId, int zoneCells)
         {
             Map.LoadMap(mapId);
+
+            // Zone
+            ZoneCells = zoneCells;
+
+            // 1 ~ 10칸 = 1존
+            // 11 ~ 20칸 = 2존
+            int countY = (Map.SizeY + zoneCells -1) / zoneCells;
+            int countX = (Map.SizeX + zoneCells -1) / zoneCells;
+            Zones = new Zone[countY, countX];
+            for(int y = 0; y < countY; y++) {
+                for(int x = 0; x < countX; x++) {
+                    Zones[y, x] = new Zone(y, x);
+                }
+            }
 
             // TEMP
             Monster monster = ObjectManager.Instance.Add<Monster>();

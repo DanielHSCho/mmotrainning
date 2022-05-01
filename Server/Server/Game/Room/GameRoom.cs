@@ -208,7 +208,18 @@ namespace Server.Game
         {
             List<Zone> zones = GetAdjacentZones(pos);
             
+            // 거리 체크
             foreach(Player p in zones.SelectMany(z => z.Players)) {
+                int dx = p.CellPos.x - pos.x;
+                int dy = p.CellPos.y - pos.y;
+                if (Math.Abs(dx) > GameRoom.VisionCells) {
+                    continue;
+                }
+
+                if (Math.Abs(dy) > GameRoom.VisionCells) {
+                    continue;
+                }
+
                 p.Session.Send(packet);
             }
         }

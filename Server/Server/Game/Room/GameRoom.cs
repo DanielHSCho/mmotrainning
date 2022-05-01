@@ -213,10 +213,14 @@ namespace Server.Game
             return null;
         }
 
-        public void Broadcast(IMessage packet)
+        public void Broadcast(Vector2Int pos, IMessage packet)
         {
-            foreach (Player player in _players.Values) {
-                player.Session.Send(packet);
+            List<Zone> zones = GetAdjacentZones(pos);
+            
+            foreach(Player p in zones.SelectMany(z => z.Players)) {
+                p.Session.Send(packet);
+            }
+        }
 
         public List<Zone> GetAdjacentZones(Vector2Int cellPos, int cells = 5)
         {

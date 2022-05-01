@@ -35,7 +35,7 @@ namespace Server.Game
             resMovePacket.ObjectId = player.Info.ObjectId;
             resMovePacket.PosInfo = movePacket.PosInfo;
 
-            Broadcast(resMovePacket);
+            Broadcast(player.CellPos, resMovePacket);
         }
 
         public void HandleSkill(Player player, C_Skill skillPacket)
@@ -57,7 +57,7 @@ namespace Server.Game
             skill.ObjectId = info.ObjectId;
             // TODO : 추후 데이터 시트로 구분되어야 함 (xml / json)
             skill.Info.SkillId = skillPacket.Info.SkillId;
-            Broadcast(skill);
+            Broadcast(player.CellPos, skill);
 
             Data.Skill skillData = null;
             if (DataManager.SkillDict.TryGetValue(skillPacket.Info.SkillId, out skillData) == false) {

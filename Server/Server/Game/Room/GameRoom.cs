@@ -116,19 +116,6 @@ namespace Server.Game
                 GetZone(projectile.CellPos).Projectiles.Add(projectile);
                 projectile.Update();
             }
-
-
-            // 타인에게 정보 전송
-            {
-                S_Spawn spawnPacket = new S_Spawn();
-                spawnPacket.Objects.Add(gameObject.Info);
-
-                foreach (Player otherPlayer in _players.Values) {
-                    if (otherPlayer.Id != gameObject.Id) {
-                        otherPlayer.Session.Send(spawnPacket);
-                    }
-                }
-            }
         }
 
         public void LeaveGame(int objectId)
@@ -173,19 +160,6 @@ namespace Server.Game
 
                 GetZone(projectile.CellPos).Projectiles.Remove(projectile);
                 projectile.Room = null;
-            }
-
-
-            // 타인에게 정보 전송
-            {
-                S_Despawn despawnPacket = new S_Despawn();
-                despawnPacket.ObjectIds.Add(objectId);
-
-                foreach (Player otherPlayer in _players.Values) {
-                    if (objectId != otherPlayer.Id) {
-                        otherPlayer.Session.Send(despawnPacket);
-                    }
-                }
             }
         }
 

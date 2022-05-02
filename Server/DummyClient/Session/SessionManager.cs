@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DummyClient.Session
 {
-    class SessionManager
+    public class SessionManager
     {
     }
 }

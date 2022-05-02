@@ -59,11 +59,13 @@ namespace Server.Game
             }
 
             // TEMP
-            Monster monster = ObjectManager.Instance.Add<Monster>();
-            // TODO : 하드코딩
-            monster.Init(1);
-            monster.CellPos = new Vector2Int(5, 5);
-            EnterGame(monster, randomPos:true);
+            for(int i = 0; i < 20; i++) {
+                Monster monster = ObjectManager.Instance.Add<Monster>();
+                // TODO : 하드코딩
+                monster.Init(1);
+                monster.CellPos = new Vector2Int(5, 5);
+                EnterGame(monster, randomPos: true);
+            }
         }
 
         public void Update()

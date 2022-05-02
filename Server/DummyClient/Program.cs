@@ -1,12 +1,16 @@
-﻿using ServerCore;
+﻿using DummyClient.Session;
+using ServerCore;
 using System;
 using System.Net;
+using System.Threading;
 
 namespace DummyClient
 {
     class Program
     {
-        static void Main(string[] args)
+		static int DummyClientCount { get; } = 30;
+
+		static void Main(string[] args)
         {
 			// TODO : 나중엔 실제 붙고 싶은 아이피를 전달
 			// DNS (Domain Name System)
@@ -18,8 +22,12 @@ namespace DummyClient
 			Connector connector = new Connector();
 
 			connector.Connect(endPoint,
-				() => { return _session; },
-				1);
+				() => { return SessionManager.Instance.Generate(); },
+				Program.DummyClientCount);
+
+            while (true) {
+				Thread.Sleep(10000);
+            }
 		}
     }
 }

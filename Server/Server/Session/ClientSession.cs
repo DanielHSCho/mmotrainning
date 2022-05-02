@@ -23,6 +23,31 @@ namespace Server
 		object _lock = new object();
 		List<ArraySegment<byte>> _reserveQueue = new List<ArraySegment<byte>>();
 
+		long _pingpongTick = 0;
+		public void Ping()
+        {
+			if(_pingpongTick > 0) {
+				long delta = (System.Environment.TickCount64 - _pingpongTick);
+
+				// Note : 30초가 지났다면
+				if(delta > 30 * 1000) {
+					Console.WriteLine("Disconnected by PingCheck");
+					Disconnect();
+					return;
+                }
+
+				S_Ping pingPacket = new S_Ping();
+				Send(pingPacket);
+
+				// Note : 1초 ~ 5초 사이로 보내줌
+            }
+        }
+
+		public void HandlePong()
+        {
+			_pingpongTick = System.Environment.TickCount64;
+        }
+
 		#region Network
 		// Note : 예약만 하고 보내는 것은 다른 스레드가
 		public void Send(IMessage packet)

@@ -113,7 +113,7 @@ namespace Server.Game
             }
 
             // 길 찾기
-            List<Vector2Int> path = Room.Map.FindPath(CellPos, _target.CellPos, checkObjects:false);
+            List<Vector2Int> path = Room.Map.FindPath(CellPos, _target.CellPos, checkObjects:true);
             
             // 갈 수 있는 위치가 없거나 너무 멀다면
             if(path.Count < 2 || path.Count > _chaseCellDist) {

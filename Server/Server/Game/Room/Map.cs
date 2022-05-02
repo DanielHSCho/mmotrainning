@@ -363,10 +363,12 @@ namespace Server.Game
 		{
 			List<Vector2Int> cells = new List<Vector2Int>();
 
-			int y = dest.Y;
-			int x = dest.X;
-			Pos pos = dest;
+			// 길을 못찾은 상황
+			if(parent.ContainsKey(dest) == false) {
+				return cells;
+            }
 
+			Pos pos = dest;
 			while (parent[pos] != pos) {
 				cells.Add(Pos2Cell(pos));
 				pos = parent[pos];

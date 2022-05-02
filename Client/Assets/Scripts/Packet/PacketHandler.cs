@@ -110,9 +110,13 @@ class PacketHandler
 		Debug.Log("S_ConnectedHandler");
 
 		C_Login loginPacket = new C_Login();
+
+
 		// Note : 디바이스 시스템에 따라 유니크 아이디 생성
 		// 로컬에서 멀티플레이시에는 문제될 될 수 있어 예외처리 필요
-		loginPacket.UniqueId = SystemInfo.deviceUniqueIdentifier;
+		// TODO : 추후 로그인창으로 수정 필요
+		string path = Application.dataPath;
+		loginPacket.UniqueId = path.GetHashCode().ToString();
 		Managers.Network.Send(loginPacket);
 	}
 

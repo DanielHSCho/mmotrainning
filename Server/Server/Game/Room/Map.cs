@@ -370,16 +370,30 @@ namespace Server.Game
 
 			// 길을 못찾은 상황
 			if(parent.ContainsKey(dest) == false) {
-				return cells;
+				Pos best = new Pos();
+				int bestDist = Int32.MaxValue;
+
+				foreach(Pos pos in parent.Keys) {
+					int dist = Math.Abs(dest.X - pos.X) + Math.Abs(dest.Y - pos.Y);
+
+					// 제일 우수한 후보를 뽑는다
+					if(dist < bestDist) {
+						best = pos;
+						bestDist = dist;
+                    }
+                }
+				dest = best;
             }
 
-			Pos pos = dest;
-			while (parent[pos] != pos) {
+			{
+				Pos pos = dest;
+				while (parent[pos] != pos) {
+					cells.Add(Pos2Cell(pos));
+					pos = parent[pos];
+				}
 				cells.Add(Pos2Cell(pos));
-				pos = parent[pos];
+				cells.Reverse();
 			}
-			cells.Add(Pos2Cell(pos));
-			cells.Reverse();
 
 			return cells;
 		}

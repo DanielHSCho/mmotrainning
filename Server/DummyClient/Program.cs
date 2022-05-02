@@ -12,6 +12,8 @@ namespace DummyClient
 
 		static void Main(string[] args)
         {
+			Thread.Sleep(3000);
+
 			// TODO : 나중엔 실제 붙고 싶은 아이피를 전달
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();

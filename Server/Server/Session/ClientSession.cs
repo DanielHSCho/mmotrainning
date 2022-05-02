@@ -35,14 +35,14 @@ namespace Server
 					Disconnect();
 					return;
                 }
-
-				S_Ping pingPacket = new S_Ping();
-				Send(pingPacket);
-
-				// Note : 1초 ~ 5초 사이로 보내줌
-				GameLogic.Instance.PushAfter(5000, Ping);
             }
-        }
+
+			S_Ping pingPacket = new S_Ping();
+			Send(pingPacket);
+
+			// Note : 1초 ~ 5초 사이로 보내줌
+			GameLogic.Instance.PushAfter(5000, Ping);
+		}
 
 		public void HandlePong()
         {

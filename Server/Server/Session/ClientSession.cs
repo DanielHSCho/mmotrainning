@@ -79,6 +79,10 @@ namespace Server
 		{
 			// 게임로직 담당스레드에게 일감 넘김
 			GameLogic.Instance.Push(() => {
+				if(MyPlayer == null) {
+					return;
+                }
+
 				GameRoom room = GameLogic.Instance.Find(1);
 				room.Push(room.LeaveGame, MyPlayer.Info.ObjectId);
 			});

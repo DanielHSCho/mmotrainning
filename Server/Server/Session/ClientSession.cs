@@ -40,6 +40,7 @@ namespace Server
 				Send(pingPacket);
 
 				// Note : 1초 ~ 5초 사이로 보내줌
+				GameLogic.Instance.PushAfter(5000, Ping);
             }
         }
 
@@ -93,6 +94,8 @@ namespace Server
 				S_Connected connectedPacket = new S_Connected();
 				Send(connectedPacket);
             }
+
+			GameLogic.Instance.PushAfter(5000, Ping);
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)

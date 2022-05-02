@@ -266,7 +266,7 @@ namespace Server.Game
 		int[] _deltaX = new int[] { 0, 0, -1, 1 };
 		int[] _cost = new int[] { 10, 10, 10, 10 };
 
-		public List<Vector2Int> FindPath(Vector2Int startCellPos, Vector2Int destCellPos, bool checkObjects = true)
+		public List<Vector2Int> FindPath(Vector2Int startCellPos, Vector2Int destCellPos, bool checkObjects = true, int maxDist = 10)
 		{
 			List<Pos> path = new List<Pos>();
 
@@ -318,6 +318,11 @@ namespace Server.Game
 				// 상하좌우 등 이동할 수 있는 좌표인지 확인해서 예약(open)한다
 				for (int i = 0; i < _deltaY.Length; i++) {
 					Pos next = new Pos(node.Y + _deltaY[i], node.X + _deltaX[i]);
+
+					// 너무 멀면 스킵
+					if(Math.Abs(pos.Y - next.Y) + Math.Abs(pos.X - next.X) >= maxDist) {
+						continue;
+					}
 
 					// 유효 범위를 벗어났으면 스킵
 					// 벽으로 막혀서 갈 수 없으면 스킵

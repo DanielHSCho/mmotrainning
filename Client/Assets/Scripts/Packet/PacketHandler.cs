@@ -239,4 +239,11 @@ class PacketHandler
 
 		// TODO
 	}
+
+	public static void S_PingHandler(PacketSession session, IMessage packet)
+	{
+		C_Pong pongPacket = new C_Pong();
+		Debug.Log("[Server] Ping Check");
+		Managers.Network.Send(pongPacket);
+	}
 }

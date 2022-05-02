@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace ServerCore
 {
@@ -24,6 +25,11 @@ namespace ServerCore
 				args.UserToken = socket;
 
 				RegisterConnect(args);
+
+				// TEST TMEP TODO REMOVE :
+				// 0.1초 안에 몇백명 오는 부분 방지용 임시 코드
+				// 500개 될 때 연결 되지 않는 부분 수정
+				Thread.Sleep(10);
 			}
 		}
 

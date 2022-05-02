@@ -35,21 +35,28 @@ namespace ServerCore
 		{
 			args.AcceptSocket = null;
 
-			bool pending = _listenSocket.AcceptAsync(args);
-			if (pending == false)
-				OnAcceptCompleted(null, args);
+			// Note : 혹시 실패할 경우 Try/Catch
+			try {
+				bool pending = _listenSocket.AcceptAsync(args);
+				if (pending == false)
+					OnAcceptCompleted(null, args);
+			} catch (Exception e) {
+				Console.WriteLine(e);
+			}
 		}
 
 		void OnAcceptCompleted(object sender, SocketAsyncEventArgs args)
 		{
-			if (args.SocketError == SocketError.Success)
-			{
-				Session session = _sessionFactory.Invoke();
-				session.Start(args.AcceptSocket);
-				session.OnConnected(args.AcceptSocket.RemoteEndPoint);
-			}
-			else
-				Console.WriteLine(args.SocketError.ToString());
+            try {
+				if (args.SocketError == SocketError.Success) {
+					Session session = _sessionFactory.Invoke();
+					session.Start(args.AcceptSocket);
+					session.OnConnected(args.AcceptSocket.RemoteEndPoint);
+				} else
+					Console.WriteLine(args.SocketError.ToString());
+			} catch(Exception e) {
+				Console.WriteLine(e);
+            }
 
 			RegisterAccept(args);
 		}

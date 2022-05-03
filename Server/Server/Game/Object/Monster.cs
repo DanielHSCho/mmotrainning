@@ -72,10 +72,7 @@ namespace Server.Game
             _nextSearchTick = Environment.TickCount64 + 1000;
 
             // 1초마다 내 주변 서칭
-            Player target = Room.FindPlayer(p => {
-                Vector2Int dir = p.CellPos - CellPos;
-                return dir.cellDistFromZero <= _searchCellDist;
-            });
+            Player target = Room.FindClosestPlayer(CellPos, _searchCellDist);
 
             if(target == null) {
                 return;

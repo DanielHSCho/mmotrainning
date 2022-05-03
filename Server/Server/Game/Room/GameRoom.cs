@@ -206,13 +206,38 @@ namespace Server.Game
         // TODO
         // Note : 이 함수는 GameRoom안에서 잡큐 형태로 호출되는 함수 안에서 불려짐
         // 외부에서 이 함수를 직접 호출하는 일이 없도록 주의할 것
-        public Player FindPlayer(Func<GameObject, bool> condition)
+        Player FindPlayer(Func<GameObject, bool> condition)
         {
             // TODO : 무식한 방법으로 우선 찾아보자
             foreach (Player player in _players.Values) {
                 if (condition.Invoke(player)) {
                     return player;
                 }
+            }
+
+            return null;
+        }
+
+        // TODO : 살짝 부하가 있을 수 있는 함수
+        // 가장 가까우면서 + 이동할 수 있는지 Astar를 계속 호출하게 됨
+        public Player FindClosestPlayer(Vector2Int pos, int range)
+        {
+            List<Player> players = GetAdjacentPlayers(pos, range);
+
+            players.Sort((left, right) => {
+                int leftDist = (left.CellPos - pos).cellDistFromZero;
+                int rightDist = (right.CellPos - pos).cellDistFromZero;
+                return leftDist - rightDist;
+            });
+
+            foreach(Player player in players) {
+                List<Vector2Int> path = Map.FindPath(pos, player.CellPos, checkObjects: true);
+                if(path.Count <2|| path.Count > range) {
+                    continue;
+                }
+
+                // 길이 없으면 조금 더 멀리있는 플레이어 찾음
+                return player;
             }
 
             return null;

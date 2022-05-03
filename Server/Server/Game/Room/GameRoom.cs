@@ -28,16 +28,20 @@ namespace Server.Game
         {
             int x = (cellPos.x - Map.MinX) / ZoneCells;
             int y = (Map.MaxY - cellPos.y) / ZoneCells;
+            return GetZone(y, x);
+        }
 
-            if(x < 0 || x >= Zones.GetLength(1)) {
+        public Zone GetZone(int indexY, int indexX)
+        {
+            if (indexX < 0 || indexX >= Zones.GetLength(1)) {
                 return null;
             }
 
-            if (y < 0 || y >= Zones.GetLength(0)) {
+            if (indexY < 0 || indexY >= Zones.GetLength(0)) {
                 return null;
             }
 
-            return Zones[y, x];
+            return Zones[indexY, indexX];
         }
 
         public void Init(int mapId, int zoneCells)
@@ -241,21 +245,30 @@ namespace Server.Game
             return zones.SelectMany(z => z.Players).ToList();
         }
 
-        public List<Zone> GetAdjacentZones(Vector2Int cellPos, int cells = GameRoom.VisionCells)
+        public List<Zone> GetAdjacentZones(Vector2Int cellPos, int range = GameRoom.VisionCells)
         {
             // 인접 존 검색
 
             HashSet<Zone> zones = new HashSet<Zone>();
 
-            // 상 / 하 / 좌 / 우 모서리 정보
-            int[] delta = new int[2] { -cells, +cells };
+            int maxY = cellPos.y + range;
+            int minY = cellPos.y - range;
+            int maxX = cellPos.x + range;
+            int minX = cellPos.x - range;
 
-            // 4가지 케이스가 나올 것
-            foreach(int dy in delta) {
-                foreach(int dx in delta) {
-                    int y = cellPos.y + dy;
-                    int x = cellPos.x + dx;
-                    Zone zone = GetZone(new Vector2Int(x, y));
+            // 좌측 상단
+            Vector2Int leftTop = new Vector2Int(minX, maxY);
+            int minIndexY = (Map.MaxY - leftTop.y) / ZoneCells;
+            int minIndexX = (leftTop.x - Map.MinX) / ZoneCells;
+
+            // 우측 하단
+            Vector2Int rightBot = new Vector2Int(maxX, minY);
+            int maxIndexY = (Map.MaxY - rightBot.y) / ZoneCells;
+            int maxIndexX = (rightBot.x - Map.MinX) / ZoneCells;
+
+            for(int x = minIndexX; x <= maxIndexX; x++) {
+                for(int y = minIndexY; y <= maxIndexY; y++) {
+                    Zone zone = GetZone(y, x);
                     if(zone == null) {
                         continue;
                     }

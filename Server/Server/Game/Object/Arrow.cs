@@ -26,7 +26,7 @@ namespace Server.Game
                 movePacket.PosInfo = PosInfo;
                 Room.Broadcast(CellPos, movePacket);
 
-                Console.WriteLine("Move Arrow");
+                // Console.WriteLine("Move Arrow");
             } else {
                 GameObject target = Room.Map.Find(destPos);
                 if(target != null) {

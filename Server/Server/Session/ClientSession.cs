@@ -99,7 +99,7 @@ namespace Server
 
 		public override void OnConnected(EndPoint endPoint)
 		{
-			Console.WriteLine($"OnConnected : {endPoint}");
+			// Console.WriteLine($"OnConnected : {endPoint}");
 
             {
 				S_Connected connectedPacket = new S_Connected();

@@ -254,7 +254,7 @@ namespace Server.Game
             foreach(int dy in delta) {
                 foreach(int dx in delta) {
                     int y = cellPos.y + dy;
-                    int x = cellPos.x + dy;
+                    int x = cellPos.x + dx;
                     Zone zone = GetZone(new Vector2Int(x, y));
                     if(zone == null) {
                         continue;

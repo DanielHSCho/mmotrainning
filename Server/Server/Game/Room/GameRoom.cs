@@ -234,6 +234,13 @@ namespace Server.Game
             }
         }
 
+        // 인접 플레이어 검색
+        public List<Player> GetAdjacentPlayers(Vector2Int pos, int range)
+        {
+            List<Zone> zones = GetAdjacentZones(pos, range);
+            return zones.SelectMany(z => z.Players).ToList();
+        }
+
         public List<Zone> GetAdjacentZones(Vector2Int cellPos, int cells = GameRoom.VisionCells)
         {
             // 인접 존 검색

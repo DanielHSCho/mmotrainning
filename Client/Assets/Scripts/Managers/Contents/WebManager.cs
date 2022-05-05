@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ public class WebManager
 {
     public string BaseUrl { get; set; } = "https://localhost:5001/api";
 
-    IEnumerator CoSendWebRequest(string url, string method, object obj)
+    IEnumerator CoSendWebRequest<T>(string url, string method, object obj, Action<T> res)
     {
         string sendUrl = $"{BaseUrl}/{url}";
         byte[] jsonBytes = null;
@@ -27,11 +28,9 @@ public class WebManager
             if(uwr.isNetworkError || uwr.isHttpError) {
                 Debug.Log(uwr.error);
             } else {
-                // 성공 되었다면 
-                uwr.downloadHandler.text;
-
+                T resObj = JsonUtility.FromJson<T>(uwr.downloadHandler.text);
+                res.Invoke(resObj);
             }
-
         } ;
     }
 }

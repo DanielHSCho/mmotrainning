@@ -19,7 +19,7 @@ public class WebManager
         string sendUrl = $"{BaseUrl}/{url}";
         byte[] jsonBytes = null;
         if(obj != null) {
-            string jsonStr = JsonUtility.ToJson(obj);
+            string jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
             jsonBytes = Encoding.UTF8.GetBytes(jsonStr);
         }
 
@@ -33,7 +33,7 @@ public class WebManager
             if(uwr.isNetworkError || uwr.isHttpError) {
                 Debug.Log(uwr.error);
             } else {
-                T resObj = JsonUtility.FromJson<T>(uwr.downloadHandler.text);
+                T resObj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(uwr.downloadHandler.text);
                 res.Invoke(resObj);
             }
         } ;

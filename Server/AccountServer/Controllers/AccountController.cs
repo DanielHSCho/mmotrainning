@@ -89,11 +89,18 @@ namespace AccountServer.Controllers
                     _shared.SaveChangesEx();
                 }
 
-                // TODO : 서버 목록
-                res.ServerList = new List<ServerInfo>() {
-                    new ServerInfo(){Name = "헬레나", Ip = "127.0.0.1", CrowdedLevel = 0},
-                    new ServerInfo(){Name = "다니엘", Ip = "127.0.0.1", CrowdedLevel = 3}
-                };
+                res.AccountId = account.AccountDbId;
+                res.Token = tokenDb.Token;
+                res.ServerList = new List<ServerInfo>();
+
+                foreach(ServerDb serverDb in _shared.Servers) {
+                    res.ServerList.Add(new ServerInfo() {
+                        Name = serverDb.Name,
+                        IpAddress = serverDb.IpAdress,
+                        Port = serverDb.Port,
+                        BusyScore = serverDb.BusyScore
+                    });
+                }
             }
 
             return res;

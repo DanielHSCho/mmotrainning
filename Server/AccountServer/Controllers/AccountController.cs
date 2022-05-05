@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SharedDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace AccountServer.Controllers
     public class AccountController : ControllerBase
     {
         AppDbContext _context;
+        SharedDbContext _shared;
 
-        public AccountController(AppDbContext context)
+        public AccountController(AppDbContext context, SharedDbContext shared)
         {
             _context = context;
+            _shared = shared;
         }
 
         [HttpPost]
@@ -62,6 +65,8 @@ namespace AccountServer.Controllers
                 res.LoginOk = false;
             } else {
                 res.LoginOk = true;
+
+                
 
                 // TODO : 서버 목록
                 res.ServerList = new List<ServerInfo>() {

@@ -49,9 +49,28 @@ namespace AccountServer.Controllers
 
         [HttpPost]
         [Route("login")]
-        public void LoginAccount()
+        public LoginAccountPacketRes LoginAccount([FromBody] LoginAccountPacketReq req)
         {
+            LoginAccountPacketRes res = new LoginAccountPacketRes();
 
+            AccountDb account = _context.Accounts
+                .AsNoTracking()
+                .Where(a => a.AccountName == req.AccountName && a.Password == req.Password)
+                .FirstOrDefault();
+
+            if(account == null) {
+                res.LoginOk = false;
+            } else {
+                res.LoginOk = true;
+
+                // TODO : 서버 목록
+                res.ServerList = new List<ServerInfo>() {
+                    new ServerInfo(){Name = "헬레나", Ip = "127.0.0.1", CrowdedLevel = 0},
+                    new ServerInfo(){Name = "다니엘", Ip = "127.0.0.1", CrowdedLevel = 3}
+                };
+            }
+
+            return res;
         }
 
     }

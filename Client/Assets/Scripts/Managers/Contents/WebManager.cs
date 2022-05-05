@@ -9,6 +9,11 @@ public class WebManager
 {
     public string BaseUrl { get; set; } = "https://localhost:5001/api";
 
+    public void SendPostRequest<T>(string url, object obj, Action<T> res)
+    {
+        Managers.Instance.StartCoroutine(CoSendWebRequest(url, UnityWebRequest.kHttpVerbPOST, obj, res));
+    }
+
     IEnumerator CoSendWebRequest<T>(string url, string method, object obj, Action<T> res)
     {
         string sendUrl = $"{BaseUrl}/{url}";

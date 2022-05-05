@@ -59,7 +59,15 @@ public class UI_LoginScene : UI_Scene
         };
 
         Managers.Web.SendPostRequest<LoginAccountPacketRes>("account/login", packet, (res) => {
-            Managers.Scene.LoadScene(Define.Scene.Game);
+            Debug.Log(res.LoginOk);
+            GetText((int)Texts.AccountNameText).text = "";
+            GetText((int)Texts.PasswordText).text = "";
+
+            if (res.LoginOk) {
+                // 네트워크 매니저로 서버접속
+                Managers.Network.ConnectToGame();
+                Managers.Scene.LoadScene(Define.Scene.Game);
+            }
         });
     }
 }

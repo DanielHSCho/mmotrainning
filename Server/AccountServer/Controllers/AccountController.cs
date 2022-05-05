@@ -1,6 +1,7 @@
 ﻿using AccountServer.DB;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,29 @@ namespace AccountServer.Controllers
 
         [HttpPost]
         [Route("create")]
-        public void CreateAccount([FromBody] CreateAccountPacketReq req)
+        public CreateAccountPacketRes CreateAccount([FromBody] CreateAccountPacketReq req)
         {
+            CreateAccountPacketRes res = new CreateAccountPacketRes();
 
+            AccountDb account = _context.Accounts
+                .AsNoTracking()
+                .Where(a => a.AccountName == req.AccountName)
+                .FirstOrDefault();
+
+            // 계정 생성 가능
+            if(account == null) {
+                _context.Accounts.Add(new AccountDb() {
+                    AccountName = req.AccountName,
+                    // TODO : 요청보낸걸 이부분에서 암호화 해서 저장해야함
+                    Password = req.Password
+                });
+                bool success = _context.SaveChangesEx();
+                res.CreateOk = success;
+            } else {
+                res.CreateOk = false;
+            }
+
+            return res;
         }
 
         [HttpPost]

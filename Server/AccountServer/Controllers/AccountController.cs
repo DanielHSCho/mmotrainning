@@ -19,11 +19,15 @@ namespace AccountServer.Controllers
             _context = context;
         }
 
-        public void CreateAccount()
+        [HttpPost]
+        [Route("create")]
+        public void CreateAccount([FromBody] CreateAccountPacketReq req)
         {
 
         }
 
+        [HttpPost]
+        [Route("login")]
         public void LoginAccount()
         {
 

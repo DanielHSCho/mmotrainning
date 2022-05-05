@@ -14,6 +14,17 @@ namespace Server
 		Dictionary<int, ClientSession> _sessions = new Dictionary<int, ClientSession>();
 		object _lock = new object();
 
+		public int GetBusyScore()
+        {
+			int count = 0;
+            lock (_lock) {
+				count = _sessions.Count;
+            }
+
+			// TODO : 최대동접 비율로 환산되도록
+			return count / 100;
+        }
+
 		public List<ClientSession> GetSessions()
         {
 			// Note : 원본을 전달해주지 않고, 우회해서 전달

@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class WebManager
 {
-    
+    public string BaseUrl { get; set; } = "https://localhost:5001/api";
+
+
 }

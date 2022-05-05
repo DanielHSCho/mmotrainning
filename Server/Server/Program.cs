@@ -56,11 +56,13 @@ namespace Server
             }
         }
 
+		// TODO : config파일 같은 것으로 관리해야함
+		public static string Name { get; } = "다니엘";
+		public static int Port { get; } = 7777;
+		public static string IpAddress { get; set; }
+
 		static void Main(string[] args)
 		{
-			using(SharedDbContext shared = new SharedDbContext()) {
-            }
-
 			// 데이터 로드
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();
@@ -71,8 +73,11 @@ namespace Server
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);
-			IPAddress ipAddr = ipHost.AddressList[0];
+			// TODO : Config로 빼야한다
+			IPAddress ipAddr = ipHost.AddressList[1];
 			IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
+
+			IpAddress = ipAddr.ToString();
 
 			_listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
 			Console.WriteLine("Listening...");

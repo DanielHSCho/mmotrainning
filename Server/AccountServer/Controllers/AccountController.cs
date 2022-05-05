@@ -66,7 +66,28 @@ namespace AccountServer.Controllers
             } else {
                 res.LoginOk = true;
 
-                
+                // 토큰 발급
+                DateTime expired = DateTime.UtcNow;
+                expired.AddSeconds(600);
+
+                TokenDb tokenDb = _shared.Tokens.Where(t => t.AccountDbId == account.AccountDbId).FirstOrDefault();
+
+                // 토큰 갱신
+                if(tokenDb != null) {
+                    // Note : Token별로 생성 규칙이 프로젝트마다 있음
+                    tokenDb.Token = new Random().Next(Int32.MinValue, Int32.MaxValue);
+                    tokenDb.Expired = expired;
+                    _shared.SaveChangesEx();
+                } else { // 신규 발급
+                    tokenDb = new TokenDb() {
+                        AccountDbId = account.AccountDbId,
+                        Token = new Random().Next(Int32.MinValue, Int32.MaxValue),
+                        Expired = expired
+                    };
+
+                    _shared.Add(tokenDb);
+                    _shared.SaveChangesEx();
+                }
 
                 // TODO : 서버 목록
                 res.ServerList = new List<ServerInfo>() {

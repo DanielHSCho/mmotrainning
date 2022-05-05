@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class UI_LoginScene : UI_Scene
 {
-    enum Texts
+    enum GameObjects
     {
-        AccountNameText,
-        PasswordText
+        AccountName,
+        Password
     }
 
     enum Images
@@ -22,7 +22,7 @@ public class UI_LoginScene : UI_Scene
     {
         base.Init();
 
-        Bind<Text>(typeof(Texts));
+        Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
 
         GetImage((int)Images.CreateBtn).gameObject.BindEvent(OnClickCreateButton);
@@ -31,8 +31,8 @@ public class UI_LoginScene : UI_Scene
 
     public void OnClickCreateButton(PointerEventData evt)
     {
-        string account = GetText((int)Texts.AccountNameText).text;
-        string password = GetText((int)Texts.PasswordText).text;
+        string account = Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text;
+        string password = Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text;
 
         // TODO : WebPacket쪽 API 사용할 것
         CreateAccountPacketReq packet = new CreateAccountPacketReq() {
@@ -43,15 +43,15 @@ public class UI_LoginScene : UI_Scene
         Managers.Web.SendPostRequest<CreateAccountPacketRes>("account/create", packet, (res) => {
             Debug.Log(res.CreateOk);
 
-            GetText((int)Texts.AccountNameText).text = "";
-            GetText((int)Texts.PasswordText).text = "";
+            Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text = "";
+            Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text = "";
         });
     }
 
     public void OnClickLoginButton(PointerEventData evt)
     {
-        string account = GetText((int)Texts.AccountNameText).text;
-        string password = GetText((int)Texts.PasswordText).text;
+        string account = Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text;
+        string password = Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text;
 
         LoginAccountPacketReq packet = new LoginAccountPacketReq() {
             AccountName = account,
@@ -60,8 +60,8 @@ public class UI_LoginScene : UI_Scene
 
         Managers.Web.SendPostRequest<LoginAccountPacketRes>("account/login", packet, (res) => {
             Debug.Log(res.LoginOk);
-            GetText((int)Texts.AccountNameText).text = "";
-            GetText((int)Texts.PasswordText).text = "";
+            Get<GameObject>((int)GameObjects.AccountName).GetComponent<InputField>().text = "";
+            Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text = "";
 
             if (res.LoginOk) {
                 // 네트워크 매니저로 서버접속

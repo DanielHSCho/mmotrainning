@@ -27,7 +27,19 @@ public class UI_SelectServerPopup_Item : UI_Base
         GetButton((int)Buttons.SelectServerButton).gameObject.BindEvent(OnClickButton);
     }
 
+    public void RefreshUI()
+    {
+        if (Info == null) {
+            return;
+        }
+
+        GetText((int)Texts.NameText).text = Info.Name;
+    }
+
     void OnClickButton(PointerEventData evt)
     {
+        Managers.Network.ConnectToGame();
+        Managers.Scene.LoadScene(Define.Scene.Game);
+        Managers.UI.ClosePopupUI();
     }
 }

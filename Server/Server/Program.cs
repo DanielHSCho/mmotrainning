@@ -14,6 +14,7 @@ using Server.Data;
 using Server.DB;
 using Server.Game;
 using ServerCore;
+using SharedDB;
 
 namespace Server
 {
@@ -57,6 +58,9 @@ namespace Server
 
 		static void Main(string[] args)
 		{
+			using(SharedDbContext shared = new SharedDbContext()) {
+            }
+
 			// 데이터 로드
 			ConfigManager.LoadConfig();
 			DataManager.LoadData();

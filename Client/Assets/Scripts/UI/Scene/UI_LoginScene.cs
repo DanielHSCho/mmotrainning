@@ -64,6 +64,12 @@ public class UI_LoginScene : UI_Scene
             Get<GameObject>((int)GameObjects.Password).GetComponent<InputField>().text = "";
 
             if (res.LoginOk) {
+                Managers.Network.AccountId = res.AccountId;
+                Managers.Network.Token = res.Token;
+
+                UI_SelectServerPopup popup = Managers.UI.ShowPopupUI<UI_SelectServerPopup>();
+                popup.SetServer(res.ServerList);
+
                 // 네트워크 매니저로 서버접속
                 //Managers.Network.ConnectToGame();
                 //Managers.Scene.LoadScene(Define.Scene.Game);

@@ -12,7 +12,7 @@ namespace SharedDB
         public int TokenDbId { get; set; }
         public int AccountDbId { get; set; }
         public int Token { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime Expired { get; set; }
     }
 
     // Note : Redis로 개선할수도 있음

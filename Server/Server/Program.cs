@@ -56,6 +56,36 @@ namespace Server
             }
         }
 
+		static void StartServerInfoTask()
+        {
+			var t = new System.Timers.Timer();
+			t.AutoReset = true;
+			t.Elapsed += new System.Timers.ElapsedEventHandler((s, e) => {
+				using(SharedDbContext shared = new SharedDbContext()) {
+					ServerDb serverDb = shared.Servers.Where(s => s.Name == Name).FirstOrDefault();
+					if(serverDb != null) {
+						serverDb.IpAdress = IpAddress;
+						serverDb.Port = Port;
+						serverDb.BusyScore = SessionManager.Instance.GetBusyScore();
+						shared.SaveChangesEx();
+                    } else {
+						serverDb = new ServerDb() {
+							Name = Program.Name,
+							IpAdress = Program.IpAddress,
+							Port = Program.Port,
+							BusyScore = SessionManager.Instance.GetBusyScore()
+						};
+						shared.Servers.Add(serverDb);
+						shared.SaveChangesEx();
+                    }
+                }
+			});
+
+			// 10초마다 누군가가 실행
+			t.Interval = 10 * 1000;
+			t.Start();
+        }
+
 		// TODO : config파일 같은 것으로 관리해야함
 		public static string Name { get; } = "다니엘";
 		public static int Port { get; } = 7777;
@@ -82,8 +112,10 @@ namespace Server
 			_listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
 			Console.WriteLine("Listening...");
 
-            // DbTask
-            {
+			StartServerInfoTask();
+
+			// DbTask
+			{
 				Thread t = new Thread(DbTask);
 				t.Name = "DB";
 				t.Start();

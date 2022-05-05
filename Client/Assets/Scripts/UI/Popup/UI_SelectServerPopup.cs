@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UI_SelectServerPopup : UI_Base
+public class UI_SelectServerPopup : UI_Popup
 {
     public List<UI_SelectServerPopup_Item> Items { get; } = new List<UI_SelectServerPopup_Item>();
     public override void Init()
     {
+        base.Init();
     }
 
     public void SetServer(List<ServerInfo> servers)
     {
         Items.Clear();
 
-        GameObject grid = transform.Find("Grid").gameObject;
+        GameObject grid = this.transform.GetComponentInChildren<GridLayoutGroup>().gameObject;
         foreach (Transform child in grid.transform) {
             Destroy(child.gameObject);
         }

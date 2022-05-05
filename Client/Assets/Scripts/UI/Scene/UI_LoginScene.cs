@@ -65,8 +65,8 @@ public class UI_LoginScene : UI_Scene
 
             if (res.LoginOk) {
                 // 네트워크 매니저로 서버접속
-                Managers.Network.ConnectToGame();
-                Managers.Scene.LoadScene(Define.Scene.Game);
+                //Managers.Network.ConnectToGame();
+                //Managers.Scene.LoadScene(Define.Scene.Game);
             }
         });
     }

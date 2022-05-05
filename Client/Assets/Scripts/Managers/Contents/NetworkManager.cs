@@ -8,6 +8,9 @@ using Google.Protobuf;
 
 public class NetworkManager
 {
+	public int AccountId { get; set; }
+	public int Token { get; set; }
+
 	ServerSession _session = new ServerSession();
 
 	public void Send(IMessage packet)

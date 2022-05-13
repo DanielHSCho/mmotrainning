@@ -1,10 +1,8 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
-using Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Server.Game
 {
@@ -203,12 +201,10 @@ namespace Server.Game
             }
         }
 
-        // TODO
         // Note : 이 함수는 GameRoom안에서 잡큐 형태로 호출되는 함수 안에서 불려짐
         // 외부에서 이 함수를 직접 호출하는 일이 없도록 주의할 것
         Player FindPlayer(Func<GameObject, bool> condition)
         {
-            // TODO : 무식한 방법으로 우선 찾아보자
             foreach (Player player in _players.Values) {
                 if (condition.Invoke(player)) {
                     return player;
@@ -218,8 +214,6 @@ namespace Server.Game
             return null;
         }
 
-        // TODO : 살짝 부하가 있을 수 있는 함수
-        // 가장 가까우면서 + 이동할 수 있는지 Astar를 계속 호출하게 됨
         public Player FindClosestPlayer(Vector2Int pos, int range)
         {
             List<Player> players = GetAdjacentPlayers(pos, range);

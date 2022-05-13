@@ -2,13 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Server.Game
 {
     public class VisionCube
     {
-        // Note : 1초에 한번씩 체크하면서 실시간 스폰/디스폰 관리
         public Player Owner { get; private set; }
         public HashSet<GameObject> PreviousObjects { get; private set; } = new HashSet<GameObject>();
 
@@ -19,7 +17,6 @@ namespace Server.Game
 
         public HashSet<GameObject> GatherObjects()
         {
-            // 잡 방식으로 실행될 수 있으므로
             if (Owner == null || Owner.Room == null) {
                 return null;
             }
@@ -82,9 +79,6 @@ namespace Server.Game
             }
 
             // 존단위로 쪼개서 확인해 부하를 줄임
-
-            // 업데이트 시점에서 오브젝트를 긁어온다
-            // 시야각 기준 최대 100개 내외
             HashSet<GameObject> currntObjects = GatherObjects();
 
             // 기존과 비교해 스폰/디스폰 처리
@@ -93,7 +87,6 @@ namespace Server.Game
                 S_Spawn spawnPacket = new S_Spawn();
 
                 foreach(GameObject gameObject in added) {
-                    // 참조값을 전달하도록 함
                     ObjectInfo info = new ObjectInfo();
                     info.MergeFrom(gameObject.Info);
                     spawnPacket.Objects.Add(info);

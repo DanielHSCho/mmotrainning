@@ -4,10 +4,8 @@ using Server.Data;
 using Server.DB;
 using Server.Game;
 using ServerCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Server
 {
@@ -18,19 +16,9 @@ namespace Server
 
         public void HandleLogin(C_Login loginPacket)
         {
-			// TODO : 이런저런 보안 체크
 			if(ServerState != PlayerServerState.ServerStateLogin) {
 				return;
             }
-
-			/* 
-			 <해킹 이슈> - 로그인 관련
-				- 동시에 다른 사람이 같은 UniqueId를 보낸다면?
-					- DB 저장이 안될 경우를 체크 (SaveChanges)
-				- 악의적으로 여러번 보낸다면 (1초에 100번씩 보낸다면)
-				- 생뚱맞은 타이밍에 이 패킷을 보낸다면
-					- 로그인했는지 등의 상태 관리
-			*/
 
 			LobbyPlayers.Clear();
 
@@ -144,7 +132,6 @@ namespace Server
 
 		public void HandleCreatePlayer(C_CreatePlayer createPacket)
         {
-			// TODO : 이런저런 보안 체크
 			if (ServerState != PlayerServerState.ServerStateLobby) {
 				return;
 			}
@@ -156,11 +143,9 @@ namespace Server
 					.FirstOrDefault();
 
 				if(findPlayer != null) {
-					// 이름이 겹친다
 					Send(new S_CreatePlayer());
                 } else {
 					// 새 플레이어 생성
-					// 1레벨 스탯 정보 추출
 					StatInfo stat = null;
 					DataManager.StatDict.TryGetValue(1, out stat);
 
@@ -177,14 +162,11 @@ namespace Server
 					};
 
 					db.Players.Add(newPlayerDb);
-					// TODO : ExceptionHandling
-					// => 찰나의 순간에 동일한 플레이어 이름이 요청될 경우
 					bool success = db.SaveChangesEx();
 					if (success == false) {
 						return;
 					}
 
-					// 메모리에 추가
 					LobbyPlayerInfo lobbyPlayer = new LobbyPlayerInfo() {
 						PlayerDbId = newPlayerDb.PlayerDbId,
 						Name = createPacket.Name,

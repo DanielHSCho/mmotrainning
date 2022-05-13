@@ -33,17 +33,13 @@ namespace Server
 		static void DbTask()
         {
 			while (true) {
-				// TODO : 나중엔 이 부분 틱룸처럼 개선해야함
-				// 이벤트락으로 일감이 있을때만 깨어나서 동작하도록 <
 				DbTransaction.Instance.Flush();
-
 				// While이 도는게 부담스러우므로
 				// Thread.Sleep(0)으로 소유권을 살짝 넘겨줌
 				Thread.Sleep(0);
 			}
 		}
 
-		// Note : 얘는 여러 스레드를 둬서 분배할 수 있음
 		static void NetworkTask()
         {
             while (true) {
@@ -81,7 +77,6 @@ namespace Server
                 }
 			});
 
-			// 10초마다 누군가가 실행
 			t.Interval = 10 * 1000;
 			t.Start();
         }
@@ -103,7 +98,6 @@ namespace Server
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);
-			// TODO : Config로 빼야한다
 			IPAddress ipAddr = ipHost.AddressList[1];
 			IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
 
@@ -123,10 +117,6 @@ namespace Server
 
 			// NetworkTask
 			{
-				// Note : 롱러닝 Task와 스레드는 큰차이 없음
-				// Task networkTask = new Task(NetworkTask, TaskCreationOptions.LongRunning);
-				// networkTask.Start();
-
 				Thread t = new Thread(NetworkTask);
 				t.Name = "NetworkSend";
 				t.Start();

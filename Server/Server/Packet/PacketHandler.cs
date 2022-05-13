@@ -1,13 +1,8 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Server;
-using Server.DB;
 using Server.Game;
 using ServerCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 class PacketHandler
 {
@@ -88,8 +83,6 @@ class PacketHandler
 
 	public static void C_PongHandler(PacketSession session, IMessage packet)
     {
-		// Note : 락을 걸어주기도 하지만,
-		// 멀티스레드에서 덮어쓴다고 큰 문제가 발생하는 부분은 아니므로 Pass
 		ClientSession clientSession = (ClientSession)session;
 		clientSession.HandlePong();
     }

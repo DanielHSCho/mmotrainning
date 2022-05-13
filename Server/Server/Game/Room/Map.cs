@@ -3,7 +3,6 @@ using ServerCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Server.Game
 {
@@ -232,7 +231,6 @@ namespace Server.Game
 			return true;
         }
 
-		// TODO : Date 시트가 들어가면 경로도 데이터에서 받아와야 한다
 		public void LoadMap(int mapId, string pathPrefix = "../../../../../Common/MapData")
 		{
 			string mapName = "Map_" + mapId.ToString("000");

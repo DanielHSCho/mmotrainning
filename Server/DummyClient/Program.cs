@@ -18,7 +18,6 @@ namespace DummyClient
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);
-			// TODO : Config로 빼야한다
 			IPAddress ipAddr = ipHost.AddressList[1];
 			IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
 

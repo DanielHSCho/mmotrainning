@@ -1,14 +1,17 @@
 using Google.Protobuf.Protocol;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Define;
 
 public class BaseController : MonoBehaviour
 {
     public int Id { get; set; }
-
+    
+    PositionInfo _positionInfo = new PositionInfo();
     StatInfo _stat = new StatInfo();
+
+    protected bool _updated = false;
+    protected Animator _animator;
+    protected SpriteRenderer _sprite;
+
     public virtual StatInfo Stat
     {
         get { return _stat; }
@@ -21,12 +24,6 @@ public class BaseController : MonoBehaviour
         }
     }
 
-    public float Speed
-    {
-        get { return Stat.Speed; }
-        set { Stat.Speed = value; }
-    }
-
     public virtual int Hp
     {
         get { return Stat.Hp; }
@@ -35,9 +32,12 @@ public class BaseController : MonoBehaviour
         }
     }
 
-    protected bool _updated = false;
+    public float Speed
+    {
+        get { return Stat.Speed; }
+        set { Stat.Speed = value; }
+    }
 
-    PositionInfo _positionInfo = new PositionInfo();
     public PositionInfo PosInfo
     {
         get { return _positionInfo; }
@@ -50,12 +50,6 @@ public class BaseController : MonoBehaviour
             State = value.State;
             Dir = value.MoveDir;
         }
-    }
-
-    public void SyncPos()
-    {
-        Vector3 destPos = Managers.Map.CurrentGrid.CellToWorld(CellPos) + new Vector3(0.5f, 0.5f);
-        transform.position = destPos;
     }
 
     public Vector3Int CellPos
@@ -74,8 +68,6 @@ public class BaseController : MonoBehaviour
             _updated = true;
         }
     }
-    protected Animator _animator;
-    protected SpriteRenderer _sprite;
 
     public virtual CreatureState State
     {
@@ -104,6 +96,12 @@ public class BaseController : MonoBehaviour
             UpdateAnimation();
             _updated = true;
         }
+    }
+
+    public void SyncPos()
+    {
+        Vector3 destPos = Managers.Map.CurrentGrid.CellToWorld(CellPos) + new Vector3(0.5f, 0.5f);
+        transform.position = destPos;
     }
 
     public MoveDir GetDirFromVec(Vector3Int dir)
@@ -205,7 +203,6 @@ public class BaseController : MonoBehaviour
                     break;
             }
         } else {
-
         }
     }
 
@@ -221,8 +218,8 @@ public class BaseController : MonoBehaviour
 
     protected virtual void Init()
     {
-        _animator = GetComponent<Animator>();
-        _sprite = GetComponent<SpriteRenderer>();
+        _animator = this.GetComponent<Animator>();
+        _sprite = this.GetComponent<SpriteRenderer>();
         Vector3 pos = Managers.Map.CurrentGrid.CellToWorld(CellPos) + new Vector3(0.5f, 0.5f);
         transform.position = pos;
 
@@ -270,16 +267,13 @@ public class BaseController : MonoBehaviour
 
     protected virtual void MoveToNextPos()
     {
-
     }
 
     protected virtual void UpdateSkill()
     {
-
     }
 
     protected virtual void UpdateDead()
     {
-
     }
 }

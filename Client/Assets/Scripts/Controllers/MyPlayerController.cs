@@ -1,12 +1,11 @@
 using Google.Protobuf.Protocol;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Define;
 
 public class MyPlayerController : PlayerController
 {
     bool _moveKeyPressed = false;
+    Coroutine _coSkillCooltime;
 
     public int WeaponDamage { get; private set; }
     public int ArmorDefence { get; private set; }
@@ -51,7 +50,6 @@ public class MyPlayerController : PlayerController
         }
     }
 
-    Coroutine _coSkillCooltime;
     IEnumerator CoInputCooltime(float time)
     {
         yield return new WaitForSeconds(time);
@@ -98,7 +96,6 @@ public class MyPlayerController : PlayerController
     {
         _moveKeyPressed = true;
 
-        // TODO : 이동 부분은 인풋 매니저화 해야함
         if (Input.GetKey(KeyCode.W)) {
             Dir = MoveDir.Up;
         } else if (Input.GetKey(KeyCode.S)) {
@@ -146,16 +143,6 @@ public class MyPlayerController : PlayerController
         CheckUpdatedFlag();
     }
 
-    protected override void CheckUpdatedFlag()
-    {
-        if (_updated) {
-            C_Move movePacket = new C_Move();
-            movePacket.PosInfo = PosInfo;
-            Managers.Network.Send(movePacket);
-            _updated = false;
-        }
-    }
-
     public void RefreshAdditionalStat()
     {
         WeaponDamage = 0;
@@ -174,6 +161,16 @@ public class MyPlayerController : PlayerController
                     ArmorDefence += ((Armor)item).Defence;
                     break;
             }
+        }
+    }
+
+    protected override void CheckUpdatedFlag() {
+        // 이동 패킷
+        if (_updated) {
+            C_Move movePacket = new C_Move();
+            movePacket.PosInfo = PosInfo;
+            Managers.Network.Send(movePacket);
+            _updated = false;
         }
     }
 }

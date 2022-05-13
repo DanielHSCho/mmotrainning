@@ -2,8 +2,6 @@
 using Google.Protobuf.Protocol;
 using ServerCore;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
@@ -44,6 +42,6 @@ public class ServerSession : PacketSession
 
 	public override void OnSend(int numOfBytes)
 	{
-		//Console.WriteLine($"Transferred bytes: {numOfBytes}");
+		// Console.WriteLine($"Transferred bytes: {numOfBytes}");
 	}
 }

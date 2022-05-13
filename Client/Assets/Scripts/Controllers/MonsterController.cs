@@ -18,9 +18,8 @@ public class MonsterController : CreatureController
 
     public override void OnDamaged()
     {
-        // TODO : 나중에 오브젝트 매니저에서 한번에 처리할 수 있도록 개선해야함
-        // Managers.Object.Remove(Id);
-        // Managers.Resource.Destroy(this.gameObject);
+        Managers.Object.Remove(Id);
+        Managers.Resource.Destroy(this.gameObject);
     }
 
     public override void UseSkill(int skillId)

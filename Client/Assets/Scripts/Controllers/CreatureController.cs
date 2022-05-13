@@ -1,8 +1,5 @@
 using Google.Protobuf.Protocol;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Define;
 
 public class CreatureController : BaseController
 {
@@ -58,19 +55,18 @@ public class CreatureController : BaseController
 
     public virtual void OnDamaged()
     {
-
     }
 
     public virtual void OnDead()
     {
         State = CreatureState.Dead;
-
-        // TODO : Dead 애니메이션이 있다면 여기서 연동
-        
-        // =
         GameObject effect = Managers.Resource.Instantiate("Effect/DieEffect");
         effect.transform.position = this.transform.position;
-        effect.GetComponent<Animator>().Play("START");
+
+        Animator animator = effect.GetComponent<Animator>();
+        if(animator != null) {
+            animator.Play("START");
+        }
         GameObject.Destroy(effect, 0.5f);
     }
 

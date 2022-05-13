@@ -15,12 +15,10 @@ public class LoginScene : BaseScene
         Managers.Web.BaseUrl = "https://localhost:5001/api";
 
         Screen.SetResolution(640, 480, false);
-
         _sceneUI = Managers.UI.ShowSceneUI<UI_LoginScene>();
     }
 
     public override void Clear()
     {
-        
     }
 }

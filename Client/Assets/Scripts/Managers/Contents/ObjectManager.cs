@@ -1,6 +1,5 @@
 using Google.Protobuf.Protocol;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +14,6 @@ public class ObjectManager
         return (GameObjectType)type;
     }
 
-    // TODO : 팩토리 패턴으로 Id 전달 시, 해당 id에 해당하는 애를 만들어주도록 개선해야함
     public void Add(ObjectInfo info, bool myPlayer = false)
     {
         if(MyPlayer != null && MyPlayer.Id == info.ObjectId) {

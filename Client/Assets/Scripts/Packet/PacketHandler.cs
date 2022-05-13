@@ -1,8 +1,6 @@
 ﻿using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using ServerCore;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 class PacketHandler
@@ -46,7 +44,6 @@ class PacketHandler
 			return;
         }
 
-		// TODO : 추후에 거리가 정말 멀어진 경우에만 보정
 		if(Managers.Object.MyPlayer.Id == movePacket.ObjectId) {
 			return;
         }
@@ -114,7 +111,6 @@ class PacketHandler
 
 		// Note : 디바이스 시스템에 따라 유니크 아이디 생성
 		// 로컬에서 멀티플레이시에는 문제될 될 수 있어 예외처리 필요
-		// TODO : 추후 로그인창으로 수정 필요
 		string path = Application.dataPath;
 		loginPacket.UniqueId = path.GetHashCode().ToString();
 		Managers.Network.Send(loginPacket);
@@ -125,7 +121,6 @@ class PacketHandler
 		S_Login loginPacket = packet as S_Login;
 		Debug.Log($"LoginOk({loginPacket.LoginOk})");
 
-		// TODO : 로비 UI에서 캐릭터 출력 / 선택
 		if(loginPacket.Players == null || loginPacket.Players.Count == 0) {
 			C_CreatePlayer createPacket = new C_CreatePlayer();
 			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
@@ -145,7 +140,6 @@ class PacketHandler
     {
 		S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
 
-		// 어떤 이유에서 캐릭터 생성 실패 시 재요청
 		if(createOkPacket.Player == null) {
 			C_CreatePlayer createPacket = new C_CreatePlayer();
 			createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
@@ -163,13 +157,6 @@ class PacketHandler
 	public static void S_ItemListHandler(PacketSession session, IMessage packet)
     {
 		S_ItemList itemList = (S_ItemList)packet;
-
-		//UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-		//if(gameSceneUI == null) {
-		//	return;
-		//      }
-		//UI_Inventory invenUI = gameSceneUI.InvenUI;
-
 		Managers.Inven.Clear();
 
 		// 메모리에 아이템 정보 적용
@@ -177,10 +164,6 @@ class PacketHandler
 			Item item = Item.MakeItem(itemInfo);
 			Managers.Inven.Add(item);
         }
-
-		//// UI에 표시
-		//invenUI.gameObject.SetActive(true);
-		//invenUI.RefreshUI();
 
 		if (Managers.Object.MyPlayer != null) {
 			Managers.Object.MyPlayer.RefreshAdditionalStat();
@@ -236,8 +219,6 @@ class PacketHandler
 	public static void S_ChangeStatHandler(PacketSession session, IMessage packet)
 	{
 		S_ChangeStat itemList = (S_ChangeStat)packet;
-
-		// TODO
 	}
 
 	public static void S_PingHandler(PacketSession session, IMessage packet)

@@ -1,8 +1,6 @@
 using Google.Protobuf.Protocol;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Define;
 
 public class PlayerController : CreatureController
 {
@@ -90,9 +88,9 @@ public class PlayerController : CreatureController
     public override void UseSkill(int skillId)
     {
         if(skillId == 1) {
-            _coSkill = StartCoroutine("CoStartPunch");
+            _coSkill = StartCoroutine(nameof(CoStartPunch));
         } else if(skillId == 2) {
-            _coSkill = StartCoroutine("CoStartShootArrow");
+            _coSkill = StartCoroutine(nameof(CoStartShootArrow));
         }
     }
 
